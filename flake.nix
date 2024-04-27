@@ -9,7 +9,6 @@
     # Otherwise you would need to specify the system in the flake.nix
     # devShells.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.mkShell {
     #   buildInputs = [
-    #     # Add necessary packages here
     #   ];
     # };
     # devShells.x86_64-darwin = nixpkgs.legacyPackages.x86_64-darwin.mkShell {
@@ -41,6 +40,7 @@
             mkdir -p $out
             cp .zshrc $out
             cp .zshenv $out
+            cp .tmux.conf $out
           '';
         };
 
@@ -88,6 +88,7 @@
             touch ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
+            sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
             sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
             zsh
             sudo umount ~/.zshenv
