@@ -47,6 +47,9 @@
 
           #  whatever you want to run when entering a dev shell
           shellHook = ''
+	    ln -s .zshenv ~/.zshenv
+	    mkdir -p ~/.config/zsh
+	    ln -s .zshrc ~/.config/zshrc
             exec zsh
           '';
         };
