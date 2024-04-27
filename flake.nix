@@ -65,13 +65,19 @@
 
           #  whatever you want to run when entering a dev shell
           shellHook = ''
-                        mkdir -p ~/.config/zsh
-                        mkdir -p ~/.config/zsh/.oh-my-zsh
-                        touch ~/.config/zsh/.zshrc
-                        touch ~/.zshenv
-                        sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
-                        sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
-                        sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+            mkdir -p ~/.config/zsh
+            mkdir -p ~/.config/zsh/.oh-my-zsh
+            touch ~/.config/zsh/.zshrc
+            touch ~/.zshenv
+            sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
+            sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
+            sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+          '';
+
+          exitHook = ''
+            sudo umount ~/.zshenv
+            sudo umount ~/.config/zsh/.zshrc
+            sudo umount ~/.config/zsh/.oh-my-zsh
           '';
         # exec zsh
 
