@@ -73,7 +73,6 @@
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
             sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
             zsh
-            echo Hi
             sudo umount ~/.zshenv
             sudo umount ~/.config/zsh/.zshrc
             sudo umount ~/.config/zsh/.oh-my-zsh
