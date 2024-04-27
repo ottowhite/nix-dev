@@ -75,6 +75,7 @@
             fzf
             tree
             neovim
+            tmux
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
