@@ -77,7 +77,10 @@
 
           exitHook = ''
             sudo umount ~/.zshenv
+            sudo umount ~/.zshenv
             sudo umount ~/.config/zsh/.zshrc
+            sudo umount ~/.config/zsh/.zshrc
+            sudo umount ~/.config/zsh/.oh-my-zsh
             sudo umount ~/.config/zsh/.oh-my-zsh
           '';
 
