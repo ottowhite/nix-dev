@@ -4,6 +4,8 @@ export XDG_CACHE_HOME=$XDG_CONFIG_HOME/cache
 export SCM="$XDG_CONFIG_HOME/scm"
 export PCF="$SCM/personal-config-files"
 
+export NIX_HOME="$HOME/nix-dev"
+
 # editor
 export EDITOR="nvim"
 export VISUAL="nvim"

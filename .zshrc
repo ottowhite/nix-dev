@@ -1,8 +1,8 @@
 ZSH_THEME="alanpeabody"
 
 # Configuration aliases
-alias cfz="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
-alias cfv="$EDITOR ~/.config/nvim/init.vim"
+alias cfz="$EDITOR $NIX_HOME/.zshrc && source $NIX_HOME/.zshrc"
+alias cfv="$EDITOR $NIX_HOME/init.vim"
 alias cfi="$EDITOR ~/.config/i3/config"
 alias cfa="$EDITOR ~/.config/alacritty/alacritty.yml"
 alias cfx="$EDITOR ~/.config/X/.xinitrc"
