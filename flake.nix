@@ -41,6 +41,7 @@
             cp .zshrc $out
             cp .zshenv $out
             cp .tmux.conf $out
+            cp init.vim $out
           '';
         };
 
@@ -84,12 +85,15 @@
           shellHook = ''
             mkdir -p ~/.config
             mkdir -p ~/.config/zsh
+            mkdir -p ~/.config/nvim
             mkdir -p ~/.config/zsh/.oh-my-zsh
             touch ~/.config/zsh/.zshrc
+            touch ~/.config/nvim/init.vim
             touch ~/.zshenv
             touch ~/.tmux.conf
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
+            sudo mount --bind ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
             sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
             sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
             export SHELL=${pkgs.zsh}/bin/zsh
@@ -97,6 +101,7 @@
             sudo umount ~/.zshenv
             sudo umount ~/.tmux.conf
             sudo umount ~/.config/zsh/.zshrc
+            sudo umount ~/.config/nvim/init.vim
             sudo umount ~/.config/zsh/.oh-my-zsh
             exit
           '';
