@@ -55,8 +55,22 @@ remote_exec() {
 cfe() {
         cluster=$1
 
-        quokkas=$(for i in $(seq 4); echo quokka0$i)
-        keas=$(for i in $(seq 8); echo kea0$i) # Exclude 6 and 2 temporarily
+        quokkas=$(
+		echo quokka01
+		echo quokka02
+		echo quokka03
+		echo quokka04
+	)
+        keas=$(
+		echo kea01
+		echo kea02
+		echo kea03
+		echo kea04
+		# echo kea05, down temporarily, I think disk got full?
+		echo kea06
+		echo kea07
+		echo kea08
+	)
 
         if [ $cluster = "q" ]
         then
