@@ -92,8 +92,10 @@
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
             sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
             sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+            sudo chsh -s ${pkgs.zsh}/bin/zsh ${whoami}
             zsh
             sudo umount ~/.zshenv
+            sudo umount ~/.tmux.conf
             sudo umount ~/.config/zsh/.zshrc
             sudo umount ~/.config/zsh/.oh-my-zsh
             exit
