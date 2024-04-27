@@ -80,7 +80,7 @@
             nix-dev-deps
             oh-my-zsh-custom
           ]);
-
+          
           shellHook = ''
             mkdir ~/.config
             mkdir ~/.config/zsh
@@ -92,7 +92,7 @@
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
             sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
             sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
-            sudo chsh -s ${pkgs.zsh}/bin/zsh $(whoami)
+            export SHELL=${pkgs.zsh}/bin/zsh
             zsh
             sudo umount ~/.zshenv
             sudo umount ~/.tmux.conf
