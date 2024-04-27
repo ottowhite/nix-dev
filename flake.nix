@@ -72,10 +72,12 @@
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
             sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+            sudo mount --bind ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             zsh
             sudo umount ~/.zshenv
             sudo umount ~/.config/zsh/.zshrc
             sudo umount ~/.config/zsh/.oh-my-zsh
+            sudo umount ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             exit
           '';
         };
