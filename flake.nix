@@ -67,6 +67,8 @@
           shellHook = ''
             mkdir -p ~/.config/zsh
             mkdir -p ~/.config/zsh/.oh-my-zsh
+            mkdir -p ~/.config/zsh/.oh-my-zsh
+            mkdir -p ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             touch ~/.config/zsh/.zshrc
             touch ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
