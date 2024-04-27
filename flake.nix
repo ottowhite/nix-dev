@@ -39,6 +39,12 @@
           # Add buildInputs here i.e packages you want to be available in the dev shell
           packages = (with pkgs; [
             zsh
+	    zsh-syntax-highlighting
+	    zsh-autosuggestions
+            oh-my-zsh
+            fzf
+            tree
+            neovim
           ]);
 	  # Goes for the cowsay package in nix packages
           # buildInputs = [
@@ -47,11 +53,17 @@
 
           #  whatever you want to run when entering a dev shell
           shellHook = ''
-	    ln -s .zshenv ~/.zshenv
-	    mkdir -p ~/.config/zsh
-	    ln -s .zshrc ~/.config/zshrc
+            echo Testing
+            mkdir -p ~/.config/zsh
+            mkdir -p ~/.config/zsh/.oh-my-zsh
+            touch ~/.config/zsh/.zshrc
+            touch ~/.zshenv
+            sudo mount --bind .zshenv ~/.zshenv
+            sudo mount --bind .zshrc ~/.config/zsh/.zshrc
+	    sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
             exec zsh
           '';
+
         };
       }
     );
