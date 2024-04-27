@@ -76,6 +76,7 @@
             sudo umount ~/.zshenv
             sudo umount ~/.config/zsh/.zshrc
             sudo umount ~/.config/zsh/.oh-my-zsh
+            exit
           '';
         };
       }
