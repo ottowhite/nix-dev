@@ -82,9 +82,9 @@
           ]);
           
           shellHook = ''
-            mkdir ~/.config
-            mkdir ~/.config/zsh
-            mkdir ~/.config/zsh/.oh-my-zsh
+            mkdir -p ~/.config
+            mkdir -p ~/.config/zsh
+            mkdir -p ~/.config/zsh/.oh-my-zsh
             touch ~/.config/zsh/.zshrc
             touch ~/.zshenv
             touch ~/.tmux.conf
