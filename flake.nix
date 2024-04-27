@@ -38,48 +38,61 @@
           version = "1";
           src = ./.;
           installPhase = ''
-            	    mkdir -p $out
-                        cp .zshrc $out
-                        cp .zshenv $out
-            	  '';
+            mkdir -p $out
+            cp .zshrc $out
+            cp .zshenv $out
+          '';
+        };
+
+        oh-my-zsh-custom = pkgs.stdenv.mkDerivation {
+          name = "ottowhite-oh-my-zsh";
+          version = "1";
+          src = ./.;
+
+          buildInputs = [
+            pkgs.oh-my-zsh
+            pkgs.zsh-syntax-highlighting
+            pkgs.zsh-autosuggestions
+          ];
+
+          buildPhase = ''
+            mkdir -p temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+            mkdir -p temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
+            cp -r ${pkgs.oh-my-zsh}/share/oh-my-zsh temp
+            cp -r ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting temp/oh-my-zsh/custom/plugins/
+            cp -r ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions temp/oh-my-zsh/custom/plugins/
+            cp zsh-syntax-highlighting.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+            cp zsh-autosuggestions.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
+            mkdir -p $out
+            cp -r temp/oh-my-zsh $out
+          '';
         };
       in
       {
-        # Default shell that launches when we write nix develop (devShells -> nix develop)
         devShells.default = pkgs.mkShell {
-
-          # Add buildInputs here i.e packages you want to be available in the dev shell
           packages = (with pkgs; [
             zsh
-            zsh-syntax-highlighting
-            zsh-autosuggestions
-            oh-my-zsh
             fzf
             tree
             neovim
-          ] ++ [ nix-dev-deps ]);
-          # Goes for the cowsay package in nix packages
-          # buildInputs = [
-          #               pkgs.cowsay
-          # ];
+          ] ++ [
+            nix-dev-deps
+            oh-my-zsh-custom
+          ]);
 
-          #  whatever you want to run when entering a dev shell
           shellHook = ''
-            mkdir -p ~/.config/zsh
-            mkdir -p ~/.config/zsh/.oh-my-zsh
-            mkdir -p ~/.config/zsh/.oh-my-zsh
-            mkdir -p ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+            mkdir ~/.config
+            mkdir ~/.config/zsh
+            mkdir ~/.config/zsh/.oh-my-zsh
             touch ~/.config/zsh/.zshrc
             touch ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
-            sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
-            sudo mount --bind ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+            sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
             zsh
             sudo umount ~/.zshenv
             sudo umount ~/.config/zsh/.zshrc
             sudo umount ~/.config/zsh/.oh-my-zsh
-            sudo umount ~/.config/zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             exit
           '';
         };
