@@ -65,7 +65,6 @@
 
           #  whatever you want to run when entering a dev shell
           shellHook = ''
-                        set -x
                         mkdir -p ~/.config/zsh
                         mkdir -p ~/.config/zsh/.oh-my-zsh
                         touch ~/.config/zsh/.zshrc
@@ -73,8 +72,8 @@
                         sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
                         sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
                         sudo mount --bind ${pkgs.oh-my-zsh}/share/oh-my-zsh ~/.config/zsh/.oh-my-zsh
-                        exec zsh
           '';
+        # exec zsh
 
         };
       }
