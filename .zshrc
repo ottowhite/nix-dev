@@ -1,4 +1,4 @@
-ZSH_THEME="alanpeabody"
+ZSH_THEME="aussiegeek"
 
 # Configuration aliases
 alias cfz="$EDITOR $NIX_HOME/.zshrc && source $NIX_HOME/.zshrc"
