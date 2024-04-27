@@ -87,6 +87,7 @@
             mkdir ~/.config/zsh/.oh-my-zsh
             touch ~/.config/zsh/.zshrc
             touch ~/.zshenv
+            touch ~/.tmux.conf
             sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
             sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
             sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
