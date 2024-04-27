@@ -34,8 +34,77 @@ function cds {
 	cd "$(dirname "$(fzf)")"
 }
 
-function kt {
-	osascript -e 'tell application "Terminal" to quit'
+# Quokka commands
+drawline() {
+        printf %"$(tput cols)"s | tr " " "-"
+}
+
+gfza() {
+        git add $(fzf)
+}
+
+rpt() {
+        for i in $(seq 100000); (echo Run $i\\n && eval "$@" && sleep 1 && clear)
+}
+
+cds() {
+        cd "$(dirname "$(fzf)")"
+}
+
+remote_exec() {
+        machine=$1
+        args=${@:2}
+
+        drawline
+        echo $machine\> "${@:2}"
+        drawline
+        ssh $machine -t "${@:2}"
+}
+
+# Cluster for each
+cfe() {
+        cluster=$1
+
+        quokkas=$(for i in $(seq 4); echo quokka0$i)
+        keas=$(for i in $(seq 8); echo kea0$i) # Exclude 6 and 2 temporarily
+
+        if [ $cluster = "q" ]
+        then
+                machines=$quokkas
+        else
+                if [ $cluster = "k" ]
+                then
+
+                        machines=$keas
+                else
+                        # Combined
+                        machines="$quokkas\\n$keas"
+                fi
+        fi
+
+        for machine in $(echo $machines)
+        do
+                remote_exec $machine ${@:2}
+        done
+}
+
+cpsu() {
+        cluster=$1
+        user=$2
+        cfe $cluster ps -fjH -u $user
+}
+
+cexec() {
+        cluster=$1
+        machine_number=$2
+        if [ $cluster = "q" ]
+        then
+                machine_prefix=quokka0
+        else
+                machine_prefix=kea0
+        fi
+
+        remote_exec $machine_prefix$machine_number ${@:3}
 }
 
 
