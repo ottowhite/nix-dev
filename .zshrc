@@ -1,6 +1,7 @@
 ZSH_THEME="dpoggi"
 
 # Configuration aliases
+alias cff="$EDITOR $NIX_HOME/flake.nix"
 alias cfz="$EDITOR $NIX_HOME/.zshrc && source $NIX_HOME/.zshrc"
 alias cfv="$EDITOR $NIX_HOME/init.vim"
 alias cfi="$EDITOR ~/.config/i3/config"
