@@ -1,9 +1,9 @@
 ZSH_THEME="dpoggi"
 
 # Configuration aliases
-alias cff="$EDITOR $NIX_HOME/flake.nix"
-alias cfz="$EDITOR $NIX_HOME/.zshrc && source $NIX_HOME/.zshrc"
-alias cfn="$EDITOR $NIX_HOME/init.vim"
+alias cff="configure_file flake.nix"
+alias cfz="configure_file .zshrc && source $NIX_HOME/.zshrc"
+alias cfn="configure_file init.vim"
 alias cfi="$EDITOR ~/.config/i3/config"
 alias cfa="$EDITOR ~/.config/alacritty/alacritty.yml"
 alias cfx="$EDITOR ~/.config/X/.xinitrc"
@@ -26,7 +26,13 @@ function cds {
 }
 
 configure_file() {
-	test -d $NIX_HOME || git clone git@github.com:ottowhite/nix-dev.git $NIX_HOME
+        if [ -d $NIX_HOME ]
+        then
+		git -C $NIX_HOME pull
+        else
+		git clone git@github.com:ottowhite/nix-dev.git $NIX_HOME 
+        fi
+
 	$EDITOR $NIX_HOME/$1
 }
 
