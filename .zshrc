@@ -25,6 +25,11 @@ function cds {
 	cd "$(dirname "$(fzf)")"
 }
 
+configure_file() {
+	test -d $NIX_HOME || git clone git@github.com:ottowhite/nix-dev.git $NIX_HOME
+	$EDITOR $NIX_HOME/$1
+}
+
 # Quokka commands
 drawline() {
         printf %"$(tput cols)"s | tr " " "-"
