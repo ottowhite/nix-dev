@@ -1,6 +1,6 @@
 let mapleader=" "
 
-set nu rnu
+set nu
 
 nnoremap <leader>h gT
 nnoremap <leader>l gt
