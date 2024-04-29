@@ -40,11 +40,10 @@ nixup() {
 	(
 		cd $NIX_HOME
 		clear
-		drawline
 		git --no-pager diff
-		git --no-pager diff --stat
+		git status
 		drawline
-		echo You\'re in a subshell \for updating your nix repo. Type \exit to return to your original location.
+		echo You\'re in a subshell \for updating your nix repo. After updating, \type \exit to \return to your original location.
 		drawline
 		zsh
 	)
