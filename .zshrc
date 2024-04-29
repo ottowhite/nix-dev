@@ -36,6 +36,20 @@ configure_file() {
 	$EDITOR $NIX_HOME/$1
 }
 
+nixup() {
+	(
+		cd $NIX_HOME
+		clear
+		drawline
+		git --no-pager diff
+		git --no-pager diff --stat
+		drawline
+		echo You\'re in a subshell \for updating your nix repo. Type \exit to return to your original location.
+		drawline
+		zsh
+	)
+}
+
 # Quokka commands
 drawline() {
         printf %"$(tput cols)"s | tr " " "-"
