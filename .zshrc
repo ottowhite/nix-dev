@@ -67,7 +67,7 @@ cfe() {
 		echo kea02
 		echo kea03
 		echo kea04
-		# echo kea05, down temporarily, I think disk got full?
+		echo kea05
 		echo kea06
 		echo kea07
 		echo kea08
