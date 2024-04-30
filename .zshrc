@@ -1,4 +1,4 @@
-ZSH_THEME="dpoggi"
+ZSH_THEME="candy"
 
 # Configuration aliases
 alias cff="configure_file flake.nix"
