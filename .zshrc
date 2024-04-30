@@ -56,7 +56,7 @@ drawline() {
 }
 
 gfza() {
-        git add $(fzf)
+        git add $(git diff --name-only | fzf)
 }
 
 rpt() {
