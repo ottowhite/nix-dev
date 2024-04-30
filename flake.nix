@@ -91,14 +91,10 @@
 		  src=$2
 		  dst=$3
 
-		  if diff -r $src/$filename $dst/$filename > /dev/null 2>&1; then
-		    echo $filename is unchanged, skipping.
-		  else
+		  if ! diff -r $src/$filename $dst/$filename >/dev/null 2>&1; then
 		    echo $filename is different, synchronizing contents.
 		    sudo rm -rf $dst/$filename
 		    sudo cp -ra $src/$filename $dst
-		    echo $src/$filename
-		    echo $dst/$filename
                     sudo chown -R $(whoami) $dst/$filename
 		  fi
 		}
