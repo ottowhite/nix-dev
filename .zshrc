@@ -20,6 +20,7 @@ alias bins='f() { pacman -Ql $1 | grep bin };f'# See the binaries provided by a 
 alias wp='f() { sudo pacman -Fy && pacman -F $1 };f' # See "which package" provides the binary you are looking for
 alias backup='f() { sudo rsync -aAXvv --info=progress2 --delete --exclude /dev/ --exclude /proc/ --exclude /sys/ --exclude /tmp/ --exclude /mnt/ --exclude /usr/tmp/ --exclude /run/ --exclude /media/ --exclude /var/cache/ --exclude /lost+found/ --exclude /home/otto/Downloads/ --exclude /home/otto/.cache/ / $1 };f'
 alias startsc='echo "Starting avahi-daemon" && sudo systemctl start avahi-daemon && uxplay && echo "Stopping avahi-daemon" && sudo systemctl stop avahi-daemon.service avahi-daemon.socket'
+alias x="exit"
 
 function cds {
 	cd "$(dirname "$(fzf)")"
@@ -43,7 +44,7 @@ nixup() {
 		git --no-pager diff
 		git status
 		drawline
-		echo You\'re in a subshell \for updating your nix repo. After updating, \type \exit to \return to your original location.
+		echo You\'re in a subshell \for updating your nix repo. After updating, \type x to \return to your original location.
 		drawline
 		zsh
 	)
