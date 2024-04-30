@@ -85,11 +85,16 @@
 	  shellHook = 
 	    let
 	      setup = if pkgs.stdenv.isDarwin then ''
-                sudo cp -a ${nix-dev-deps}/.zshenv ~/.zshenv
-                sudo cp -a ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
-                sudo cp -a ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
-                sudo cp -a ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
-                sudo cp -ra ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+		copy_and_own() {
+		  sudo cp -ra $1 $2
+		  sudo chown -R $(whoami) $2
+		}
+
+                copy_and_own ${nix-dev-deps}/.zshenv ~/.zshenv
+                copy_and_own ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
+                copy_and_own ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
+                copy_and_own ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
+                copy_and_own ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
 	      '' else ''
                 touch ~/.config/zsh/.zshrc
                 touch ~/.config/nvim/init.vim
