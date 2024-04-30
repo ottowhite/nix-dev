@@ -65,7 +65,8 @@
             cp zsh-syntax-highlighting.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             cp zsh-autosuggestions.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
             mkdir -p $out
-            cp -r temp/oh-my-zsh $out
+	    mv temp/oh-my-zsh temp/.oh-my-zsh
+            cp -r temp/.oh-my-zsh $out
           '';
         };
       in
@@ -86,15 +87,27 @@
 	    let
 	      setup = if pkgs.stdenv.isDarwin then ''
 		copy_and_own() {
-		  sudo cp -ra $1 $2
-		  sudo chown -R $(whoami) $2
+		  filename=$1
+		  src=$2
+		  dst=$3
+
+		  if diff -r $src/$filename $dst/$filename > /dev/null 2>&1; then
+		    echo $filename is unchanged, skipping.
+		  else
+		    echo $filename is different, synchronizing contents.
+		    sudo rm -rf $dst/$filename
+		    sudo cp -ra $src/$filename $dst
+		    echo $src/$filename
+		    echo $dst/$filename
+                    sudo chown -R $(whoami) $dst/$filename
+		  fi
 		}
 
-                copy_and_own ${nix-dev-deps}/.zshenv ~/.zshenv
-                copy_and_own ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
-                copy_and_own ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
-                copy_and_own ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
-                copy_and_own ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+                copy_and_own .zshenv    ${nix-dev-deps}     ~
+                copy_and_own .tmux.conf ${nix-dev-deps}     ~
+                copy_and_own .zshrc     ${nix-dev-deps}     ~/.config/zsh
+                copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
+                copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 	      '' else ''
                 touch ~/.config/zsh/.zshrc
                 touch ~/.config/nvim/init.vim
@@ -104,7 +117,7 @@
                 sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
                 sudo mount --bind ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
                 sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
-                sudo mount --bind ${oh-my-zsh-custom}/oh-my-zsh ~/.config/zsh/.oh-my-zsh
+                sudo mount --bind ${oh-my-zsh-custom}/.oh-my-zsh ~/.config/zsh/.oh-my-zsh
 	      '';
 
 	      packdown = if pkgs.stdenv.isDarwin then '' '' else ''
