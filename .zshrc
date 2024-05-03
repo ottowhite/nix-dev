@@ -26,6 +26,10 @@ function cds {
 	cd "$(dirname "$(fzf)")"
 }
 
+space() {
+	du -sh $(ls -A .) | sort -h
+}
+
 configure_file() {
         if [ -d $NIX_HOME ]
         then
