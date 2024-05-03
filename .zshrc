@@ -27,7 +27,7 @@ function cds {
 }
 
 space() {
-	du -sh $(ls -A .) | sort -h
+	ls -A $1 | sudo xargs -I{} du -sh $1/{} | sort -h
 }
 
 configure_file() {
