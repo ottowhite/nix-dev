@@ -78,6 +78,7 @@
             tree
             neovim
             tmux
+	    watch
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
