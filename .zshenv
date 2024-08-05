@@ -3,6 +3,7 @@ export XDG_DATA_HOME=$XDG_CONFIG_HOME/local/share
 export XDG_CACHE_HOME=$XDG_CONFIG_HOME/cache
 export SCM="$XDG_CONFIG_HOME/scm"
 export PCF="$SCM/personal-config-files"
+export PATH="$PATH:$HOME/.local/bin"
 
 export NIX_HOME="$HOME/nix-dev"
 
