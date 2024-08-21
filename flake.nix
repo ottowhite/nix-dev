@@ -79,6 +79,7 @@
             neovim
             tmux
 	    watch
+	    mosh
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
