@@ -63,6 +63,10 @@ gfza() {
         git add $(git diff --name-only | fzf)
 }
 
+gsfe() {
+	git submodule foreach $@
+}
+
 rpt() {
         for i in $(seq 100000); (echo Run $i\\n && eval "$@" && sleep 1 && clear)
 }
