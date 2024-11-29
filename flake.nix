@@ -80,6 +80,7 @@
             tmux
 	    watch
 	    mosh
+	    stgit
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
