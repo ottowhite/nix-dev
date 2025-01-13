@@ -21,6 +21,7 @@ alias wp='f() { sudo pacman -Fy && pacman -F $1 };f' # See "which package" provi
 alias backup='f() { sudo rsync -aAXvv --info=progress2 --delete --exclude /dev/ --exclude /proc/ --exclude /sys/ --exclude /tmp/ --exclude /mnt/ --exclude /usr/tmp/ --exclude /run/ --exclude /media/ --exclude /var/cache/ --exclude /lost+found/ --exclude /home/otto/Downloads/ --exclude /home/otto/.cache/ / $1 };f'
 alias startsc='echo "Starting avahi-daemon" && sudo systemctl start avahi-daemon && uxplay && echo "Stopping avahi-daemon" && sudo systemctl stop avahi-daemon.service avahi-daemon.socket'
 alias x="exit"
+alias nixmac="sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist"
 
 function cds {
 	cd "$(dirname "$(fzf)")"
