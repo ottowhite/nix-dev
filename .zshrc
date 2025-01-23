@@ -31,6 +31,10 @@ space() {
 	ls -A $1 | sudo xargs -I{} du -sh $1/{} | sort -h
 }
 
+gdd() {
+	git diff $1~ $1
+}
+
 configure_file() {
         if [ -d $NIX_HOME ]
         then
