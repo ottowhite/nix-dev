@@ -59,7 +59,6 @@ nixup() {
 	)
 }
 
-# Quokka commands
 drawline() {
         printf %"$(tput cols)"s | tr " " "-"
 }
@@ -71,85 +70,6 @@ gfza() {
 gsfe() {
 	git submodule foreach $@
 }
-
-rpt() {
-        for i in $(seq 100000); (echo Run $i\\n && eval "$@" && sleep 1 && clear)
-}
-
-cds() {
-        cd "$(dirname "$(fzf)")"
-}
-
-remote_exec() {
-        machine=$1
-        args=${@:2}
-
-        drawline
-        echo $machine\> "${@:2}"
-        drawline
-        ssh $machine -t "${@:2}"
-}
-
-# Cluster for each
-cfe() {
-        cluster=$1
-
-        quokkas=$(
-		echo quokka01
-		echo quokka02
-		echo quokka03
-		echo quokka04
-	)
-        keas=$(
-		echo kea01
-		echo kea02
-		echo kea03
-		echo kea04
-		echo kea05
-		echo kea06
-		echo kea07
-		echo kea08
-	)
-
-        if [ $cluster = "q" ]
-        then
-                machines=$quokkas
-        else
-                if [ $cluster = "k" ]
-                then
-
-                        machines=$keas
-                else
-                        # Combined
-                        machines="$quokkas\\n$keas"
-                fi
-        fi
-
-        for machine in $(echo $machines)
-        do
-                remote_exec $machine ${@:2}
-        done
-}
-
-cpsu() {
-        cluster=$1
-        user=$2
-        cfe $cluster ps -fjH -u $user
-}
-
-cexec() {
-        cluster=$1
-        machine_number=$2
-        if [ $cluster = "q" ]
-        then
-                machine_prefix=quokka0
-        else
-                machine_prefix=kea0
-        fi
-
-        remote_exec $machine_prefix$machine_number ${@:3}
-}
-
 
 # Plugins
 plugins=(git vi-mode zsh-syntax-highlighting zsh-autosuggestions fzf kubectl)
