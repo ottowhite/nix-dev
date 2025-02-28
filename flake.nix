@@ -1,3 +1,4 @@
+# TODO: Create directories for .config, .config/zsh, .config/neovim, .config/zsh/.oh-my-zsh for new machines
 {
   description = "Otto Dev Environment";
 
