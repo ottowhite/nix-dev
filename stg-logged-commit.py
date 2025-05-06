@@ -84,7 +84,7 @@ if __name__ == "__main__":
     arg = sys.argv[1]
     filename = os.path.join(".git/patches", sys.argv[2])
     if not os.path.exists(filename):
-        os.system("mkdir " + filename)
+        os.system("touch " + filename)
     if arg == "commit":
         logged_commit(filename)
     elif arg == "uncommit":
