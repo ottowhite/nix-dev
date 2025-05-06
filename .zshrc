@@ -23,6 +23,8 @@ alias startsc='echo "Starting avahi-daemon" && sudo systemctl start avahi-daemon
 alias x="exit"
 alias nixmac="sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist"
 alias getsid="ssh -t root@kangaroo2 id -u "
+alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
+alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 getshortcode() {
 	ssh -t lsds.doc.ic.ac.uk "cat /etc/passwd | grep -i $1"
 }
