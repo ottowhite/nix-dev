@@ -83,6 +83,8 @@ if __name__ == "__main__":
     # get arg which is either commit or uncommit, the next is the filename
     arg = sys.argv[1]
     filename = os.path.join(".git/patches", sys.argv[2])
+    if not os.path.exists(filename):
+        os.system("mkdir " + filename)
     if arg == "commit":
         logged_commit(filename)
     elif arg == "uncommit":
