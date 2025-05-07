@@ -3,12 +3,6 @@ import sys
 
 NO_PAGER_VAR='LESS="${LESS:+$LESS }-X -F"'
 
-def create_patch_folder():
-    assert os.path.exists(".git"), "Not a git repository"
-
-    if not os.path.exists(".git/patches"):
-        os.system("mkdir .git/patches")
-
 def get_current_patch_names():
     patch_names = os.popen("stg series").read().split("\n")
     patch_names = list(filter(lambda x: x != "", patch_names))
@@ -78,13 +72,9 @@ def uncommit_with_patch_names(filename):
         os.system(f"stg rename {new_patch_name} {original_patch_name}")
 
 if __name__ == "__main__":
-    create_patch_folder()
-
     # get arg which is either commit or uncommit, the next is the filename
     arg = sys.argv[1]
-    filename = os.path.join(".git/patches", sys.argv[2])
-    if not os.path.exists(filename):
-        os.system("touch " + filename)
+    filename = sys.argv[2]
     if arg == "commit":
         logged_commit(filename)
     elif arg == "uncommit":
