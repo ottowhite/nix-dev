@@ -79,64 +79,69 @@
             tree
             neovim
             tmux
-	    watch
-	    mosh
-	    stgit
+	          watch
+	          mosh
+	          stgit
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
           ]);
 
-	  shellHook = 
-	    let
-	      setup = if pkgs.stdenv.isDarwin then ''
-		copy_and_own() {
-		  filename=$1
-		  src=$2
-		  dst=$3
+	      shellHook = 
+          ''
+		        copy_and_own() {
+		          filename=$1
+		          src=$2
+		          dst=$3
 
-		  if ! diff -r $src/$filename $dst/$filename >/dev/null 2>&1; then
-		    echo $filename is different, synchronizing contents.
-		    sudo rm -rf $dst/$filename
-		    sudo cp -ra $src/$filename $dst
-                    sudo chown -R $(whoami) $dst/$filename
-		  fi
-		}
+		          if ! diff -r $src/$filename $dst/$filename >/dev/null 2>&1; then
+		            echo $filename is different, synchronizing contents.
+		            sudo rm -rf $dst/$filename
+		            sudo cp -ra $src/$filename $dst
+                sudo chown -R $(whoami) $dst/$filename
+		          fi
+		        }
+            mkdir_and_own() {
+              directory=$1
+              sudo mkdir -p $directory
+              sudo chown -R $(whoami) $directory
+            }
 
-                copy_and_own .zshenv    ${nix-dev-deps}     ~
-                copy_and_own .tmux.conf ${nix-dev-deps}     ~
-                copy_and_own .zshrc     ${nix-dev-deps}     ~/.config/zsh
-                copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
-                copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
-	      '' else ''
-                touch ~/.config/zsh/.zshrc
-                touch ~/.config/nvim/init.vim
-                touch ~/.zshenv
-                touch ~/.tmux.conf
-                sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
-                sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
-                sudo mount --bind ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
-                sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
-                sudo mount --bind ${oh-my-zsh-custom}/.oh-my-zsh ~/.config/zsh/.oh-my-zsh
-	      '';
+            mkdir_and_own ~/.config
+            mkdir_and_own ~/.config/zsh
+            mkdir_and_own ~/.config/nvim
 
-	      packdown = if pkgs.stdenv.isDarwin then '' '' else ''
-                sudo umount ~/.zshenv
-                sudo umount ~/.tmux.conf
-                sudo umount ~/.config/zsh/.zshrc
-                sudo umount ~/.config/nvim/init.vim
-                sudo umount ~/.config/zsh/.oh-my-zsh
-	      '';
-            in
-              ''
-	        ${setup}
-                export SHELL=${pkgs.zsh}/bin/zsh
-                zsh
-	        ${packdown}
-                exit
-              '';
-        };
-      }
-    );
+            copy_and_own .zshenv    ${nix-dev-deps}     ~
+            copy_and_own .tmux.conf ${nix-dev-deps}     ~
+            copy_and_own .zshrc     ${nix-dev-deps}     ~/.config/zsh
+            copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
+            copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
+
+            export SHELL=${pkgs.zsh}/bin/zsh
+            zsh
+            exit
+          '';
+      };
+    }
+  );
 }
 
+# Old linux bind mounts
+# Setup ----
+# touch ~/.config/zsh/.zshrc
+# touch ~/.config/nvim/init.vim
+# touch ~/.zshenv
+# touch ~/.tmux.conf
+# sudo mount --bind ${nix-dev-deps}/.zshenv ~/.zshenv
+# sudo mount --bind ${nix-dev-deps}/.zshrc ~/.config/zsh/.zshrc
+# sudo mount --bind ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
+# sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
+# sudo mount --bind ${oh-my-zsh-custom}/.oh-my-zsh ~/.config/zsh/.oh-my-zsh
+# Teardown ----
+# packdown = if pkgs.stdenv.isDarwin then '' '' else ''
+#          sudo umount ~/.zshenv
+#          sudo umount ~/.tmux.conf
+#          sudo umount ~/.config/zsh/.zshrc
+#          sudo umount ~/.config/nvim/init.vim
+#          sudo umount ~/.config/zsh/.oh-my-zsh
+# '';
