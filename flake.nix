@@ -103,8 +103,10 @@
 		        }
             mkdir_and_own() {
               directory=$1
-              sudo mkdir -p $directory
-              sudo chown -R $(whoami) $directory
+              if [ ! -d $directory ]; then
+                sudo mkdir -p $directory
+                sudo chown -R $(whoami) $directory
+              fi
             }
 
             mkdir_and_own ~/.config
