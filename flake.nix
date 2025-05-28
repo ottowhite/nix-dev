@@ -119,8 +119,6 @@
             copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
             copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 
-            export SHELL=${pkgs.zsh}/bin/zsh
-            zsh
             exit
           '';
       };
@@ -129,6 +127,13 @@
 }
 
 # Old linux bind mounts
+# Add these lines before the exit to enter the nix shell
+# ---------
+# export SHELL=${pkgs.zsh}/bin/zsh
+# zsh
+# exit
+# ---------
+
 # Setup ----
 # touch ~/.config/zsh/.zshrc
 # touch ~/.config/nvim/init.vim
