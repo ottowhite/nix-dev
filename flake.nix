@@ -1,6 +1,8 @@
 # TODO: Add a flag that either drops you into the nix environment or the local environment
 # TODO: Add a flag to potentially install all of the packages on host (arch dependent)
 # TODO: Synchronise with my VSCode config
+# TODO: Synchronise with my Windows keybindings files from the other git repo
+# TODO: Synchronise with my mac keybindings from karabiner elements / others
 
 {
   description = "Otto Dev Environment";
