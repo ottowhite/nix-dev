@@ -1,4 +1,7 @@
-# TODO: Create directories for .config, .config/zsh, .config/neovim, .config/zsh/.oh-my-zsh for new machines
+# TODO: Add a flag that either drops you into the nix environment or the local environment
+# TODO: Add a flag to potentially install all of the packages on host (arch dependent)
+# TODO: Synchronise with my VSCode config
+
 {
   description = "Otto Dev Environment";
 
