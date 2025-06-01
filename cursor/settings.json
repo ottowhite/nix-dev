@@ -1,0 +1,136 @@
+{
+    "remote.SSH.useLocalServer": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "vim.leader": " ",
+    "vim.useCtrlKeys": true,
+    "keyboard.dipatch": "keyCode",
+    "editor.minimap.enabled": false,
+    "terminal.integrated.scrollback": 10000,
+    "editor.lineNumbers": "relative",
+    "editor.insertSpaces": false,
+    "haskell.manageHLS": "GHCup",
+    "editor.largeFileOptimizations": false,
+    "editor.rulers": [
+        100
+    ],
+    // Stop icon from bouncing upon SSH disconnect
+    "window.dialogStyle": "custom",
+    "[latex]": {
+        "editor.wordWrap": "on",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.fontFamily": "Lato, sans-serif",
+        "editor.fontSize": 16,
+        "editor.lineHeight": 25,
+        "editor.quickSuggestions": {
+            "comments": false,
+            "other": false,
+            "strings": false
+        },
+        "editor.rulers": []
+    },
+    // Make PDFs dark mode
+    // "latex-workshop.view.pdf.invert": 0.9
+    "grammarly.config.documentDialect": "british",
+    "grammarly.config.documentDomain": "academic",
+    "explorer.decorations.badges": false,
+    "workbench.editor.showIcons": false,
+    "workbench.editor.labelFormat": "default",
+    "workbench.editor.tabCloseButton": "off",
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.decorations.badges": false,
+    // "editor.scrollbar.horizontal": "hidden",
+    // "editor.scrollbar.vertical": "hidden",
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.overviewRulerBorder": false,
+    "workbench.colorCustomizations": {
+        "editor[Warning|Error].forground": "#000000",
+        "editorOverviewRuler.addedForeground": "#0000",
+        "editorOverviewRuler.bracketMatchForeground": "#0000",
+        "editorOverviewRuler.deletedForeground": "#0000",
+        "editorOverviewRuler.errorForeground": "#0000",
+        "editorOverviewRuler.findMatchForeground": "#0000",
+        "editorOverviewRuler.infoForeground": "#0000",
+        "editorOverviewRuler.modifiedForeground": "#0000",
+        "editorOverviewRuler.rangeHighlightForeground": "#0000",
+        "editorOverviewRuler.selectionHighlightForeground": "#0000",
+        "editorOverviewRuler.warningForeground": "#0000",
+        "editorOverviewRuler.wordHighlightForeground": "#0000",
+        "editorOverviewRuler.wordHighlightStrongForeground": "#0000"
+    },
+    "extensions.autoUpdate": false,
+    "editor.inlineSuggest.enabled": true,
+    "window.menuBarVisibility": "toggle",
+    "cmake.configureOnOpen": false,
+    "editor.formatOnSave": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "xaver.clang-format"
+    },
+    // git blame
+    "git-blame.config.showBlameInline": true,
+    "git-blame.config.inlineBlameHoverMessage": true, // true == false
+    "git-blame.configs.inlineBlame.position": "right",
+    // notebook
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "[elixir]": {
+        "editor.defaultFormatter": "saratravi.elixir-formatter"
+    },
+    "remote.SSH.remotePlatform": {
+        "edge15": "linux",
+        "fractos2": "linux",
+        "texel12": "linux",
+        "texel11": "linux",
+        "ray24": "linux",
+        "texel35": "linux",
+        "texel33": "linux",
+        "fractos2_devcontainer": "linux",
+        "kea4_devcontainer": "linux",
+        "kea4_core_devcontainer": "linux",
+        "kea4_experiments_devcontainer": "linux",
+        "kea3_experiments_devcontainer": "linux",
+        "fractos4": "linux",
+        "maru02.doc.res.ic.ac.uk": "linux",
+        "kea4": "linux",
+        "remote-06.dcs.warwick.ac.uk": "linux",
+        "kea1": "linux",
+        "komodo01.doc.res.ic.ac.uk": "linux",
+        "komodo03.doc.res.ic.ac.uk": "linux",
+        "koala10.doc.res.ic.ac.uk": "linux",
+        "quokka05.doc.res.ic.ac.uk": "linux",
+        "komodo01_devcontainer": "linux"
+    },
+    "window.zoomLevel": 1,
+    "workbench.editor.tabActionCloseVisibility": false,
+    "workbench.activityBar.location": "hidden",
+    "editor.wordWrap": "on",
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "rust-analyzer.inlayHints.parameterHints.enable": false,
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "editor.renderWhitespace": "none",
+    "[nix]": {
+        "editor.defaultFormatter": "brettm12345.nixfmt-vscode"
+    },
+    "window.commandCenter": false,
+    "latex-workshop.latex.outDir": "%DIR%/build",
+    "latex-workshop.latex.autoClean.run": "onSucceeded",
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "markdown",
+        "scminput"
+    ],
+    "editor.accessibilitySupport": "off",
+    "workbench.colorTheme": "Atom One Darker",
+    "makefile.configureOnOpen": true,
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true,
+        "**/.ammonite": true
+    }
+}
