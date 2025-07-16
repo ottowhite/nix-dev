@@ -133,54 +133,6 @@
                                     }
                                 ],
                                 "from": {
-                                    "key_code": "j",
-                                    "modifiers": {
-                                        "mandatory": ["command"],
-                                        "optional": ["any"]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "down_arrow",
-                                        "modifiers": ["command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.apple\\.iCal$"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": {
-                                        "mandatory": ["command"],
-                                        "optional": ["any"]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "up_arrow",
-                                        "modifiers": ["command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.apple\\.iCal$"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
                                     "key_code": "n",
                                     "modifiers": { "mandatory": ["command", "left_shift"] }
                                 },
@@ -303,7 +255,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -325,7 +278,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -347,7 +301,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -369,7 +324,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -391,7 +347,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -413,7 +370,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
-                                            "^company\\.thebrowser\\.Browser$"
+                                            "^company\\.thebrowser\\.Browser$",
+                                            "^company\\.thebrowser\\.dia$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -666,7 +624,7 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "l",
+                                    "key_code": "j",
                                     "modifiers": { "mandatory": ["left_command"] }
                                 },
                                 "to": [
@@ -679,7 +637,7 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "h",
+                                    "key_code": "k",
                                     "modifiers": { "mandatory": ["left_command"] }
                                 },
                                 "to": [
