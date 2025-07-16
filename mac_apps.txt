@@ -1,0 +1,3 @@
+Use contexts for making all windows separate in the recent app switcher
+Use rectangle for tiling window management
+Use HotKey for quick app launching
