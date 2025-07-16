@@ -70,6 +70,7 @@
     "git-blame.config.inlineBlameHoverMessage": true, // true == false
     "git-blame.configs.inlineBlame.position": "right",
     // notebook
+    "notebook.output.wordWrap": true,
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -99,7 +100,10 @@
         "komodo03.doc.res.ic.ac.uk": "linux",
         "koala10.doc.res.ic.ac.uk": "linux",
         "quokka05.doc.res.ic.ac.uk": "linux",
-        "komodo01_devcontainer": "linux"
+        "komodo01_devcontainer": "linux",
+        "komodo01": "linux",
+        "emu3.doc.res.ic.ac.uk": "linux",
+        "emu3": "linux"
     },
     "window.zoomLevel": 1,
     "workbench.editor.tabActionCloseVisibility": false,
@@ -126,11 +130,13 @@
         "scminput"
     ],
     "editor.accessibilitySupport": "off",
-    "workbench.colorTheme": "Atom One Darker",
+    "workbench.colorTheme": "Default Dark+",
     "makefile.configureOnOpen": true,
     "files.watcherExclude": {
         "**/.bloop": true,
         "**/.metals": true,
         "**/.ammonite": true
-    }
+    },
+    "cursor.general.disableHttp2": true,
+    "jupyter.askForKernelRestart": false
 }
