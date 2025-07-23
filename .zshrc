@@ -33,6 +33,15 @@ function cds {
 	cd "$(dirname "$(fzf)")"
 }
 
+function proxy_up() {
+	ssh -Nf -L 8080:localhost:3128 $1
+	networksetup -setsecurewebproxy Wi-Fi localhost 8080
+}
+function proxy_down() {
+	pkill -f "ssh -Nf -L 8080:localhost:3128 $1"
+	networksetup -setsecurewebproxystate Wi-Fi off
+}
+
 space() {
 	ls -A $1 | sudo xargs -I{} du -sh $1/{} | sort -h
 }
