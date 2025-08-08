@@ -33,13 +33,28 @@ function cds {
 	cd "$(dirname "$(fzf)")"
 }
 
+function tunnel() {
+	ssh -Nf -L $1\:localhost\:$2 $3
+}
+
+function untunnel() {
+	pkill -f "ssh -Nf -L $1:localhost:$2 $3"
+}
+	
 function proxy_up() {
-	ssh -Nf -L 8080:localhost:3128 $1
+	tunnel 8080 3128 $1
 	networksetup -setsecurewebproxy Wi-Fi localhost 8080
 }
+
 function proxy_down() {
-	pkill -f "ssh -Nf -L 8080:localhost:3128 $1"
+	untunnel 8080 3128 $1
 	networksetup -setsecurewebproxystate Wi-Fi off
+}
+
+function oversight() {
+	tunnel 3000 3000 komodo01
+	ssh -t komodo01 "cd code/oversight && ./start_oversight.sh up"
+	open "http://localhost:3000"
 }
 
 space() {
