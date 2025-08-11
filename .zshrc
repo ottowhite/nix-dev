@@ -38,7 +38,7 @@ function tunnel() {
 }
 
 function untunnel() {
-	pkill -f "ssh -Nf -L $1:localhost:$2 $3"
+	pkill -f "ssh -Nf -L $1\:localhost\:$2 $3"
 }
 	
 function proxy_up() {
@@ -52,9 +52,9 @@ function proxy_down() {
 }
 
 function oversight() {
-	tunnel 3000 3000 komodo01
+	tunnel 3333 3000 komodo01
 	ssh -t komodo01 "cd code/oversight && ./start_oversight.sh up"
-	open "http://localhost:3000"
+	open "http://localhost:3333"
 }
 
 space() {
