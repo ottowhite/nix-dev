@@ -130,7 +130,7 @@
         "scminput"
     ],
     "editor.accessibilitySupport": "off",
-    "workbench.colorTheme": "Default Dark+",
+    "workbench.colorTheme": "Atom One Darker",
     "makefile.configureOnOpen": true,
     "files.watcherExclude": {
         "**/.bloop": true,
@@ -138,5 +138,7 @@
         "**/.ammonite": true
     },
     "cursor.general.disableHttp2": true,
-    "jupyter.askForKernelRestart": false
+    "jupyter.askForKernelRestart": false,
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.diagnosticMode": "workspace"
 }
