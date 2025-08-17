@@ -624,7 +624,7 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "j",
+                                    "key_code": "l",
                                     "modifiers": { "mandatory": ["left_command"] }
                                 },
                                 "to": [
@@ -637,7 +637,7 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "k",
+                                    "key_code": "h",
                                     "modifiers": { "mandatory": ["left_command"] }
                                 },
                                 "to": [
