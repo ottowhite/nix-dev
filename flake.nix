@@ -71,7 +71,7 @@
             cp zsh-syntax-highlighting.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             cp zsh-autosuggestions.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
             mkdir -p $out
-	    mv temp/oh-my-zsh temp/.oh-my-zsh
+            mv temp/oh-my-zsh temp/.oh-my-zsh
             cp -r temp/.oh-my-zsh $out
           '';
         };
@@ -84,28 +84,28 @@
             tree
             neovim
             tmux
-	          watch
-	          mosh
-	          stgit
+            watch
+            mosh
+            stgit
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
           ]);
 
-	      shellHook = 
+          shellHook = 
           ''
-		        copy_and_own() {
-		          filename=$1
-		          src=$2
-		          dst=$3
+            copy_and_own() {
+              filename=$1
+              src=$2
+              dst=$3
 
-		          if ! diff -r $src/$filename $dst/$filename >/dev/null 2>&1; then
-		            echo $filename is different, synchronizing contents.
-		            sudo rm -rf $dst/$filename
-		            sudo cp -ra $src/$filename $dst
+              if ! diff -r $src/$filename $dst/$filename >/dev/null 2>&1; then
+                echo $filename is different, synchronizing contents.
+                sudo rm -rf $dst/$filename
+                sudo cp -ra $src/$filename $dst
                 sudo chown -R $(whoami) $dst/$filename
-		          fi
-		        }
+              fi
+            }
             mkdir_and_own() {
               directory=$1
               if [ ! -d $directory ]; then
@@ -118,18 +118,22 @@
             mkdir_and_own ~/.config/zsh
             mkdir_and_own ~/.config/nvim
 
+            echo "Copying configuration files..."
             copy_and_own .zshenv    ${nix-dev-deps}     ~
             copy_and_own .tmux.conf ${nix-dev-deps}     ~
             copy_and_own .zshrc     ${nix-dev-deps}     ~/.config/zsh
             copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
             copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 
-            exit
           '';
       };
     }
   );
 }
+
+#             echo "Development environment setup complete!"
+#             echo "Configuration files have been synced to your home directory."
+#             export SHELL=${pkgs.zsh}/bin/zsh
 
 # Old linux bind mounts
 # Add these lines before the exit to enter the nix shell
