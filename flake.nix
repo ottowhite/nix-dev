@@ -125,6 +125,7 @@
             copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
             copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 
+            exit
           '';
       };
     }
