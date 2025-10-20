@@ -25,6 +25,9 @@ alias nixmac="sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.pl
 alias getsid="ssh -t root@kangaroo2 id -u "
 alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
+
+alias loadenv='export $(grep -v ^# .env | xargs)'
+
 getshortcode() {
 	ssh -t ow20@lsds.doc.ic.ac.uk "cat /etc/passwd | grep -i $1"
 }
