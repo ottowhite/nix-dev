@@ -61,7 +61,7 @@ function oversight() {
 }
 
 space() {
-	ls -A $1 | sudo xargs -I{} du -sh $1/{} | sort -h
+	sudo du -sh * .* -t 1G | sort -nr
 }
 
 gdd() {
