@@ -61,7 +61,9 @@ function oversight() {
 }
 
 space() {
-	sudo du -sh * .* -t 1G | sort -nr
+	sudo du -sh * -t 1G | sort -nr
+	drawline
+	sudo du -sh .* -t 1G | sort -nr
 }
 
 gdd() {
