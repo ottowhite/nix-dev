@@ -32,6 +32,10 @@ getshortcode() {
 	ssh -t ow20@lsds.doc.ic.ac.uk "cat /etc/passwd | grep -i $1"
 }
 
+function crun {
+	docker run -v$(pwd):$(pwd) -w $(pwd) --user "$(id -u):$(id -g)" $1 ${@:2}
+}
+
 function cds {
 	cd "$(dirname "$(fzf)")"
 }
