@@ -122,6 +122,8 @@ export KEYTIMEOUT=20
 # Do ls when change directory
 chpwd() ls 
 
+eval "$(direnv hook zsh)"
+
 # Start Oh My Zsh, leave at end of file
 source $ZSH/oh-my-zsh.sh
 
