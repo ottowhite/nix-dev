@@ -9,7 +9,7 @@
 
   inputs = {
     # This is pinning to the latest stable nixpkgs version
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     # This imports the flake-utils library which allows you to build for multiple systems more easily
     # Otherwise you would need to specify the system in the flake.nix
