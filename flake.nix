@@ -36,6 +36,7 @@
         # If we didn't 
         pkgs = import nixpkgs {
           inherit system;
+          config.allowUnfree = true;
         };
 
         nix-dev-deps = pkgs.stdenv.mkDerivation {
@@ -87,6 +88,7 @@
             watch
             mosh
             stgit
+            claude-code
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
