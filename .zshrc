@@ -9,7 +9,7 @@ alias cfa="$EDITOR ~/.config/alacritty/alacritty.yml"
 alias cfx="$EDITOR ~/.config/X/.xinitrc"
 
 # Useful aliases
-alias gh="alias | grep"
+# alias gh="alias | grep"
 alias idea="~/Applications/idea-IC-231.9011.34/bin/idea.sh"
 alias ctl="ssh ow20@shell4.doc.ic.ac.uk"
 alias clipboard="xclip -selection c"
