@@ -88,7 +88,6 @@
             watch
             mosh
             stgit
-            claude-code
             direnv
           ] ++ [
             nix-dev-deps
