@@ -8,8 +8,8 @@
   description = "Otto Dev Environment";
 
   inputs = {
-    # This is pinning to the latest stable nixpkgs version
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
 
     # This imports the flake-utils library which allows you to build for multiple systems more easily
     # Otherwise you would need to specify the system in the flake.nix
@@ -89,6 +89,7 @@
             mosh
             stgit
             direnv
+	    claude-code
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
