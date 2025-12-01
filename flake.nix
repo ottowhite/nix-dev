@@ -64,11 +64,11 @@
           ];
 
           buildPhase = ''
-            mkdir -p temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-            mkdir -p temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
-            cp -r ${pkgs.oh-my-zsh}/share/oh-my-zsh temp
-            cp -r ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting temp/oh-my-zsh/custom/plugins/
-            cp -r ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions temp/oh-my-zsh/custom/plugins/
+            mkdir -p temp/oh-my-zsh/custom/plugins
+            cp -rL ${pkgs.oh-my-zsh}/share/oh-my-zsh temp
+            cp -rL ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting temp/oh-my-zsh/custom/plugins/
+            cp -rL ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions temp/oh-my-zsh/custom/plugins/
+            chmod -R u+w temp
             cp zsh-syntax-highlighting.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
             cp zsh-autosuggestions.plugin.zsh temp/oh-my-zsh/custom/plugins/zsh-autosuggestions
             mkdir -p $out
