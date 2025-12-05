@@ -36,11 +36,12 @@ function crun {
 	docker run -v$(pwd):$(pwd) -w $(pwd) --user "$(id -u):$(id -g)" $1 ${@:2}
 }
 
-# Run '? whats the command to do X', and it will give you this command
-function '??'() {
-	PROMPT="$@"
-	sgpt -s $PROMPT
+# Enables '?? whats the command to do X', followed by ai generation/explanation for that command
+alias '??'='noglob _ask_gpt'
+function _ask_gpt() {
+    sgpt -s "$*"
 }
+
 
 function cds {
 	cd "$(dirname "$(fzf)")"
