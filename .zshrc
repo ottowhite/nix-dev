@@ -36,6 +36,12 @@ function crun {
 	docker run -v$(pwd):$(pwd) -w $(pwd) --user "$(id -u):$(id -g)" $1 ${@:2}
 }
 
+# Run '? whats the command to do X', and it will give you this command
+function ?() {
+	PROMPT="$@"
+	sgpt -s $PROMPT
+}
+
 function cds {
 	cd "$(dirname "$(fzf)")"
 }
