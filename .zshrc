@@ -37,7 +37,7 @@ function crun {
 }
 
 # Run '? whats the command to do X', and it will give you this command
-function ?() {
+function '??'() {
 	PROMPT="$@"
 	sgpt -s $PROMPT
 }
