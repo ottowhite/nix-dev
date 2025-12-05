@@ -90,6 +90,7 @@
             stgit
             direnv
 	    claude-code
+	    shell-gpt
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
