@@ -91,6 +91,7 @@
             direnv
 	    claude-code
 	    shell-gpt
+	    opkssh
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
