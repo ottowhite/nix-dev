@@ -23,6 +23,9 @@ alias backup='f() { sudo rsync -aAXvv --info=progress2 --delete --exclude /dev/ 
 alias startsc='echo "Starting avahi-daemon" && sudo systemctl start avahi-daemon && uxplay && echo "Stopping avahi-daemon" && sudo systemctl stop avahi-daemon.service avahi-daemon.socket'
 alias x="exit"
 alias nixmac="sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist"
+alias nrb="sudo nix-rebuild "
+alias nrbt="sudo nix-rebuild test"
+alias nrbs="sudo nix-rebuild switch"
 alias getsid="ssh -t root@kangaroo2 id -u "
 alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
