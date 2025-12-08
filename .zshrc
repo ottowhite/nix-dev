@@ -7,6 +7,7 @@ alias cfn="configure_file init.vim"
 alias cfi="$EDITOR ~/.config/i3/config"
 alias cfa="$EDITOR ~/.config/alacritty/alacritty.yml"
 alias cfx="$EDITOR ~/.config/X/.xinitrc"
+alias cfnix="sudo $EDITOR /etc/nixos/configuration.nix"
 
 # Useful aliases
 # alias gh="alias | grep"
@@ -95,6 +96,7 @@ configure_file() {
 nixup() {
 	(
 		cd $NIX_HOME
+		source pull-configs.sh
 		clear
 		git --no-pager diff
 		git status
