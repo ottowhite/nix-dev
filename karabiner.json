@@ -154,7 +154,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.microsoft\\.VSCode$",
-                                            "^com\\.todesktop\\.230313mzl4w4u92$"
+                                            "^com\\.todesktop\\.230313mzl4w4u92$",
+                                            "^com\\.google\\.antigravity$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -256,7 +257,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -279,7 +282,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -302,7 +307,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -325,7 +332,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -348,7 +357,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -371,7 +382,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome$",
                                             "^company\\.thebrowser\\.Browser$",
-                                            "^company\\.thebrowser\\.dia$"
+                                            "^company\\.thebrowser\\.dia$",
+                                            "^com\\.openai\\.atlas$",
+                                            "^app\\.zen-browser\\.zen"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -404,7 +417,8 @@
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^com\\.google\\.antigravity$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -432,7 +446,8 @@
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^com\\.google\\.antigravity$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -460,7 +475,8 @@
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^com\\.google\\.antigravity$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -488,7 +504,8 @@
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^com\\.google\\.antigravity$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
