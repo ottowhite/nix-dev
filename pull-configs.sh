@@ -2,3 +2,4 @@ cp /Users/ottowhite/Library/Application\ Support/Cursor/User/keybindings.json cu
 cp /Users/ottowhite/Library/Application\ Support/Cursor/User/settings.json cursor/
 cp /Users/ottowhite/.config/karabiner/karabiner.json .
 cp /etc/nixos/configuration.nix .
+cp ~/.claude/CLAUDE.md
