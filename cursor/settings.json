@@ -4,7 +4,7 @@
     "vim.leader": " ",
     "vim.useCtrlKeys": true,
     "keyboard.dipatch": "keyCode",
-    "editor.minimap.enabled": false,
+    "editor.minimap.enabled": true,
     "terminal.integrated.scrollback": 10000,
     "editor.lineNumbers": "relative",
     "editor.insertSpaces": false,
@@ -12,6 +12,11 @@
     "editor.largeFileOptimizations": false,
     "editor.rulers": [
         100
+    ],
+    "terminal.integrated.allowChords": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "workbench.action.togglePanel",
+        "workbench.action.terminal.focus"
     ],
     // Stop icon from bouncing upon SSH disconnect
     "window.dialogStyle": "custom",
@@ -103,7 +108,12 @@
         "komodo01_devcontainer": "linux",
         "komodo01": "linux",
         "emu3.doc.res.ic.ac.uk": "linux",
-        "emu3": "linux"
+        "emu3": "linux",
+        "kea8": "linux",
+        "komodo01_ncu": "linux",
+        "komodo02.doc.res.ic.ac.uk": "linux",
+        "komodo04.doc.res.ic.ac.uk": "linux",
+        "vertex02.doc.ic.ac.uk": "linux"
     },
     "window.zoomLevel": 1,
     "workbench.editor.tabActionCloseVisibility": false,
@@ -130,7 +140,6 @@
         "scminput"
     ],
     "editor.accessibilitySupport": "off",
-    "workbench.colorTheme": "Atom One Darker",
     "makefile.configureOnOpen": true,
     "files.watcherExclude": {
         "**/.bloop": true,
@@ -140,5 +149,16 @@
     "cursor.general.disableHttp2": true,
     "jupyter.askForKernelRestart": false,
     "python.analysis.typeCheckingMode": "standard",
-    "python.analysis.diagnosticMode": "workspace"
+    "python.analysis.diagnosticMode": "workspace",
+    "cursor.composer.textSizeScale": 0.85,
+    "python.linting.mypyEnabled": true,
+    "workbench.panel.defaultLocation": "right",
+    "puppet.editorService.formatOnType.enable": true,
+    "explorer.confirmPasteNative": false,
+    "cursor.agent_layout_browser_beta_setting": true,
+    "cursor.enable_git_worktrees_setting": true,
+    "python.terminal.activateEnvironment": false,
+    "python.globalModuleInstallation": true,
+    "cursorpyright.analysis.typeCheckingMode": "standard",
+    "remote.autoForwardPortsSource": "hybrid"
 }

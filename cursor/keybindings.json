@@ -94,13 +94,17 @@
   },
   {
     "key": "ctrl+enter",
-    "command": "workbench.action.terminal.toggleTerminal",
-    "when": "terminal.active"
+    "command": "workbench.action.terminal.focus"
   },
   {
-    "key": "ctrl+`",
-    "command": "-workbench.action.terminal.toggleTerminal",
-    "when": "terminal.active"
+    "key": "ctrl+enter",
+    "command": "workbench.action.togglePanel",
+    "when": "terminalFocus || terminalProcessSupported || terminalWebExtensionContributedProfile"
+  },
+  {
+    "key": "ctrl+enter",
+    "command": "workbench.action.togglePanel",
+    "when": "terminalFocus && (terminalProcessSupported || terminalWebExtensionContributedProfile)"
   },
   {
     "key": "ctrl+shift+enter",
@@ -108,7 +112,7 @@
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
   {
-    "key": "ctrl+shift+`",
+    "key": "ctrl+shift+enter",
     "command": "-workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
@@ -405,11 +409,11 @@
     "command": "-editor.action.showContextMenu",
     "when": "textInputFocus"
   },
-  {
-    "key": "ctrl+w j",
-    "command": "workbench.action.terminal.focusNextPane",
-    "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
-  },
+  // {
+  //   "key": "ctrl+w j",
+  //   "command": "workbench.action.terminal.focusNextPane",
+  //   "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
+  // },
   {
     "key": "alt+down",
     "command": "-workbench.action.terminal.focusNextPane",
@@ -917,7 +921,26 @@
     "when": "composerFocused || focusedView =~ /^workbench.panel.aichat.view/"
   },
   {
-    "key": "cmd+e",
-    "command": "composerMode.background"
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\\\r\n"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "f5",
+    "command": "-workbench.action.debug.start",
+    "when": "debuggersAvailable && debugState == 'inactive'"
+  },
+  {
+    "key": "f5",
+    "command": "-workbench.action.debug.continue",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "key": "f5",
+    "command": "-debug.openView",
+    "when": "!debuggersAvailable"
   }
 ]
