@@ -49,6 +49,7 @@
             cp .zshenv $out
             cp .tmux.conf $out
             cp init.vim $out
+            cp CLAUDE.md $out
           '';
         };
 
@@ -111,6 +112,58 @@
                 sudo chown -R $(whoami) $dst/$filename
               fi
             }
+
+            copy_and_own_with_confirmation() {
+              filename=$1
+              src=$2
+              dst=$3
+
+              src_file="$src/$filename"
+              dst_file="$dst/$filename"
+
+              # If destination file doesn't exist, just copy it
+              if [ ! -f "$dst_file" ]; then
+                echo "$filename does not exist at $dst_file, copying..."
+                sudo cp -ra "$src_file" "$dst"
+                sudo chown -R $(whoami) "$dst_file"
+                return
+              fi
+
+              # If files are the same, nothing to do
+              if diff -q "$src_file" "$dst_file" >/dev/null 2>&1; then
+                return
+              fi
+
+              # Files are different - show diff and ask for confirmation
+              echo ""
+              echo "========================================"
+              echo "WARNING: $filename files are different!"
+              echo "========================================"
+              echo ""
+              echo "Diff between $src_file and $dst_file:"
+              echo "----------------------------------------"
+              diff --color=always "$dst_file" "$src_file" || true
+              echo "----------------------------------------"
+              echo ""
+              echo "If there are changes that you want in nix, run nixup to add them"
+              echo ""
+              echo -n "Do you want to overwrite $dst_file with the version from nix-dev-deps? [y/N]: "
+              read -r response
+              case "$response" in
+                [yY][eE][sS]|[yY])
+                  echo "Overwriting $dst_file..."
+                  sudo rm -rf "$dst_file"
+                  sudo cp -ra "$src_file" "$dst"
+                  sudo chown -R $(whoami) "$dst_file"
+                  sudo chmod 770 "$dst_file"
+                  echo "Done."
+                  ;;
+                *)
+                  echo "Skipping overwrite of $dst_file."
+                  ;;
+              esac
+            }
+
             mkdir_and_own() {
               directory=$1
               if [ ! -d $directory ]; then
@@ -119,9 +172,13 @@
               fi
             }
 
+            mkdir_and_own ~/.claude
             mkdir_and_own ~/.config
             mkdir_and_own ~/.config/zsh
             mkdir_and_own ~/.config/nvim
+
+            # NOTE: This kind of copy is recommended for configuration files that are changed indirectly by other applications
+            copy_and_own_with_confirmation CLAUDE.md ${nix-dev-deps} ~/.claude
 
             echo "Copying configuration files..."
             copy_and_own .zshenv    ${nix-dev-deps}     ~
