@@ -68,6 +68,7 @@
 	    claude-code
 	    shell-gpt
 	    opkssh
+	    nodejs_24
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
