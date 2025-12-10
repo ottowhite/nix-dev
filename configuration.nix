@@ -97,6 +97,9 @@
   programs.firefox.enable = true;
   programs.zsh.enable = true;
 
+  # SSH related options
+  programs.ssh.startAgent = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -107,6 +110,7 @@
     git
     wget
     zsh
+    vscode.fhs
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
