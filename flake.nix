@@ -1,39 +1,14 @@
-# TODO: Add a flag that either drops you into the nix environment or the local environment
-# TODO: Add a flag to potentially install all of the packages on host (arch dependent)
-# TODO: Synchronise with my VSCode config
-# TODO: Synchronise with my Windows keybindings files from the other git repo
-# TODO: Synchronise with my mac keybindings from karabiner elements / others
-
 {
-  description = "Otto Dev Environment";
+  description = "Otto's Bedroom";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-
-    # This imports the flake-utils library which allows you to build for multiple systems more easily
-    # Otherwise you would need to specify the system in the flake.nix
-    # devShells.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.mkShell {
-    #   buildInputs = [
-    #   ];
-    # };
-    # devShells.x86_64-darwin = nixpkgs.legacyPackages.x86_64-darwin.mkShell {
-    #   buildInputs = [
-    #     # Add necessary packages here
-    #   ];
-    # };
-
-    # This is another flake that we're importing, can do this arbitrarily with flakes
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  # These are the inputs that generate the outputs
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-
-        # Get the correct packages for each of the architectures we're building for
-        # If we didn't 
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
@@ -195,19 +170,8 @@
   );
 }
 
-#             echo "Development environment setup complete!"
-#             echo "Configuration files have been synced to your home directory."
-#             export SHELL=${pkgs.zsh}/bin/zsh
+# The way to do bind mounts for linux, and architecture dependent execution
 
-# Old linux bind mounts
-# Add these lines before the exit to enter the nix shell
-# ---------
-# export SHELL=${pkgs.zsh}/bin/zsh
-# zsh
-# exit
-# ---------
-
-# Setup ----
 # touch ~/.config/zsh/.zshrc
 # touch ~/.config/nvim/init.vim
 # touch ~/.zshenv
@@ -217,7 +181,9 @@
 # sudo mount --bind ${nix-dev-deps}/init.vim ~/.config/nvim/init.vim
 # sudo mount --bind ${nix-dev-deps}/.tmux.conf ~/.tmux.conf
 # sudo mount --bind ${oh-my-zsh-custom}/.oh-my-zsh ~/.config/zsh/.oh-my-zsh
-# Teardown ----
+
+# Bind mounts teardown
+
 # packdown = if pkgs.stdenv.isDarwin then '' '' else ''
 #          sudo umount ~/.zshenv
 #          sudo umount ~/.tmux.conf
