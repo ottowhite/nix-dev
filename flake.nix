@@ -165,6 +165,7 @@
             copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 
             export SHELL=${pkgs.zsh}/bin/zsh
+            # NOTE: Fixes rendering issues on macOS for some reason: https://github.com/NixOS/nixpkgs/issues/376958
 	    unset DEVELOPER_DIR
             exec zsh
           '';
