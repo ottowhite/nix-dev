@@ -165,6 +165,7 @@
             copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
 
             export SHELL=${pkgs.zsh}/bin/zsh
+	    unset DEVELOPER_DIR
             exec zsh
           '';
       };
