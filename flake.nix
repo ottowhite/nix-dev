@@ -65,6 +65,7 @@
             mosh
             stgit
             direnv
+	    nix-direnv
 	    claude-code
 	    shell-gpt
 	    opkssh
