@@ -1,4 +1,4 @@
-ZSH_THEME="bira"
+ZSH_THEME="pygmalion"
 
 # Configuration aliases
 alias cff="configure_file flake.nix"
