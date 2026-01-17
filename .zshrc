@@ -3,6 +3,7 @@ ZSH_THEME="pygmalion"
 # Configuration aliases
 alias cff="configure_file flake.nix"
 alias cfz="configure_file .zshrc && source $NIX_HOME/.zshrc"
+alias cfzenv="configure_file .zshenv && source $NIX_HOME/.zshenv"
 alias cfn="configure_file init.vim"
 alias cfi="$EDITOR ~/.config/i3/config"
 alias cfa="$EDITOR ~/.config/alacritty/alacritty.yml"
