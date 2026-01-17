@@ -33,6 +33,7 @@ alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 
 alias loadenv='export $(grep -v ^# .env | xargs)'
 
+
 getshortcode() {
 	ssh -t ow20@lsds.doc.ic.ac.uk "cat /etc/passwd | grep -i $1"
 }
@@ -57,6 +58,15 @@ alias tailhome="sudo tailscale set --exit-node="
 alias tailbaby="sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP"
 alias tailberry="sudo tailscale set --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP"
 alias tailkea="sudo tailscale set --exit-node=$KEA04_TAILSCALE_IP"
+
+function chill {
+	tailbaby
+	sleep 1
+	firefox "https://www.netflix.com/browse" &
+	firefox "https://www.disneyplus.com/en-gb/home" &
+	firefox "https://www.amazon.co.uk/gp/video/storefront?ref_=nav_cs_prime_video" &
+	firefox "https://www.bbc.co.uk/iplayer" &
+}
 
 
 function cds {
