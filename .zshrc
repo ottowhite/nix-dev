@@ -62,12 +62,7 @@ alias tailkea="sudo tailscale set --exit-node=$KEA04_TAILSCALE_IP"
 function chill {
 	tailbaby
 	sleep 1
-	firefox &
-	sleep 1
-	firefox "https://www.netflix.com/browse" &
-	firefox "https://www.disneyplus.com/en-gb/home" &
-	firefox "https://www.amazon.co.uk/gp/video/storefront?ref_=nav_cs_prime_video" &
-	firefox "https://www.bbc.co.uk/iplayer" &
+	firefox "https://www.netflix.com/browse" "https://www.disneyplus.com/en-gb/home" "https://www.amazon.co.uk/gp/video/storefront?ref_=nav_cs_prime_video" "https://www.bbc.co.uk/iplayer"
 }
 
 
