@@ -53,10 +53,10 @@ function tailwhere {
 	echo
 	echo current:  $(curl -s ifconfig.me)
 }
-alias tailhome="sudo tailscale up --exit-node="
-alias tailbaby="sudo tailscale up --exit-node=$BABY_SERVER_TAILSCALE_IP"
-alias tailberry="sudo tailscale up --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP"
-alias tailkea="sudo tailscale up --exit-node=$KEA04_TAILSCALE_IP"
+alias tailhome="sudo tailscale set --exit-node="
+alias tailbaby="sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP"
+alias tailberry="sudo tailscale set --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP"
+alias tailkea="sudo tailscale set --exit-node=$KEA04_TAILSCALE_IP"
 
 
 function cds {
