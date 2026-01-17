@@ -86,6 +86,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.otto = {
