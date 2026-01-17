@@ -51,7 +51,7 @@ function _ask_gpt() {
 function tailwhere {
 	tailscale status
 	echo
-	echo current:  $(curl -s ifconfig.me)
+	curl -s ipinfo.io | jq
 }
 alias tailhome="sudo tailscale set --exit-node="
 alias tailbaby="sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP"
