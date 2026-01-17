@@ -48,6 +48,11 @@
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  # Useful config here: https://discourse.nixos.org/t/hardware-nvidia-open-is-used-but-not-defined-error-when-updating-nixos-flake-config/51359/10
+  hardware.nvidia.open = false;
+
+
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -80,6 +85,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  services.tailscale.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.otto = {
@@ -111,9 +117,19 @@
     wget
     zsh
     vscode.fhs
+    cudatoolkit
+    tailscale
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [
+      "https://cache.nixos-cuda.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
