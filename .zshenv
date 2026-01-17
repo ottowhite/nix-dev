@@ -19,10 +19,11 @@ export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
 export HISTSIZE=10000                   # Maximum events for internal history
 export SAVEHIST=10000                   # Maximum events in history file
 
-# Maven home
-export M2_HOME=/usr/share/maven
+# tailscale
+export BABY_SERVER_TAILSCALE_IP=100.67.151.15
+export STRAWBERRY_SHORTCAKE_TAILSCALE_IP=100.115.111.12
+export KEA04_TAILSCALE_IP=100.67.99.38
 
 # Useful directories
 export TRASH=$HOME"/.local/share/Trash/files"
-export WINDOWS_HOME="/mnt/c/Users/OttoWhite"
 
