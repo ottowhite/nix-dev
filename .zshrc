@@ -47,6 +47,17 @@ function _ask_gpt() {
     sgpt -s "$*"
 }
 
+# Tailscale
+function tailwhere {
+	tailscale status
+	echo
+	echo current:  $(curl -s ifconfig.me)
+}
+alias tailhome="sudo tailscale up --exit-node="
+alias tailbaby="sudo tailscale up --exit-node=$BABY_SERVER_TAILSCALE_IP"
+alias tailberry="sudo tailscale up --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP"
+alias tailkea="sudo tailscale up --exit-node=$KEA04_TAILSCALE_IP"
+
 
 function cds {
 	cd "$(dirname "$(fzf)")"
