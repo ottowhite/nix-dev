@@ -70,6 +70,7 @@
 	    shell-gpt
 	    opkssh
 	    nodejs_24
+	    jq
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
