@@ -67,6 +67,7 @@
             direnv
 	    nix-direnv
 	    claude-code
+	    github-copilot-cli
 	    shell-gpt
 	    opkssh
 	    nodejs_24
