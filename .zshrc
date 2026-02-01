@@ -33,10 +33,33 @@ alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 
 alias loadenv='export $(grep -v ^# .env | xargs)'
 
-function ctree {
-	git worktree add $1
-	cd $1
-	direnv allow && claude --dangerously-skip-permissions
+# "Worktree add"
+function wta {
+	git worktree add "$1"
+	cd "$1"
+	direnv allow
+	# Force reload
+	eval "$(direnv export zsh)"
+}
+
+# "Worktree remove"
+function wtrm {
+	rm -rf "$1"
+	git worktree prune
+}
+
+# "Claude worktree add"
+function cwta {
+	wta "$1"
+	claude --dangerously-skip-permissions
+}
+
+# "Claude worktree add in new tmux pane"
+function cwtat {
+	worktree_name=$(basename $(realpath "$1"))
+	echo $worktree_name
+	tmux new-window -n "$worktree_name"
+	tmux send-keys "cwta \"$1\"" C-m
 }
 
 
