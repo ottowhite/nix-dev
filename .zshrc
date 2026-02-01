@@ -59,7 +59,7 @@ function cwtat {
 	worktree_name=$(basename $(realpath "$1"))
 	echo $worktree_name
 	tmux new-window -n "$worktree_name"
-	tmux send-keys "cwta \"$1\"" C-m
+	tmux send-keys "cwta $1" C-m
 }
 
 
