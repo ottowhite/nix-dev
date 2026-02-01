@@ -33,6 +33,12 @@ alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 
 alias loadenv='export $(grep -v ^# .env | xargs)'
 
+function ctree {
+	git worktree add $1
+	cd $1
+	direnv allow && claude --dangerously-skip-permissions
+}
+
 
 getshortcode() {
 	ssh -t ow20@lsds.doc.ic.ac.uk "cat /etc/passwd | grep -i $1"
