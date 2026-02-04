@@ -19,4 +19,3 @@
 
 ### Type Checking
 - Never use `if TYPE_CHECKING:` guards - we always type check, so these are unnecessary indirection
-# test
