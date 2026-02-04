@@ -26,3 +26,12 @@ class Repository(Protocol):
     def get_branches(self) -> list[Branch]:
         """Get all branches in this repository."""
         ...
+
+    def get_local_branches(self) -> list[Branch]:
+        """
+        Get all branches with local filesystem checkouts (main repo and worktrees).
+
+        Raises ValueError if no local git repository is associated.
+        Invariant: No two branches in the returned list have the same name.
+        """
+        ...
