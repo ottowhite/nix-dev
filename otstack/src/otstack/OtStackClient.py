@@ -5,6 +5,7 @@ from typing import TextIO
 from dotenv import load_dotenv
 
 from .GitHubClient import GitHubClient
+from .GitRepoDetector import GitPythonRepoDetector, GitRepoDetector
 from .PRTree import PRTree
 from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
@@ -20,6 +21,7 @@ class OtStackClient:
         access_token: str | None = None,
         output: TextIO | None = None,
         terminal_width: int | None = None,
+        repo_detector: GitRepoDetector | None = None,
     ) -> None:
         """
         Initialize OtStackClient.
@@ -31,6 +33,8 @@ class OtStackClient:
             output: Optional output stream for printing. Defaults to stdout.
             terminal_width: Optional terminal width. If not provided,
                            will use os.get_terminal_size().columns with fallback to 80.
+            repo_detector: Optional GitRepoDetector for detecting the current repo
+                          from git remotes. Defaults to GitPythonRepoDetector.
 
         Raises:
             ValueError: If no access token is provided or found in environment.
@@ -59,6 +63,17 @@ class OtStackClient:
                 )
 
             self._github_client = PyGitHubClient(token)
+
+        self._repo_detector = repo_detector or GitPythonRepoDetector()
+
+    def detect_repo_name(self) -> str | None:
+        """
+        Detect the GitHub repository name from the current git directory.
+
+        Returns:
+            Repository name in 'owner/repo' format, or None if not detectable.
+        """
+        return self._repo_detector.get_repo_name()
 
     def tree(self, repo: Repository) -> None:
         """Display the PR dependency tree for a repository."""

@@ -6,6 +6,7 @@ from otstack.Repository import Repository
 
 from .helpers.MockBranch import MockBranch
 from .helpers.MockGitHubClient import MockGitHubClient
+from .helpers.MockGitRepoDetector import MockGitRepoDetector
 from .helpers.MockPullRequest import MockPullRequest
 from .helpers.MockRepository import MockRepository
 
@@ -43,6 +44,30 @@ def test_get_repo_returns_repository_by_name() -> None:
     result = client.get_repo("test-user/test-repo")
 
     assert result.name == "test-repo"
+
+
+class TestDetectRepoName:
+    def test_returns_repo_name_when_detected(self) -> None:
+        mock_client = MockGitHubClient(repos=[])
+        mock_detector = MockGitRepoDetector(repo_name="owner/repo")
+        client = OtStackClient(
+            github_client=mock_client, repo_detector=mock_detector
+        )
+
+        result = client.detect_repo_name()
+
+        assert result == "owner/repo"
+
+    def test_returns_none_when_not_in_git_repo(self) -> None:
+        mock_client = MockGitHubClient(repos=[])
+        mock_detector = MockGitRepoDetector(repo_name=None)
+        client = OtStackClient(
+            github_client=mock_client, repo_detector=mock_detector
+        )
+
+        result = client.detect_repo_name()
+
+        assert result is None
 
 
 class TestGetPrTree:
