@@ -106,6 +106,30 @@ class TestGetPrTree:
         assert child_b.pull_request == pr_b
         assert child_b.children == []
 
+    def test_returns_multiple_children_for_multiple_prs_targeting_same_branch(
+        self,
+    ) -> None:
+        """When multiple PRs target the same branch, all are included as children."""
+        pr_a = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr_b = _make_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr_a, pr_b])
+        client = _make_client(repos=[repo])
+
+        tree = client.get_pr_tree(repo, "main")
+
+        assert tree.branch_name == "main"
+        assert len(tree.children) == 2
+        branch_names = {child.branch_name for child in tree.children}
+        assert branch_names == {"feature-a", "feature-b"}
+
 
 class TestTree:
     def test_no_prs_returns_empty_output(self) -> None:
