@@ -28,6 +28,18 @@ class PyGitHubClient(GitHubClient):
             )
         return repos
 
+    def get_repo(self, name: str) -> Repository:
+        """Get a repository by name (e.g., 'owner/repo')."""
+        repo = self._github.get_repo(name)
+        return PyGitHubRepository(
+            name=repo.name,
+            full_name=repo.full_name,
+            description=repo.description,
+            private=repo.private,
+            url=repo.html_url,
+            _gh_repo=repo,
+        )
+
     def get_authenticated_user_login(self) -> str:
         """Get the login name of the authenticated user."""
         return self._github.get_user().login

@@ -10,6 +10,10 @@ class GitHubClient(Protocol):
         """Get all repositories for the authenticated user."""
         ...
 
+    def get_repo(self, name: str) -> Repository:
+        """Get a repository by name (e.g., 'owner/repo')."""
+        ...
+
     def get_authenticated_user_login(self) -> str:
         """Get the login name of the authenticated user."""
         ...

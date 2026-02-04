@@ -10,6 +10,12 @@ class MockGitHubClient(GitHubClient):
     def get_user_repos(self) -> list[Repository]:
         return self._repos
 
+    def get_repo(self, name: str) -> Repository:
+        for repo in self._repos:
+            if repo.full_name == name or repo.name == name:
+                return repo
+        raise ValueError(f"Repository not found: {name}")
+
     def get_authenticated_user_login(self) -> str:
         return "test-user"
 

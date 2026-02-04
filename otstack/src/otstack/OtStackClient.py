@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from .GitHubClient import GitHubClient
 from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
+from .Repository import Repository
 
 
 class OtStackClient:
@@ -49,13 +50,15 @@ class OtStackClient:
 
             self._github_client = PyGitHubClient(token)
 
-    def tree(self) -> None:
-        """Display the PR dependency tree for all repositories."""
-        repos = self._github_client.get_user_repos()
-        for repo in repos:
-            prs = repo.get_open_pull_requests()
-            if prs:
-                self._print_tree(prs)
+    def tree(self, repo: Repository) -> None:
+        """Display the PR dependency tree for a repository."""
+        prs = repo.get_open_pull_requests()
+        if prs:
+            self._print_tree(prs)
+
+    def get_repo(self, name: str) -> Repository:
+        """Get a repository by name (e.g., 'owner/repo')."""
+        return self._github_client.get_repo(name)
 
     def _print_tree(self, prs: list[PullRequest]) -> None:
         """Print the PR dependency tree."""

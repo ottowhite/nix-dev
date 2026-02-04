@@ -29,11 +29,28 @@ def test_otstack_client_uses_injected_github_client() -> None:
     assert repos[0].name == "test-repo"
 
 
-class TestTree:
-    def test_no_repos_returns_empty_output(self) -> None:
-        client, output = _make_client_with_output(repos=[])
+def test_get_repo_returns_repository_by_name() -> None:
+    repo = MockRepository(
+        name="test-repo",
+        full_name="test-user/test-repo",
+        description="A test repository",
+        private=False,
+        url="https://github.com/test-user/test-repo",
+    )
+    mock_client = MockGitHubClient(repos=[repo])
+    client = OtStackClient(github_client=mock_client)
 
-        client.tree()
+    result = client.get_repo("test-user/test-repo")
+
+    assert result.name == "test-repo"
+
+
+class TestTree:
+    def test_no_prs_returns_empty_output(self) -> None:
+        repo = _make_repo(pull_requests=[])
+        client, output = _make_client_with_output(repos=[repo])
+
+        client.tree(repo)
 
         assert output.getvalue() == ""
 
@@ -46,7 +63,7 @@ class TestTree:
         repo = _make_repo(pull_requests=[pr])
         client, output = _make_client_with_output(repos=[repo])
 
-        client.tree()
+        client.tree(repo)
 
         expected = """\
 main
@@ -68,7 +85,7 @@ main
         repo = _make_repo(pull_requests=[pr1, pr2])
         client, output = _make_client_with_output(repos=[repo])
 
-        client.tree()
+        client.tree(repo)
 
         expected = """\
 main
@@ -92,7 +109,7 @@ main
         repo = _make_repo(pull_requests=[pr1, pr2])
         client, output = _make_client_with_output(repos=[repo])
 
-        client.tree()
+        client.tree(repo)
 
         expected = """\
 main
@@ -127,7 +144,7 @@ main
         repo = _make_repo(pull_requests=[pr_a, pr_b, pr_c])
         client, output = _make_client_with_output(repos=[repo])
 
-        client.tree()
+        client.tree(repo)
 
         expected = """\
 main
