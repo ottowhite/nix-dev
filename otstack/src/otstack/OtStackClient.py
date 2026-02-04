@@ -1,4 +1,6 @@
 import os
+import sys
+from typing import TextIO
 
 from dotenv import load_dotenv
 
@@ -13,6 +15,7 @@ class OtStackClient:
         self,
         github_client: GitHubClient | None = None,
         access_token: str | None = None,
+        output: TextIO | None = None,
     ) -> None:
         """
         Initialize OtStackClient.
@@ -21,11 +24,14 @@ class OtStackClient:
             github_client: Optional GitHubClient to use (for testing/mocking).
             access_token: Optional GitHub access token. If not provided,
                          will load from GITHUB_PERSONAL_ACCESS_TOKEN env var.
+            output: Optional output stream for printing. Defaults to stdout.
 
         Raises:
             ValueError: If no access token is provided or found in environment.
         """
         load_dotenv()
+
+        self._output = output or sys.stdout
 
         if github_client is not None:
             self._github_client = github_client
@@ -41,6 +47,10 @@ class OtStackClient:
                 )
 
             self._github_client = PyGitHubClient(token)
+
+    def tree(self) -> None:
+        """Display the PR dependency tree for all repositories."""
+        pass
 
     @property
     def github(self) -> GitHubClient:

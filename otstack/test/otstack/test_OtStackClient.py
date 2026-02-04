@@ -1,3 +1,5 @@
+from io import StringIO
+
 from otstack.OtStackClient import OtStackClient
 
 from .helpers.MockGitHubClient import MockGitHubClient
@@ -21,3 +23,25 @@ def test_otstack_client_uses_injected_github_client() -> None:
     repos = client.github.get_user_repos()
     assert len(repos) == 1
     assert repos[0].name == "test-repo"
+
+
+class TestTree:
+    def test_no_repos_returns_empty_output(self) -> None:
+        client, output = _make_client_with_output(repos=[])
+
+        client.tree()
+
+        assert output.getvalue() == ""
+
+
+# Test helpers
+
+
+def _make_client_with_output(
+    repos: list[MockRepository],
+) -> tuple[OtStackClient, StringIO]:
+    """Create an OtStackClient with captured stdout."""
+    mock_client = MockGitHubClient(repos=repos)
+    output = StringIO()
+    client = OtStackClient(github_client=mock_client, output=output)
+    return client, output
