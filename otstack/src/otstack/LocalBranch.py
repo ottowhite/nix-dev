@@ -18,22 +18,18 @@ class LocalBranch(Branch):
         Merge other_branch into this branch.
 
         Returns True if merge succeeded (or already up to date).
-        Returns False if there would be conflicts (no changes made to branch).
+        Returns False if there are conflicts (left in conflicted state for manual resolution).
         """
         self._repo.git.checkout(self.name)
 
-        # Check if merge would have conflicts using --no-commit --no-ff
+        # Attempt the merge
         try:
             self._repo.git.merge("--no-commit", "--no-ff", other_branch.name)
         except GitCommandError as e:
             # Check if "already up to date" (not an error)
             if "Already up to date" in str(e.stdout):
                 return True
-            # Merge would conflict, abort to leave branch clean
-            try:
-                self._repo.git.merge("--abort")
-            except GitCommandError:
-                pass  # No merge in progress, nothing to abort
+            # Merge has conflicts - leave in conflicted state for manual resolution
             return False
 
         # Merge succeeded, commit it (may fail if nothing to commit)
@@ -45,6 +41,26 @@ class LocalBranch(Branch):
                 return True
             raise
         return True
+
+    def has_merge_conflicts(self) -> bool:
+        """Check if the repo is currently in a conflicted merge state."""
+        try:
+            # Check for MERGE_HEAD which indicates an in-progress merge
+            self._repo.git.rev_parse("MERGE_HEAD")
+            return True
+        except GitCommandError:
+            return False
+
+    def abort_merge(self) -> None:
+        """Abort any in-progress merge."""
+        try:
+            self._repo.git.merge("--abort")
+        except GitCommandError:
+            pass  # No merge in progress
+
+    def get_working_dir(self) -> str:
+        """Get the working directory path for this branch's repo."""
+        return str(self._repo.working_dir)
 
     def pull(self) -> bool:
         """

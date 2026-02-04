@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 from typing import TextIO
 
@@ -336,16 +337,11 @@ class OtStackClient:
                     )
                     self._output.write(f"  Pulling {pr.destination_branch.name}...\n")
                     if not pr.sync():
-                        self._output.write(
-                            f"  Merge failed!\n\n"
-                            f"Sync failed: Merging '{pr.destination_branch.name}' into "
-                            f"'{pr.source_branch.name}' would result in conflicts.\n"
-                            f"Please resolve conflicts manually.\n"
-                        )
-                        return False
-                    self._output.write(
-                        f"  Merged and pushed.\n"
-                    )
+                        # Merge has conflicts - drop user into subshell to resolve
+                        if not self._handle_merge_conflict(pr):
+                            return False
+                    else:
+                        self._output.write(f"  Merged and pushed.\n")
                 else:
                     self._output.write(
                         f"Skipping '{pr.source_branch.name}' (not checked out locally)\n"
@@ -355,6 +351,53 @@ class OtStackClient:
             if not self._sync_tree(child):
                 return False
 
+        return True
+
+    def _handle_merge_conflict(self, pr: PullRequest) -> bool:
+        """
+        Handle a merge conflict by dropping user into a subshell.
+
+        Returns True if user resolved the conflict, False if they aborted.
+        """
+        working_dir = pr.source_branch.get_working_dir()
+
+        self._output.write(
+            f"\n  Merge conflict detected!\n"
+            f"  Dropping you into a shell at: {working_dir}\n"
+            f"  Resolve the conflicts, then 'git add' and 'git commit'.\n"
+            f"  Type 'exit' when done to continue syncing.\n"
+            f"  Type 'exit 1' to abort the sync.\n\n"
+        )
+        self._output.flush()
+
+        # Get user's shell
+        shell = os.environ.get("SHELL", "/bin/sh")
+
+        # Run subshell in the worktree directory
+        result = subprocess.run(
+            [shell],
+            cwd=working_dir,
+            env={**os.environ, "OTSTACK_MERGE_CONFLICT": "1"},
+        )
+
+        # Check if user aborted (non-zero exit)
+        if result.returncode != 0:
+            self._output.write(f"\n  Sync aborted by user.\n")
+            pr.source_branch.abort_merge()
+            return False
+
+        # Check if merge was resolved
+        if pr.source_branch.has_merge_conflicts():
+            self._output.write(
+                f"\n  Merge conflicts still present. Aborting sync.\n"
+            )
+            pr.source_branch.abort_merge()
+            return False
+
+        # Push the resolved merge
+        self._output.write(f"  Conflict resolved. Pushing...\n")
+        pr.source_branch.push()
+        self._output.write(f"  Merged and pushed.\n")
         return True
 
     @property

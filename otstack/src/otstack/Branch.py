@@ -31,3 +31,15 @@ class Branch(Protocol):
     def push(self) -> bool:
         """Push this branch to origin. Returns True if successful, False otherwise."""
         ...
+
+    def has_merge_conflicts(self) -> bool:
+        """Check if the repo is currently in a conflicted merge state."""
+        ...
+
+    def abort_merge(self) -> None:
+        """Abort any in-progress merge."""
+        ...
+
+    def get_working_dir(self) -> str:
+        """Get the working directory path for this branch's repo."""
+        ...
