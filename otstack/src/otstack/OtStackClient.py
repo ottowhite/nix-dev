@@ -373,11 +373,15 @@ class OtStackClient:
         # Get user's shell
         shell = os.environ.get("SHELL", "/bin/sh")
 
-        # Run subshell in the worktree directory
+        # Run subshell in the worktree directory with clean environment
+        # Remove VIRTUAL_ENV so the target repo's hooks use their own venv
+        subshell_env = {k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"}
+        subshell_env["OTSTACK_MERGE_CONFLICT"] = "1"
+
         result = subprocess.run(
             [shell],
             cwd=working_dir,
-            env={**os.environ, "OTSTACK_MERGE_CONFLICT": "1"},
+            env=subshell_env,
         )
 
         # Check if user aborted (non-zero exit)
