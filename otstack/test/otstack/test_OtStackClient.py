@@ -197,6 +197,35 @@ class TestTree:
 """
         assert output.getvalue() == expected
 
+    def test_chained_prs_shows_vertical_stack_in_single_column(self) -> None:
+        """PR feature-b depends on feature-a which depends on main."""
+        pr1 = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr2 = _make_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="feature-a",
+        )
+        repo = _make_repo(pull_requests=[pr1, pr2])
+        client, output = _make_client_with_output(repos=[repo], terminal_width=60)
+
+        client.tree(repo)
+
+        # Chained PRs appear stacked vertically in one column
+        expected = """\
+                         feature-b
+                      "Add feature B"
+                             |
+                         feature-a
+                      "Add feature A"
+                             |
+                            main
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 

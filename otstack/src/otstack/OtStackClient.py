@@ -107,18 +107,9 @@ class OtStackClient:
         if not children:
             return
 
-        # For single PR, use full width centered
+        # For single child (possibly with its own children forming a chain)
         if len(children) == 1:
-            child = children[0]
-            branch_name = child.branch_name
-            pr_title = f'"{child.pull_request.title}"' if child.pull_request else ""
-
-            # Print branch name centered
-            self._output.write(self._center_text(branch_name, width) + "\n")
-            # Print PR title centered
-            self._output.write(self._center_text(pr_title, width) + "\n")
-            # Print connector
-            self._output.write(self._center_text("|", width) + "\n")
+            self._print_chain(children[0], width)
             # Print root branch
             self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
         else:
@@ -148,6 +139,22 @@ class OtStackClient:
             self._output.write(self._center_text("|", width) + "\n")
             # Print root branch
             self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
+
+    def _print_chain(self, node: PRTree, width: int) -> None:
+        """Print a chain of PRs vertically (top-down from deepest to this node)."""
+        # First print any children (recursively)
+        if node.children:
+            # For now, only handle single child chains
+            if len(node.children) == 1:
+                self._print_chain(node.children[0], width)
+
+        # Then print this node
+        branch_name = node.branch_name
+        pr_title = f'"{node.pull_request.title}"' if node.pull_request else ""
+
+        self._output.write(self._center_text(branch_name, width) + "\n")
+        self._output.write(self._center_text(pr_title, width) + "\n")
+        self._output.write(self._center_text("|", width) + "\n")
 
     def _center_text(self, text: str, width: int) -> str:
         """Center text within width, without trailing whitespace."""
