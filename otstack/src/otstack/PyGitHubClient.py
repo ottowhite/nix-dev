@@ -29,9 +29,20 @@ class PyGitHubClient(GitHubClient):
         return repos
 
     def get_repo(self, name: str) -> Repository:
-        """Get a repository by name. Uses authenticated user if no owner given."""
+        """Get a repository by name. Searches user's repos if no owner given."""
         if "/" not in name:
-            name = f"{self.get_authenticated_user_login()}/{name}"
+            # Search user's accessible repos by name
+            for repo in self._github.get_user().get_repos():
+                if repo.name == name:
+                    return PyGitHubRepository(
+                        name=repo.name,
+                        full_name=repo.full_name,
+                        description=repo.description,
+                        private=repo.private,
+                        url=repo.html_url,
+                        _gh_repo=repo,
+                    )
+            raise ValueError(f"Repository '{name}' not found in your accessible repos")
         repo = self._github.get_repo(name)
         return PyGitHubRepository(
             name=repo.name,

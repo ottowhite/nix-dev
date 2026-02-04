@@ -1,5 +1,7 @@
 pyproject.toml
+src/otstack/Branch.py
 src/otstack/GitHubClient.py
+src/otstack/GitPythonBranch.py
 src/otstack/OtStackClient.py
 src/otstack/PullRequest.py
 src/otstack/PyGitHubClient.py
