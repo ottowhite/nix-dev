@@ -17,7 +17,7 @@ class LocalBranch(Branch):
         """
         Merge other_branch into this branch.
 
-        Returns True if merge would succeed without conflicts.
+        Returns True if merge succeeded (or already up to date).
         Returns False if there would be conflicts (no changes made to branch).
         """
         self._repo.git.checkout(self.name)
@@ -25,13 +25,26 @@ class LocalBranch(Branch):
         # Check if merge would have conflicts using --no-commit --no-ff
         try:
             self._repo.git.merge("--no-commit", "--no-ff", other_branch.name)
-            # Merge succeeded, commit it
-            self._repo.git.commit("-m", f"Merge branch '{other_branch.name}'")
-            return True
-        except GitCommandError:
+        except GitCommandError as e:
+            # Check if "already up to date" (not an error)
+            if "Already up to date" in str(e.stdout):
+                return True
             # Merge would conflict, abort to leave branch clean
-            self._repo.git.merge("--abort")
+            try:
+                self._repo.git.merge("--abort")
+            except GitCommandError:
+                pass  # No merge in progress, nothing to abort
             return False
+
+        # Merge succeeded, commit it (may fail if nothing to commit)
+        try:
+            self._repo.git.commit("-m", f"Merge branch '{other_branch.name}'")
+        except GitCommandError as e:
+            # "nothing to commit" is fine - merge was a fast-forward or no changes
+            if "nothing to commit" in str(e.stdout):
+                return True
+            raise
+        return True
 
     def pull(self) -> bool:
         """

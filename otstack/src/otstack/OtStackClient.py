@@ -78,17 +78,21 @@ class OtStackClient:
         """
         return self._repo_detector.get_repo_name()
 
-    def detect_repo(self) -> Repository | None:
+    def detect_repo(self, local_path: str = ".") -> Repository | None:
         """
-        Detect and return the Repository from the current git directory.
+        Detect and return the Repository from a git directory.
 
         This method detects the repo name from git remotes and also associates
         the local git repository, enabling local branch detection for sync operations.
 
+        Args:
+            local_path: Path to the local git repository. Defaults to current directory.
+
         Returns:
             Repository with local git repo associated, or None if not detectable.
         """
-        repo_name = self._repo_detector.get_repo_name()
+        detector = GitPythonRepoDetector(local_path)
+        repo_name = detector.get_repo_name()
         if repo_name is None:
             return None
 
@@ -97,7 +101,7 @@ class OtStackClient:
         # Associate local git repo if available
         if isinstance(repo, PyGitHubRepository):
             try:
-                git_repo = Repo(".", search_parent_directories=True)
+                git_repo = Repo(local_path, search_parent_directories=True)
                 repo._git_repo = git_repo
             except InvalidGitRepositoryError:
                 pass
@@ -119,9 +123,27 @@ class OtStackClient:
             pr_tree = self.get_pr_tree(repo, root)
             self._print_horizontal_tree(pr_tree)
 
-    def get_repo(self, name: str) -> Repository:
-        """Get a repository by name (e.g., 'owner/repo')."""
-        return self._github_client.get_repo(name)
+    def get_repo(self, name: str, local_path: str = ".") -> Repository:
+        """Get a repository by name (e.g., 'owner/repo').
+
+        If a local git directory is provided, associates the local git repo
+        to enable local branch detection for sync operations.
+
+        Args:
+            name: Repository name (e.g., 'owner/repo').
+            local_path: Path to the local git repository. Defaults to current directory.
+        """
+        repo = self._github_client.get_repo(name)
+
+        # Associate local git repo if available
+        if isinstance(repo, PyGitHubRepository):
+            try:
+                git_repo = Repo(local_path, search_parent_directories=True)
+                repo._git_repo = git_repo
+            except InvalidGitRepositoryError:
+                pass
+
+        return repo
 
     def get_pr_tree(self, repo: Repository, branch: str) -> PRTree:
         """Get the PR dependency tree rooted at the given branch."""

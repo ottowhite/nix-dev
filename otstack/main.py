@@ -14,6 +14,12 @@ def main() -> None:
         required=False,
         help="Repository name (e.g., 'repo-name'). If not provided, detects from git remote.",
     )
+    tree_parser.add_argument(
+        "--path",
+        type=str,
+        required=False,
+        help="Path to local git repository. If not provided, uses current directory.",
+    )
 
     sync_parser = subparsers.add_parser("sync", help="Sync all local PRs")
     sync_parser.add_argument(
@@ -22,13 +28,20 @@ def main() -> None:
         required=False,
         help="Repository name (e.g., 'repo-name'). If not provided, detects from git remote.",
     )
+    sync_parser.add_argument(
+        "--path",
+        type=str,
+        required=False,
+        help="Path to local git repository. If not provided, uses current directory.",
+    )
 
     args = parser.parse_args()
 
     try:
+        local_path = getattr(args, "path", None) or "."
         with OtStackClient() as client:
             if args.repo is None:
-                repo = client.detect_repo()
+                repo = client.detect_repo(local_path)
                 if repo is None:
                     print(
                         "Could not detect repository. Please specify --repo or run "
@@ -37,7 +50,7 @@ def main() -> None:
                     exit(-1)
                 print(f"Detected repository: {repo.full_name}")
             else:
-                repo = client.get_repo(args.repo)
+                repo = client.get_repo(args.repo, local_path)
 
             if args.command == "tree":
                 print(f"Repository: {repo.full_name}\n")
