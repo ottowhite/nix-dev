@@ -31,6 +31,7 @@ class PyGitHubRepository(Repository):
                     source_branch=pr.head.ref,
                     destination_branch=pr.base.ref,
                     url=pr.html_url,
+                    _gh_pr=pr,
                 )
             )
         return prs
@@ -53,4 +54,5 @@ class PyGitHubRepository(Repository):
             source_branch=pr.head.ref,
             destination_branch=pr.base.ref,
             url=pr.html_url,
+            _gh_pr=pr,
         )

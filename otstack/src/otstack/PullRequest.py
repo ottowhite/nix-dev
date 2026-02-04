@@ -9,3 +9,7 @@ class PullRequest(Protocol):
     source_branch: str
     destination_branch: str
     url: str
+
+    def change_destination(self, new_destination: str) -> None:
+        """Change the destination branch of this pull request."""
+        ...
