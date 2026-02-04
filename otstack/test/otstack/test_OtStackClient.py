@@ -277,6 +277,30 @@ class TestTree:
 """
         assert output.getvalue() == expected
 
+    def test_long_branch_name_is_truncated(self) -> None:
+        """Branch names longer than column width - 2 are truncated with ..."""
+        pr = _make_pr(
+            title="Add A",
+            source_branch="this-is-a-very-long-branch-name-that-exceeds-width",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr])
+        # With width=40, the name has 50 chars, max is 38, so truncate at 35 + "..."
+        client, output = _make_client_with_output(repos=[repo], terminal_width=40)
+
+        client.tree(repo)
+
+        # Branch name should be truncated to fit within width - 2 = 38 chars
+        # "this-is-a-very-long-branch-name-tha..." (35 chars + 3 dots = 38)
+        # centered in 40: (40 - 38) // 2 = 1 space
+        expected = """\
+ this-is-a-very-long-branch-name-tha...
+                "Add A"
+                   |
+                  main
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 

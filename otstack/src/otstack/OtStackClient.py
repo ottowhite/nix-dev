@@ -175,8 +175,9 @@ class OtStackClient:
         """Print a chain of PRs vertically (top-down from deepest to this node)."""
         # Get the chain and print from deepest to shallowest
         chain = self._get_chain(node)
+        max_text_width = width - 2  # Leave 1 char margin on each side
         for n in reversed(chain):
-            branch_name = n.branch_name
+            branch_name = self._truncate_text(n.branch_name, max_text_width)
             pr_title = f'"{n.pull_request.title}"' if n.pull_request else ""
 
             self._output.write(self._center_text(branch_name, width) + "\n")
@@ -187,6 +188,12 @@ class OtStackClient:
         """Center text within width, without trailing whitespace."""
         padding = (width - len(text)) // 2
         return " " * padding + text
+
+    def _truncate_text(self, text: str, max_width: int) -> str:
+        """Truncate text with ... if it exceeds max_width."""
+        if len(text) <= max_width:
+            return text
+        return text[: max_width - 3] + "..."
 
     def _build_horizontal_connector(self, col_width: int, num_cols: int) -> str:
         """Build a horizontal line connecting all columns with + at junctions."""
