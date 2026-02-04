@@ -5,6 +5,7 @@ from typing import TextIO
 from dotenv import load_dotenv
 
 from .GitHubClient import GitHubClient
+from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
 
 
@@ -50,7 +51,52 @@ class OtStackClient:
 
     def tree(self) -> None:
         """Display the PR dependency tree for all repositories."""
-        pass
+        repos = self._github_client.get_user_repos()
+        for repo in repos:
+            prs = repo.get_open_pull_requests()
+            if prs:
+                self._print_tree(prs)
+
+    def _print_tree(self, prs: list[PullRequest]) -> None:
+        """Print the PR dependency tree."""
+        # Build a mapping of destination -> list of PRs that target it
+        children: dict[str, list[PullRequest]] = {}
+        for pr in prs:
+            dest = pr.destination_branch.name
+            if dest not in children:
+                children[dest] = []
+            children[dest].append(pr)
+
+        # Find root destinations (destinations that are not source branches of any PR)
+        source_branches = {pr.source_branch.name for pr in prs}
+        roots = [dest for dest in children if dest not in source_branches]
+
+        for root in roots:
+            self._output.write(f"{root}\n")
+            self._print_subtree(root, children, "", True)
+
+    def _print_subtree(
+        self,
+        branch: str,
+        children: dict[str, list[PullRequest]],
+        prefix: str,
+        is_last: bool,
+    ) -> None:
+        """Recursively print a subtree."""
+        if branch not in children:
+            return
+
+        branch_prs = children[branch]
+        for i, pr in enumerate(branch_prs):
+            is_last_child = i == len(branch_prs) - 1
+            connector = "└── " if is_last_child else "├── "
+            self._output.write(
+                f'{prefix}{connector}{pr.source_branch.name} (PR: "{pr.title}")\n'
+            )
+            extension = "    " if is_last_child else "│   "
+            self._print_subtree(
+                pr.source_branch.name, children, prefix + extension, is_last_child
+            )
 
     @property
     def github(self) -> GitHubClient:

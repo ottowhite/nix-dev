@@ -15,9 +15,10 @@ class MockRepository(Repository):
     private: bool
     url: str
     _branches: list[Branch] = field(default_factory=list)
+    _pull_requests: list[PullRequest] = field(default_factory=list)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
-        return []
+        return self._pull_requests
 
     def create_pr(
         self, source_branch: Branch, destination_branch: Branch, title: str
