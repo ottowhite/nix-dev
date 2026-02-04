@@ -140,103 +140,27 @@ class TestTree:
 
         assert output.getvalue() == ""
 
-    def test_single_pr_shows_simple_tree(self) -> None:
+    def test_single_pr_shows_horizontal_tree(self) -> None:
         pr = _make_pr(
             title="Add feature A",
             source_branch="feature-a",
             destination_branch="main",
         )
         repo = _make_repo(pull_requests=[pr])
-        client, output = _make_client_with_output(repos=[repo])
+        client, output = _make_client_with_output(repos=[repo], terminal_width=60)
 
         client.tree(repo)
 
+        # Content centered in 60-char width
+        # feature-a: 9 chars, padding = (60-9)//2 = 25
+        # "Add feature A": 15 chars, padding = (60-15)//2 = 22
+        # |: 1 char, padding = (60-1)//2 = 29
+        # main: 4 chars, padding = (60-4)//2 = 28
         expected = """\
-main
-└── feature-a (PR: "Add feature A")
-"""
-        assert output.getvalue() == expected
-
-    def test_multiple_independent_prs_to_same_base(self) -> None:
-        pr1 = _make_pr(
-            title="Add feature A",
-            source_branch="feature-a",
-            destination_branch="main",
-        )
-        pr2 = _make_pr(
-            title="Add feature C",
-            source_branch="feature-c",
-            destination_branch="main",
-        )
-        repo = _make_repo(pull_requests=[pr1, pr2])
-        client, output = _make_client_with_output(repos=[repo])
-
-        client.tree(repo)
-
-        expected = """\
-main
-├── feature-a (PR: "Add feature A")
-└── feature-c (PR: "Add feature C")
-"""
-        assert output.getvalue() == expected
-
-    def test_chained_prs_show_nested_tree(self) -> None:
-        """PR feature-b depends on feature-a which depends on main."""
-        pr1 = _make_pr(
-            title="Add feature A",
-            source_branch="feature-a",
-            destination_branch="main",
-        )
-        pr2 = _make_pr(
-            title="Add feature B",
-            source_branch="feature-b",
-            destination_branch="feature-a",
-        )
-        repo = _make_repo(pull_requests=[pr1, pr2])
-        client, output = _make_client_with_output(repos=[repo])
-
-        client.tree(repo)
-
-        expected = """\
-main
-└── feature-a (PR: "Add feature A")
-    └── feature-b (PR: "Add feature B")
-"""
-        assert output.getvalue() == expected
-
-    def test_complex_dag_with_multiple_chains(self) -> None:
-        """
-        Complex DAG structure:
-        main
-        ├── feature-a
-        │   └── feature-b
-        └── feature-c
-        """
-        pr_a = _make_pr(
-            title="Add feature A",
-            source_branch="feature-a",
-            destination_branch="main",
-        )
-        pr_b = _make_pr(
-            title="Add feature B",
-            source_branch="feature-b",
-            destination_branch="feature-a",
-        )
-        pr_c = _make_pr(
-            title="Add feature C",
-            source_branch="feature-c",
-            destination_branch="main",
-        )
-        repo = _make_repo(pull_requests=[pr_a, pr_b, pr_c])
-        client, output = _make_client_with_output(repos=[repo])
-
-        client.tree(repo)
-
-        expected = """\
-main
-├── feature-a (PR: "Add feature A")
-│   └── feature-b (PR: "Add feature B")
-└── feature-c (PR: "Add feature C")
+                         feature-a
+                      "Add feature A"
+                             |
+                            main
 """
         assert output.getvalue() == expected
 

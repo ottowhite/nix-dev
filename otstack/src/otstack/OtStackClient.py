@@ -73,8 +73,7 @@ class OtStackClient:
 
         for root in roots:
             pr_tree = self.get_pr_tree(repo, root)
-            self._output.write(f"{pr_tree.branch_name}\n")
-            self._print_pr_tree(pr_tree, "")
+            self._print_horizontal_tree(pr_tree)
 
     def get_repo(self, name: str) -> Repository:
         """Get a repository by name (e.g., 'owner/repo')."""
@@ -99,15 +98,57 @@ class OtStackClient:
         ]
         return PRTree(branch_name=branch, pull_request=pull_request, children=children)
 
-    def _print_pr_tree(self, pr_tree: PRTree, prefix: str) -> None:
-        """Recursively print a PRTree."""
-        for i, child in enumerate(pr_tree.children):
-            is_last = i == len(pr_tree.children) - 1
-            connector = "└── " if is_last else "├── "
-            pr_title = child.pull_request.title if child.pull_request else ""
-            self._output.write(f'{prefix}{connector}{child.branch_name} (PR: "{pr_title}")\n')
-            extension = "    " if is_last else "│   "
-            self._print_pr_tree(child, prefix + extension)
+    def _print_horizontal_tree(self, pr_tree: PRTree) -> None:
+        """Print the PR tree in horizontal format."""
+        width = self._terminal_width
+
+        # Get the top-level children (PRs targeting root)
+        children = pr_tree.children
+        if not children:
+            return
+
+        # For single PR, use full width centered
+        if len(children) == 1:
+            child = children[0]
+            branch_name = child.branch_name
+            pr_title = f'"{child.pull_request.title}"' if child.pull_request else ""
+
+            # Print branch name centered
+            self._output.write(self._center_text(branch_name, width) + "\n")
+            # Print PR title centered
+            self._output.write(self._center_text(pr_title, width) + "\n")
+            # Print connector
+            self._output.write(self._center_text("|", width) + "\n")
+            # Print root branch
+            self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
+        else:
+            # For multiple PRs, divide into columns
+            col_width = width // len(children)
+            # Print branch names
+            line = ""
+            for child in children:
+                line += child.branch_name.center(col_width)
+            self._output.write(line.rstrip() + "\n")
+            # Print PR titles
+            line = ""
+            for child in children:
+                pr_title = f'"{child.pull_request.title}"' if child.pull_request else ""
+                line += pr_title.center(col_width)
+            self._output.write(line.rstrip() + "\n")
+            # Print connectors
+            line = ""
+            for _ in children:
+                line += "|".center(col_width)
+            self._output.write(line.rstrip() + "\n")
+            # Print horizontal connecting line
+            # TODO: implement this
+            # Print root branch
+            self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
+
+    def _center_text(self, text: str, width: int) -> str:
+        """Center text within width, without trailing whitespace."""
+        padding = (width - len(text)) // 2
+        return " " * padding + text
 
     @property
     def github(self) -> GitHubClient:
