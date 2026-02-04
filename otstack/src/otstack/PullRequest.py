@@ -19,3 +19,7 @@ class PullRequest(Protocol):
     def get_branch(self) -> Branch:
         """Get the source branch of this pull request."""
         ...
+
+    def is_local(self) -> bool:
+        """Return True if both source and destination branches are local."""
+        ...

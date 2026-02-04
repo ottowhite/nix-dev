@@ -17,3 +17,6 @@ class MockPullRequest(PullRequest):
 
     def get_branch(self) -> Branch:
         return self.source_branch
+
+    def is_local(self) -> bool:
+        return self.source_branch.is_local() and self.destination_branch.is_local()
