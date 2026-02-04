@@ -76,6 +76,30 @@ main
 """
         assert output.getvalue() == expected
 
+    def test_chained_prs_show_nested_tree(self) -> None:
+        """PR feature-b depends on feature-a which depends on main."""
+        pr1 = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr2 = _make_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="feature-a",
+        )
+        repo = _make_repo(pull_requests=[pr1, pr2])
+        client, output = _make_client_with_output(repos=[repo])
+
+        client.tree()
+
+        expected = """\
+main
+└── feature-a (PR: "Add feature A")
+    └── feature-b (PR: "Add feature B")
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
