@@ -64,16 +64,21 @@ class OtStackClient:
     def get_pr_tree(self, repo: Repository, branch: str) -> PRTree:
         """Get the PR dependency tree rooted at the given branch."""
         prs = repo.get_open_pull_requests()
+        return self._build_pr_tree(branch, None, prs)
+
+    def _build_pr_tree(
+        self,
+        branch: str,
+        pull_request: PullRequest | None,
+        all_prs: list[PullRequest],
+    ) -> PRTree:
+        """Recursively build a PRTree for the given branch."""
         children = [
-            PRTree(
-                branch_name=pr.source_branch.name,
-                pull_request=pr,
-                children=[],
-            )
-            for pr in prs
+            self._build_pr_tree(pr.source_branch.name, pr, all_prs)
+            for pr in all_prs
             if pr.destination_branch.name == branch
         ]
-        return PRTree(branch_name=branch, pull_request=None, children=children)
+        return PRTree(branch_name=branch, pull_request=pull_request, children=children)
 
     def _print_tree(self, prs: list[PullRequest]) -> None:
         """Print the PR dependency tree."""

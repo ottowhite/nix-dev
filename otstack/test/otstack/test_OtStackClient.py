@@ -77,6 +77,35 @@ class TestGetPrTree:
         assert child.pull_request == pr
         assert child.children == []
 
+    def test_returns_nested_tree_for_chained_prs(self) -> None:
+        """When PRs are chained, return a nested tree structure."""
+        pr_a = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr_b = _make_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="feature-a",
+        )
+        repo = _make_repo(pull_requests=[pr_a, pr_b])
+        client = _make_client(repos=[repo])
+
+        tree = client.get_pr_tree(repo, "main")
+
+        # main -> feature-a -> feature-b
+        assert tree.branch_name == "main"
+        assert len(tree.children) == 1
+        child_a = tree.children[0]
+        assert child_a.branch_name == "feature-a"
+        assert child_a.pull_request == pr_a
+        assert len(child_a.children) == 1
+        child_b = child_a.children[0]
+        assert child_b.branch_name == "feature-b"
+        assert child_b.pull_request == pr_b
+        assert child_b.children == []
+
 
 class TestTree:
     def test_no_prs_returns_empty_output(self) -> None:
