@@ -31,3 +31,18 @@ class PyGitHubPullRequest(PullRequest):
     def is_local(self) -> bool:
         """Return True if both source and destination branches are local."""
         return self.source_branch.is_local() and self.destination_branch.is_local()
+
+    def sync(self) -> bool:
+        """
+        Sync the PR by pulling destination, merging into source, and pushing source.
+
+        Raises ValueError if is_local() returns False.
+        Returns True if sync succeeded, False if merge would conflict (no push performed).
+        """
+        if not self.is_local():
+            raise ValueError("sync() requires is_local() to return True, but it returned False")
+        self.destination_branch.pull()
+        if not self.source_branch.merge(self.destination_branch):
+            return False
+        self.source_branch.push()
+        return True
