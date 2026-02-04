@@ -242,14 +242,28 @@ class OtStackClient:
 
         Returns True if all syncs succeeded, False if any merge would conflict.
         """
+        self._output.write(f"Fetching open pull requests...\n")
         prs = repo.get_open_pull_requests()
         if not prs:
+            self._output.write("No open pull requests found.\n")
+            return True
+
+        # Count local PRs
+        local_prs = [pr for pr in prs if pr.is_local()]
+        self._output.write(
+            f"Found {len(prs)} open PR(s), {len(local_prs)} with local checkouts.\n"
+        )
+
+        if not local_prs:
+            self._output.write("No local PRs to sync.\n")
             return True
 
         # Find root branches (destinations that are not source branches of any PR)
         source_branches = {pr.source_branch.name for pr in prs}
         dest_branches = {pr.destination_branch.name for pr in prs}
         roots = [dest for dest in dest_branches if dest not in source_branches]
+
+        self._output.write(f"Starting sync from root(s): {', '.join(roots)}\n\n")
 
         # Process PRs level by level (top-down from root toward leaves)
         for root in roots:
@@ -266,15 +280,24 @@ class OtStackClient:
             if child.pull_request is not None:
                 pr = child.pull_request
                 if pr.is_local():
+                    self._output.write(
+                        f"Syncing '{pr.source_branch.name}' <- '{pr.destination_branch.name}'...\n"
+                    )
+                    self._output.write(f"  Pulling {pr.destination_branch.name}...\n")
                     if not pr.sync():
                         self._output.write(
+                            f"  Merge failed!\n\n"
                             f"Sync failed: Merging '{pr.destination_branch.name}' into "
                             f"'{pr.source_branch.name}' would result in conflicts.\n"
                             f"Please resolve conflicts manually.\n"
                         )
                         return False
                     self._output.write(
-                        f"Synced: {pr.source_branch.name} <- {pr.destination_branch.name}\n"
+                        f"  Merged and pushed.\n"
+                    )
+                else:
+                    self._output.write(
+                        f"Skipping '{pr.source_branch.name}' (not checked out locally)\n"
                     )
 
             # Then recursively sync children (deeper in the tree)
