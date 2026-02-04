@@ -252,11 +252,14 @@ def _make_client(repos: list[Repository]) -> OtStackClient:
 
 def _make_client_with_output(
     repos: list[Repository],
+    terminal_width: int = 60,
 ) -> tuple[OtStackClient, StringIO]:
     """Create an OtStackClient with captured stdout."""
     mock_client = MockGitHubClient(repos=repos)
     output = StringIO()
-    client = OtStackClient(github_client=mock_client, output=output)
+    client = OtStackClient(
+        github_client=mock_client, output=output, terminal_width=terminal_width
+    )
     return client, output
 
 

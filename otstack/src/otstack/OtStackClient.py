@@ -19,6 +19,7 @@ class OtStackClient:
         github_client: GitHubClient | None = None,
         access_token: str | None = None,
         output: TextIO | None = None,
+        terminal_width: int | None = None,
     ) -> None:
         """
         Initialize OtStackClient.
@@ -28,6 +29,8 @@ class OtStackClient:
             access_token: Optional GitHub access token. If not provided,
                          will load from GITHUB_PERSONAL_ACCESS_TOKEN env var.
             output: Optional output stream for printing. Defaults to stdout.
+            terminal_width: Optional terminal width. If not provided,
+                           will use os.get_terminal_size().columns with fallback to 80.
 
         Raises:
             ValueError: If no access token is provided or found in environment.
@@ -35,6 +38,12 @@ class OtStackClient:
         load_dotenv()
 
         self._output = output or sys.stdout
+        if terminal_width is None:
+            try:
+                terminal_width = os.get_terminal_size().columns
+            except OSError:
+                terminal_width = 80
+        self._terminal_width = terminal_width
 
         if github_client is not None:
             self._github_client = github_client
