@@ -100,6 +100,42 @@ main
 """
         assert output.getvalue() == expected
 
+    def test_complex_dag_with_multiple_chains(self) -> None:
+        """
+        Complex DAG structure:
+        main
+        ├── feature-a
+        │   └── feature-b
+        └── feature-c
+        """
+        pr_a = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr_b = _make_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="feature-a",
+        )
+        pr_c = _make_pr(
+            title="Add feature C",
+            source_branch="feature-c",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr_a, pr_b, pr_c])
+        client, output = _make_client_with_output(repos=[repo])
+
+        client.tree()
+
+        expected = """\
+main
+├── feature-a (PR: "Add feature A")
+│   └── feature-b (PR: "Add feature B")
+└── feature-c (PR: "Add feature C")
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
