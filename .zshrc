@@ -32,8 +32,9 @@ alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 function otstack() {
 	local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/]||; s|\.git$||')
+	local repo_path=$(pwd)
 	if [[ -n "$repo_name" ]]; then
-		uv --directory $NIX_HOME/otstack run main.py "$1" --repo "$repo_name" "${@:2}"
+		uv --directory $NIX_HOME/otstack run main.py "$1" --repo "$repo_name" --path "$repo_path" "${@:2}"
 	else
 		uv --directory $NIX_HOME/otstack run main.py "$@"
 	fi
