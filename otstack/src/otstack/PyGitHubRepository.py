@@ -27,18 +27,22 @@ class PyGitHubRepository(Repository):
         """Get all open pull requests for this repository."""
         if self._gh_repo is None:
             return []
+
+        # Build a map of locally checked out branches by name
+        local_branch_map: dict[str, Branch] = {}
+        if self._git_repo is not None:
+            for branch in self.get_local_branches():
+                local_branch_map[branch.name] = branch
+
         prs: list[PullRequest] = []
         for pr in self._gh_repo.get_pulls(state="open"):
-            if self._git_repo is not None:
-                source_branch: Branch = LocalBranch(
-                    name=pr.head.ref, _repo=self._git_repo
-                )
-                dest_branch: Branch = LocalBranch(
-                    name=pr.base.ref, _repo=self._git_repo
-                )
-            else:
-                source_branch = SimpleBranch(name=pr.head.ref)
-                dest_branch = SimpleBranch(name=pr.base.ref)
+            # Use LocalBranch if checked out locally, otherwise SimpleBranch
+            source_branch: Branch = local_branch_map.get(
+                pr.head.ref, SimpleBranch(name=pr.head.ref)
+            )
+            dest_branch: Branch = local_branch_map.get(
+                pr.base.ref, SimpleBranch(name=pr.base.ref)
+            )
             prs.append(
                 PyGitHubPullRequest(
                     title=pr.title,
@@ -55,7 +59,7 @@ class PyGitHubRepository(Repository):
         self, source_branch: Branch, destination_branch: Branch, title: str
     ) -> PullRequest:
         """Create a pull request from source_branch to destination_branch."""
-        if self._gh_repo is None or self._git_repo is None:
+        if self._gh_repo is None:
             raise ValueError("Cannot create PR without GitHub repository reference")
         pr = self._gh_repo.create_pull(
             title=title,
@@ -63,11 +67,26 @@ class PyGitHubRepository(Repository):
             head=source_branch.name,
             base=destination_branch.name,
         )
+
+        # Build a map of locally checked out branches by name
+        local_branch_map: dict[str, Branch] = {}
+        if self._git_repo is not None:
+            for branch in self.get_local_branches():
+                local_branch_map[branch.name] = branch
+
+        # Use LocalBranch if checked out locally, otherwise SimpleBranch
+        new_source: Branch = local_branch_map.get(
+            pr.head.ref, SimpleBranch(name=pr.head.ref)
+        )
+        new_dest: Branch = local_branch_map.get(
+            pr.base.ref, SimpleBranch(name=pr.base.ref)
+        )
+
         return PyGitHubPullRequest(
             title=pr.title,
             description=pr.body,
-            source_branch=LocalBranch(name=pr.head.ref, _repo=self._git_repo),
-            destination_branch=LocalBranch(name=pr.base.ref, _repo=self._git_repo),
+            source_branch=new_source,
+            destination_branch=new_dest,
             url=pr.html_url,
             _gh_pr=pr,
         )
@@ -76,10 +95,18 @@ class PyGitHubRepository(Repository):
         """Get all branches in this repository."""
         if self._git_repo is None:
             return []
+
+        # Build a map of locally checked out branches by name
+        local_branch_map: dict[str, Branch] = {}
+        for branch in self.get_local_branches():
+            local_branch_map[branch.name] = branch
+
         branches: list[Branch] = []
         for ref in self._git_repo.references:
             if hasattr(ref, "name") and not ref.name.startswith("origin/"):
-                branches.append(LocalBranch(name=ref.name, _repo=self._git_repo))
+                # Use LocalBranch if checked out locally, otherwise SimpleBranch
+                branch = local_branch_map.get(ref.name, SimpleBranch(name=ref.name))
+                branches.append(branch)
         return branches
 
     def get_local_branches(self) -> list[Branch]:
