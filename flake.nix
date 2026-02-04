@@ -73,6 +73,7 @@
 	    opkssh
 	    nodejs_24
 	    jq
+	    uv
           ] ++ [
             nix-dev-deps
             oh-my-zsh-custom
