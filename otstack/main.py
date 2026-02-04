@@ -1,4 +1,4 @@
-from otstack import OtStackClient
+from otstack.OtStackClient import OtStackClient
 
 
 if __name__ == "__main__":

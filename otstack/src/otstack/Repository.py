@@ -1,7 +1,6 @@
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
-if TYPE_CHECKING:
-    from .PullRequest import PullRequest
+from .PullRequest import PullRequest
 
 
 class Repository(Protocol):
@@ -13,12 +12,12 @@ class Repository(Protocol):
     private: bool
     url: str
 
-    def get_open_pull_requests(self) -> list["PullRequest"]:
+    def get_open_pull_requests(self) -> list[PullRequest]:
         """Get all open pull requests for this repository."""
         ...
 
     def create_pr(
         self, source_branch: str, destination_branch: str, title: str
-    ) -> "PullRequest":
+    ) -> PullRequest:
         """Create a pull request from source_branch to destination_branch."""
         ...

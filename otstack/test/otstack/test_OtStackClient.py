@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
-from otstack import GitHubClient, OtStackClient, Repository
+from otstack.GitHubClient import GitHubClient
+from otstack.OtStackClient import OtStackClient
+from otstack.Repository import Repository
 
 
 @dataclass
