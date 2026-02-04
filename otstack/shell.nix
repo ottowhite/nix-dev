@@ -11,5 +11,6 @@ pkgs.mkShell {
 	unset PYTHONNOUSERSITE
 	uv sync --all-extras
 	git config core.hooksPath .githooks
+	uv pip install --editable .
 	'';
 }
