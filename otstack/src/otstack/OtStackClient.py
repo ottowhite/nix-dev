@@ -4,11 +4,14 @@ from typing import TextIO
 
 from dotenv import load_dotenv
 
+from git import InvalidGitRepositoryError, Repo
+
 from .GitHubClient import GitHubClient
 from .GitRepoDetector import GitPythonRepoDetector, GitRepoDetector
 from .PRTree import PRTree
 from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
+from .PyGitHubRepository import PyGitHubRepository
 from .Repository import Repository
 
 
@@ -74,6 +77,32 @@ class OtStackClient:
             Repository name in 'owner/repo' format, or None if not detectable.
         """
         return self._repo_detector.get_repo_name()
+
+    def detect_repo(self) -> Repository | None:
+        """
+        Detect and return the Repository from the current git directory.
+
+        This method detects the repo name from git remotes and also associates
+        the local git repository, enabling local branch detection for sync operations.
+
+        Returns:
+            Repository with local git repo associated, or None if not detectable.
+        """
+        repo_name = self._repo_detector.get_repo_name()
+        if repo_name is None:
+            return None
+
+        repo = self._github_client.get_repo(repo_name)
+
+        # Associate local git repo if available
+        if isinstance(repo, PyGitHubRepository):
+            try:
+                git_repo = Repo(".", search_parent_directories=True)
+                repo._git_repo = git_repo
+            except InvalidGitRepositoryError:
+                pass
+
+        return repo
 
     def tree(self, repo: Repository) -> None:
         """Display the PR dependency tree for a repository."""

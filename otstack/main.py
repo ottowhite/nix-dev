@@ -27,23 +27,23 @@ def main() -> None:
 
     try:
         with OtStackClient() as client:
-            repo_name = args.repo
-            if repo_name is None:
-                repo_name = client.detect_repo_name()
-                if repo_name is None:
+            if args.repo is None:
+                repo = client.detect_repo()
+                if repo is None:
                     print(
                         "Could not detect repository. Please specify --repo or run "
                         "from within a git repository with a GitHub remote."
                     )
                     exit(-1)
-                print(f"Detected repository: {repo_name}")
-            repo = client.get_repo(repo_name)
+                print(f"Detected repository: {repo.full_name}")
+            else:
+                repo = client.get_repo(args.repo)
 
             if args.command == "tree":
-                print(f"Repository: {repo_name}\n")
+                print(f"Repository: {repo.full_name}\n")
                 client.tree(repo)
             elif args.command == "sync":
-                print(f"Syncing repository: {repo_name}\n")
+                print(f"Syncing repository: {repo.full_name}\n")
                 if client.sync(repo):
                     print("All PRs synced successfully!")
                 else:
