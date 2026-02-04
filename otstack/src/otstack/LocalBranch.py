@@ -36,8 +36,9 @@ class LocalBranch(Branch):
         try:
             self._repo.git.commit("-m", f"Merge branch '{other_branch.name}'")
         except GitCommandError as e:
-            # "nothing to commit" is fine - merge was a fast-forward or no changes
-            if "nothing to commit" in str(e.stdout):
+            # "nothing to commit" or "no changes added" is fine - already up to date
+            stdout = str(e.stdout).lower()
+            if "nothing to commit" in stdout or "no changes added" in stdout:
                 return True
             raise
         return True
