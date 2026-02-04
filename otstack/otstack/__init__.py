@@ -1,4 +1,13 @@
-from .client import OtStackClient
-from .github_client import GitHubClient, PyGitHubClient
+from .OtStackClient import OtStackClient
+from .GitHubClient import GitHubClient
+from .PyGitHubClient import PyGitHubClient
+from .Repository import Repository
+from .PyGitHubRepository import PyGitHubRepository
 
-__all__ = ["OtStackClient", "GitHubClient", "PyGitHubClient"]
+__all__ = [
+    "OtStackClient",
+    "GitHubClient",
+    "PyGitHubClient",
+    "Repository",
+    "PyGitHubRepository",
+]

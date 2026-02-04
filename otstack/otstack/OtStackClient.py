@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
-from .github_client import GitHubClient, PyGitHubClient
+
+from .GitHubClient import GitHubClient
+from .PyGitHubClient import PyGitHubClient
 
 
 class OtStackClient:

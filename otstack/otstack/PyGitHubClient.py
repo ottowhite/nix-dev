@@ -1,31 +1,7 @@
-from typing import Protocol
-from dataclasses import dataclass
 from github import Github, Auth
 
-
-@dataclass
-class Repository:
-    name: str
-    full_name: str
-    description: str | None
-    private: bool
-    url: str
-
-
-class GitHubClient(Protocol):
-    """Protocol defining the high-level interface for GitHub operations."""
-
-    def get_user_repos(self) -> list[Repository]:
-        """Get all repositories for the authenticated user."""
-        ...
-
-    def get_authenticated_user_login(self) -> str:
-        """Get the login name of the authenticated user."""
-        ...
-
-    def close(self) -> None:
-        """Close the client and release resources."""
-        ...
+from .Repository import Repository
+from .PyGitHubRepository import PyGitHubRepository
 
 
 class PyGitHubClient:
@@ -37,10 +13,10 @@ class PyGitHubClient:
 
     def get_user_repos(self) -> list[Repository]:
         """Get all repositories for the authenticated user."""
-        repos = []
+        repos: list[Repository] = []
         for repo in self._github.get_user().get_repos():
             repos.append(
-                Repository(
+                PyGitHubRepository(
                     name=repo.name,
                     full_name=repo.full_name,
                     description=repo.description,
