@@ -4,7 +4,7 @@ from git import Repo
 from github.Repository import Repository as GHRepository
 
 from .Branch import Branch
-from .GitPythonBranch import GitPythonBranch
+from .LocalBranch import LocalBranch
 from .PullRequest import PullRequest
 from .PyGitHubPullRequest import PyGitHubPullRequest
 from .Repository import Repository
@@ -30,10 +30,10 @@ class PyGitHubRepository(Repository):
         prs: list[PullRequest] = []
         for pr in self._gh_repo.get_pulls(state="open"):
             if self._git_repo is not None:
-                source_branch: Branch = GitPythonBranch(
+                source_branch: Branch = LocalBranch(
                     name=pr.head.ref, _repo=self._git_repo
                 )
-                dest_branch: Branch = GitPythonBranch(
+                dest_branch: Branch = LocalBranch(
                     name=pr.base.ref, _repo=self._git_repo
                 )
             else:
@@ -66,8 +66,8 @@ class PyGitHubRepository(Repository):
         return PyGitHubPullRequest(
             title=pr.title,
             description=pr.body,
-            source_branch=GitPythonBranch(name=pr.head.ref, _repo=self._git_repo),
-            destination_branch=GitPythonBranch(name=pr.base.ref, _repo=self._git_repo),
+            source_branch=LocalBranch(name=pr.head.ref, _repo=self._git_repo),
+            destination_branch=LocalBranch(name=pr.base.ref, _repo=self._git_repo),
             url=pr.html_url,
             _gh_pr=pr,
         )
@@ -79,5 +79,5 @@ class PyGitHubRepository(Repository):
         branches: list[Branch] = []
         for ref in self._git_repo.references:
             if hasattr(ref, "name") and not ref.name.startswith("origin/"):
-                branches.append(GitPythonBranch(name=ref.name, _repo=self._git_repo))
+                branches.append(LocalBranch(name=ref.name, _repo=self._git_repo))
         return branches

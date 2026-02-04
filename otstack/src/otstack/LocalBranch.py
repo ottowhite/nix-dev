@@ -7,8 +7,8 @@ from .Branch import Branch
 
 
 @dataclass
-class GitPythonBranch(Branch):
-    """Concrete implementation of Branch using GitPython."""
+class LocalBranch(Branch):
+    """Concrete implementation of Branch using GitPython for local filesystem operations."""
 
     name: str
     _repo: Repo = field(repr=False)
@@ -53,3 +53,6 @@ class GitPythonBranch(Branch):
         # Check if HEAD changed
         head_after = self._repo.head.commit.hexsha
         return head_before != head_after
+
+    def is_local(self) -> bool:
+        return True

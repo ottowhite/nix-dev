@@ -1,4 +1,5 @@
 from otstack.Branch import Branch
+from otstack.LocalBranch import LocalBranch
 from otstack.SimpleBranch import SimpleBranch
 
 from .helpers.MockBranch import MockBranch
@@ -30,3 +31,16 @@ class TestSimpleBranchIsLocal:
         result = branch.is_local()
 
         assert result is False
+
+
+class TestLocalBranchIsLocal:
+    def test_local_branch_is_local_returns_true(self, tmp_path) -> None:
+        """LocalBranch.is_local() always returns True."""
+        from git import Repo
+
+        repo = Repo.init(tmp_path)
+        branch = LocalBranch(name="main", _repo=repo)
+
+        result = branch.is_local()
+
+        assert result is True

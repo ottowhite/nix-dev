@@ -15,12 +15,12 @@ class SimpleBranch(Branch):
 
     def merge(self, other_branch: Branch) -> bool:
         raise NotImplementedError(
-            "SimpleBranch does not support merge. Use GitPythonBranch for local git operations."
+            "SimpleBranch does not support merge. Use LocalBranch for local git operations."
         )
 
     def pull(self) -> bool:
         raise NotImplementedError(
-            "SimpleBranch does not support pull. Use GitPythonBranch for local git operations."
+            "SimpleBranch does not support pull. Use LocalBranch for local git operations."
         )
 
     def is_local(self) -> bool:
