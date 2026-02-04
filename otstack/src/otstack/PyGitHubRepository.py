@@ -81,3 +81,43 @@ class PyGitHubRepository(Repository):
             if hasattr(ref, "name") and not ref.name.startswith("origin/"):
                 branches.append(LocalBranch(name=ref.name, _repo=self._git_repo))
         return branches
+
+    def get_local_branches(self) -> list[Branch]:
+        """
+        Get all branches with local filesystem checkouts (main repo and worktrees).
+
+        Raises ValueError if no local git repository is associated.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        branches: list[Branch] = []
+
+        # Get the main repo's currently checked out branch
+        if not self._git_repo.head.is_detached:
+            branches.append(
+                LocalBranch(name=self._git_repo.active_branch.name, _repo=self._git_repo)
+            )
+
+        # Get worktree branches
+        try:
+            worktree_output = self._git_repo.git.worktree("list", "--porcelain")
+            current_worktree_path = None
+            for line in worktree_output.splitlines():
+                if line.startswith("worktree "):
+                    current_worktree_path = line[9:]  # Remove "worktree " prefix
+                elif line.startswith("branch "):
+                    branch_ref = line[7:]  # Remove "branch " prefix
+                    # Extract branch name from refs/heads/branch-name
+                    if branch_ref.startswith("refs/heads/"):
+                        branch_name = branch_ref[11:]  # Remove "refs/heads/" prefix
+                        # Skip if this is the main repo (already added above)
+                        if current_worktree_path != str(self._git_repo.working_dir):
+                            branches.append(
+                                LocalBranch(name=branch_name, _repo=self._git_repo)
+                            )
+        except Exception:
+            # Worktree command failed or not supported, just return main branch
+            pass
+
+        return branches
