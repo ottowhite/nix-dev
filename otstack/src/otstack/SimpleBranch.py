@@ -22,3 +22,6 @@ class SimpleBranch(Branch):
         raise NotImplementedError(
             "SimpleBranch does not support pull. Use GitPythonBranch for local git operations."
         )
+
+    def is_local(self) -> bool:
+        return False

@@ -1,4 +1,5 @@
 from otstack.Branch import Branch
+from otstack.SimpleBranch import SimpleBranch
 
 from .helpers.MockBranch import MockBranch
 
@@ -19,3 +20,13 @@ class TestBranchIsLocal:
 
         assert local_branch.is_local() is True
         assert remote_branch.is_local() is False
+
+
+class TestSimpleBranchIsLocal:
+    def test_simple_branch_is_local_returns_false(self) -> None:
+        """SimpleBranch.is_local() always returns False."""
+        branch = SimpleBranch(name="some-branch")
+
+        result = branch.is_local()
+
+        assert result is False
