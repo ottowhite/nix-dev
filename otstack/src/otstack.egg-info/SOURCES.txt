@@ -1,0 +1,14 @@
+pyproject.toml
+src/otstack/GitHubClient.py
+src/otstack/OtStackClient.py
+src/otstack/PullRequest.py
+src/otstack/PyGitHubClient.py
+src/otstack/PyGitHubPullRequest.py
+src/otstack/PyGitHubRepository.py
+src/otstack/Repository.py
+src/otstack/__init__.py
+src/otstack.egg-info/PKG-INFO
+src/otstack.egg-info/SOURCES.txt
+src/otstack.egg-info/dependency_links.txt
+src/otstack.egg-info/requires.txt
+src/otstack.egg-info/top_level.txt

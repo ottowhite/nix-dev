@@ -1,5 +1,5 @@
-- Perform atomic git commits with standard git tags and descriptions as you work, and always push directly after committing.
-- Always keep the project-level CLAUDE.md up to date as you make changes
+- Always keep this CLAUDE.md up to date as you make changes
+- Perform atomic git commits with standard git tags and descriptions as you work, and always push directly after committing
 
 ## Coding Practices
 

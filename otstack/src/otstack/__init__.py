@@ -1,8 +1,10 @@
-from .OtStackClient import OtStackClient
 from .GitHubClient import GitHubClient
+from .OtStackClient import OtStackClient
+from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
-from .Repository import Repository
+from .PyGitHubPullRequest import PyGitHubPullRequest
 from .PyGitHubRepository import PyGitHubRepository
+from .Repository import Repository
 
 __all__ = [
     "OtStackClient",
@@ -10,4 +12,6 @@ __all__ = [
     "PyGitHubClient",
     "Repository",
     "PyGitHubRepository",
+    "PullRequest",
+    "PyGitHubPullRequest",
 ]

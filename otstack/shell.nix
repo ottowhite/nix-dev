@@ -9,6 +9,7 @@ pkgs.mkShell {
 	unset PYTHONPATH
 	unset PYTHONHOME
 	unset PYTHONNOUSERSITE
-	uv sync
+	uv sync --all-extras
+	git config core.hooksPath .githooks
 	'';
 }

@@ -1,8 +1,8 @@
-from github import Github, Auth
+from github import Auth, Github
 
 from .GitHubClient import GitHubClient
-from .Repository import Repository
 from .PyGitHubRepository import PyGitHubRepository
+from .Repository import Repository
 
 
 class PyGitHubClient(GitHubClient):
@@ -23,6 +23,7 @@ class PyGitHubClient(GitHubClient):
                     description=repo.description,
                     private=repo.private,
                     url=repo.html_url,
+                    _gh_repo=repo,
                 )
             )
         return repos
