@@ -9,6 +9,7 @@
 - Concrete implementations should be prefixed with the library/implementation name (e.g., `PyGitHubClient` for PyGithub implementation)
 
 ### Protocols and Interfaces
+- We use Protocols extensively to completely mock out external interactions (like GitHub) for testing, and to define exact interfaces without coupling to implementation details
 - Define Protocol classes for abstractions that will have multiple implementations or need to be mocked
 - Protocol methods should have `...` as the body
 - For data-holding protocols intended for dataclass implementations, use attribute annotations (e.g., `name: str`) rather than `@property` decorators
