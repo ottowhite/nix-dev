@@ -11,7 +11,7 @@ class GitHubClient(Protocol):
         ...
 
     def get_repo(self, name: str) -> Repository:
-        """Get a repository by name (e.g., 'owner/repo')."""
+        """Get a repository by name. Uses authenticated user if no owner given."""
         ...
 
     def get_authenticated_user_login(self) -> str:

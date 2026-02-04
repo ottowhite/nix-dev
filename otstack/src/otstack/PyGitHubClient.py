@@ -29,7 +29,9 @@ class PyGitHubClient(GitHubClient):
         return repos
 
     def get_repo(self, name: str) -> Repository:
-        """Get a repository by name (e.g., 'owner/repo')."""
+        """Get a repository by name. Uses authenticated user if no owner given."""
+        if "/" not in name:
+            name = f"{self.get_authenticated_user_login()}/{name}"
         repo = self._github.get_repo(name)
         return PyGitHubRepository(
             name=repo.name,
