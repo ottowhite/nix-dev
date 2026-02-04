@@ -141,7 +141,11 @@ class OtStackClient:
                 line += "|".center(col_width)
             self._output.write(line.rstrip() + "\n")
             # Print horizontal connecting line
-            # TODO: implement this
+            self._output.write(
+                self._build_horizontal_connector(col_width, len(children)) + "\n"
+            )
+            # Print vertical connector to root
+            self._output.write(self._center_text("|", width) + "\n")
             # Print root branch
             self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
 
@@ -149,6 +153,21 @@ class OtStackClient:
         """Center text within width, without trailing whitespace."""
         padding = (width - len(text)) // 2
         return " " * padding + text
+
+    def _build_horizontal_connector(self, col_width: int, num_cols: int) -> str:
+        """Build a horizontal line connecting all columns with + at junctions."""
+        # Each column's center point (matching str.center behavior)
+        # str.center(30) for a 1-char string gives (30-1)//2 = 14 spaces before
+        centers = [(col_width - 1) // 2 + i * col_width for i in range(num_cols)]
+
+        # Build the line from first center to last center
+        first_center = centers[0]
+        last_center = centers[-1]
+
+        result = " " * first_center + "+"
+        result += "-" * (last_center - first_center - 1) + "+"
+
+        return result
 
     @property
     def github(self) -> GitHubClient:

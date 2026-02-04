@@ -164,6 +164,39 @@ class TestTree:
 """
         assert output.getvalue() == expected
 
+    def test_two_independent_prs_shows_two_columns(self) -> None:
+        pr1 = _make_pr(
+            title="Add A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr2 = _make_pr(
+            title="Add B",
+            source_branch="feature-b",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr1, pr2])
+        client, output = _make_client_with_output(repos=[repo], terminal_width=60)
+
+        client.tree(repo)
+
+        # Two columns of 30 chars each
+        # feature-a centered in 30: (30-9)//2 = 10 spaces
+        # feature-b centered in 30: (30-9)//2 = 10 spaces
+        # "Add A" centered in 30: (30-7)//2 = 11 spaces
+        # "Add B" centered in 30: (30-7)//2 = 11 spaces
+        # | centered in 30: (30-1)//2 = 14 spaces
+        # Horizontal connector line with + at junction points
+        expected = """\
+          feature-a                     feature-b
+           "Add A"                       "Add B"
+              |                             |
+              +-----------------------------+
+                             |
+                            main
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
