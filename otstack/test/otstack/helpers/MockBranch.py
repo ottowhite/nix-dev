@@ -9,6 +9,7 @@ class MockBranch(Branch):
     _merge_will_conflict: bool = field(default=False)
     _pull_has_new_commits: bool = field(default=False)
     _is_local: bool = field(default=False)
+    _push_will_succeed: bool = field(default=True)
 
     def merge(self, other_branch: Branch) -> bool:
         if self._merge_will_conflict:
@@ -20,3 +21,6 @@ class MockBranch(Branch):
 
     def is_local(self) -> bool:
         return self._is_local
+
+    def push(self) -> bool:
+        return self._push_will_succeed

@@ -27,3 +27,7 @@ class Branch(Protocol):
     def is_local(self) -> bool:
         """Return True if this branch has a local filesystem checkout."""
         ...
+
+    def push(self) -> bool:
+        """Push this branch to origin. Returns True if successful, False otherwise."""
+        ...

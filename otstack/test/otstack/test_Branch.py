@@ -44,3 +44,21 @@ class TestLocalBranchIsLocal:
         result = branch.is_local()
 
         assert result is True
+
+
+class TestBranchPush:
+    def test_branch_protocol_has_push_method(self) -> None:
+        """Branch protocol defines push() method."""
+        branch: Branch = MockBranch(name="test-branch", _push_will_succeed=True)
+
+        result = branch.push()
+
+        assert result is True
+
+    def test_mock_branch_returns_configured_push_value(self) -> None:
+        """MockBranch returns the configured _push_will_succeed value."""
+        success_branch = MockBranch(name="success", _push_will_succeed=True)
+        fail_branch = MockBranch(name="fail", _push_will_succeed=False)
+
+        assert success_branch.push() is True
+        assert fail_branch.push() is False
