@@ -15,23 +15,37 @@ def main() -> None:
         help="Repository name (e.g., 'repo-name'). If not provided, detects from git remote.",
     )
 
+    sync_parser = subparsers.add_parser("sync", help="Sync all local PRs")
+    sync_parser.add_argument(
+        "--repo",
+        type=str,
+        required=False,
+        help="Repository name (e.g., 'repo-name'). If not provided, detects from git remote.",
+    )
+
     args = parser.parse_args()
 
     try:
         with OtStackClient() as client:
-            if args.command == "tree":
-                repo_name = args.repo
+            repo_name = args.repo
+            if repo_name is None:
+                repo_name = client.detect_repo_name()
                 if repo_name is None:
-                    repo_name = client.detect_repo_name()
-                    if repo_name is None:
-                        print(
-                            "Could not detect repository. Please specify --repo or run "
-                            "from within a git repository with a GitHub remote."
-                        )
-                        exit(-1)
-                    print(f"Detected repository: {repo_name}")
-                repo = client.get_repo(repo_name)
+                    print(
+                        "Could not detect repository. Please specify --repo or run "
+                        "from within a git repository with a GitHub remote."
+                    )
+                    exit(-1)
+                print(f"Detected repository: {repo_name}")
+            repo = client.get_repo(repo_name)
+
+            if args.command == "tree":
                 client.tree(repo)
+            elif args.command == "sync":
+                if client.sync(repo):
+                    print("All PRs synced successfully!")
+                else:
+                    exit(1)
     except ValueError as e:
         print(e)
         exit(-1)
