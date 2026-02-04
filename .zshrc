@@ -30,7 +30,14 @@ alias nrbs="sudo nixos-rebuild switch"
 alias getsid="ssh -t root@kangaroo2 id -u "
 alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
-alias otstack="uv --directory $NIX_HOME/otstack run main.py "
+function otstack() {
+	local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/](.+/.+?)(\.git)?$|\1|')
+	if [[ -n "$repo_name" ]]; then
+		uv --directory $NIX_HOME/otstack run main.py --repo "$repo_name" "$@"
+	else
+		uv --directory $NIX_HOME/otstack run main.py "$@"
+	fi
+}
 
 alias loadenv='export $(grep -v ^# .env | xargs)'
 
