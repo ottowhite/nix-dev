@@ -30,8 +30,5 @@ class MockRepository(Repository):
             url=f"{self.url}/pull/1",
         )
 
-    def pull(self) -> None:
-        pass
-
     def get_branches(self) -> list[Branch]:
         return self._branches

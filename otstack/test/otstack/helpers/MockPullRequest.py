@@ -14,3 +14,6 @@ class MockPullRequest(PullRequest):
 
     def change_destination(self, new_destination: Branch) -> None:
         self.destination_branch = new_destination
+
+    def get_branch(self) -> Branch:
+        return self.source_branch

@@ -15,3 +15,7 @@ class PullRequest(Protocol):
     def change_destination(self, new_destination: Branch) -> None:
         """Change the destination branch of this pull request."""
         ...
+
+    def get_branch(self) -> Branch:
+        """Get the source branch of this pull request."""
+        ...

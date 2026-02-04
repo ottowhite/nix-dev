@@ -65,12 +65,6 @@ class PyGitHubRepository(Repository):
             _gh_pr=pr,
         )
 
-    def pull(self) -> None:
-        """Pull latest changes from remote."""
-        if self._git_repo is None:
-            raise ValueError("Cannot pull without git repository reference")
-        self._git_repo.remotes.origin.pull()
-
     def get_branches(self) -> list[Branch]:
         """Get all branches in this repository."""
         if self._git_repo is None:

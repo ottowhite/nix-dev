@@ -10,7 +10,16 @@ class Branch(Protocol):
         """
         Merge other_branch into this branch.
 
-        Returns True if merge succeeded without conflicts.
-        Returns False if there were conflicts (branch left in partially merged state).
+        Returns True if merge would succeed without conflicts.
+        Returns False if there would be conflicts (no changes made to branch).
+        """
+        ...
+
+    def pull(self) -> bool:
+        """
+        Pull latest changes from remote for this branch.
+
+        Returns True if new commits were pulled.
+        Returns False if already up to date.
         """
         ...

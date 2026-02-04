@@ -23,3 +23,7 @@ class PyGitHubPullRequest(PullRequest):
             raise ValueError("Cannot change destination without GitHub PR reference")
         self._gh_pr.edit(base=new_destination.name)
         self.destination_branch = new_destination
+
+    def get_branch(self) -> Branch:
+        """Get the source branch of this pull request."""
+        return self.source_branch

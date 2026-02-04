@@ -23,10 +23,6 @@ class Repository(Protocol):
         """Create a pull request from source_branch to destination_branch."""
         ...
 
-    def pull(self) -> None:
-        """Pull latest changes from remote."""
-        ...
-
     def get_branches(self) -> list[Branch]:
         """Get all branches in this repository."""
         ...
