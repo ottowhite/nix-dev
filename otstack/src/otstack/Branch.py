@@ -23,3 +23,7 @@ class Branch(Protocol):
         Returns False if already up to date.
         """
         ...
+
+    def is_local(self) -> bool:
+        """Return True if this branch has a local filesystem checkout."""
+        ...
