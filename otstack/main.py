@@ -40,8 +40,10 @@ def main() -> None:
             repo = client.get_repo(repo_name)
 
             if args.command == "tree":
+                print(f"Repository: {repo_name}\n")
                 client.tree(repo)
             elif args.command == "sync":
+                print(f"Syncing repository: {repo_name}\n")
                 if client.sync(repo):
                     print("All PRs synced successfully!")
                 else:
