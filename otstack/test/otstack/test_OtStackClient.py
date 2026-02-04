@@ -45,6 +45,19 @@ def test_get_repo_returns_repository_by_name() -> None:
     assert result.name == "test-repo"
 
 
+class TestGetPrTree:
+    def test_returns_tree_with_no_children_when_no_prs_target_branch(self) -> None:
+        """When no PRs target the given branch, return a tree with empty children."""
+        repo = _make_repo(pull_requests=[])
+        client = _make_client(repos=[repo])
+
+        tree = client.get_pr_tree(repo, "main")
+
+        assert tree.branch_name == "main"
+        assert tree.pull_request is None
+        assert tree.children == []
+
+
 class TestTree:
     def test_no_prs_returns_empty_output(self) -> None:
         repo = _make_repo(pull_requests=[])
@@ -156,6 +169,12 @@ main
 
 
 # Test helpers
+
+
+def _make_client(repos: list[Repository]) -> OtStackClient:
+    """Create an OtStackClient with the given repos."""
+    mock_client = MockGitHubClient(repos=repos)
+    return OtStackClient(github_client=mock_client)
 
 
 def _make_client_with_output(

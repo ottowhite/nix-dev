@@ -5,6 +5,7 @@ from typing import TextIO
 from dotenv import load_dotenv
 
 from .GitHubClient import GitHubClient
+from .PRTree import PRTree
 from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
 from .Repository import Repository
@@ -59,6 +60,10 @@ class OtStackClient:
     def get_repo(self, name: str) -> Repository:
         """Get a repository by name (e.g., 'owner/repo')."""
         return self._github_client.get_repo(name)
+
+    def get_pr_tree(self, repo: Repository, branch: str) -> PRTree:
+        """Get the PR dependency tree rooted at the given branch."""
+        return PRTree(branch_name=branch, pull_request=None, children=[])
 
     def _print_tree(self, prs: list[PullRequest]) -> None:
         """Print the PR dependency tree."""
