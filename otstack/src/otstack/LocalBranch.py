@@ -49,7 +49,9 @@ class LocalBranch(Branch):
 
             # Merge succeeded, commit it (may fail if nothing to commit)
             try:
-                self._repo.git.commit("-m", f"Merge branch '{other_branch.name}'")
+                self._repo.git.commit(
+                    "-m", f"Merge (patch propagation) {other_branch.name} -> {self.name}"
+                )
             except GitCommandError as e:
                 # "nothing to commit" or "no changes added" is fine - already up to date
                 stdout = str(e.stdout).lower()
