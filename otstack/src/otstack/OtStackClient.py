@@ -115,22 +115,44 @@ class OtStackClient:
         else:
             # For multiple PRs, divide into columns
             col_width = width // len(children)
-            # Print branch names
-            line = ""
-            for child in children:
-                line += child.branch_name.center(col_width)
-            self._output.write(line.rstrip() + "\n")
-            # Print PR titles
-            line = ""
-            for child in children:
-                pr_title = f'"{child.pull_request.title}"' if child.pull_request else ""
-                line += pr_title.center(col_width)
-            self._output.write(line.rstrip() + "\n")
-            # Print connectors
-            line = ""
-            for _ in children:
-                line += "|".center(col_width)
-            self._output.write(line.rstrip() + "\n")
+
+            # Get chains for each column (from deepest to shallowest)
+            chains = [self._get_chain(child) for child in children]
+            max_depth = max(len(chain) for chain in chains)
+
+            # Print chains from top (deepest level) to bottom
+            for level in range(max_depth - 1, -1, -1):
+                # Print branch names at this level
+                line = ""
+                for chain in chains:
+                    if level < len(chain):
+                        line += chain[level].branch_name.center(col_width)
+                    else:
+                        line += "".center(col_width)
+                self._output.write(line.rstrip() + "\n")
+
+                # Print PR titles at this level
+                line = ""
+                for chain in chains:
+                    if level < len(chain):
+                        node = chain[level]
+                        pr_title = (
+                            f'"{node.pull_request.title}"' if node.pull_request else ""
+                        )
+                        line += pr_title.center(col_width)
+                    else:
+                        line += "".center(col_width)
+                self._output.write(line.rstrip() + "\n")
+
+                # Print connectors at this level
+                line = ""
+                for chain in chains:
+                    if level < len(chain):
+                        line += "|".center(col_width)
+                    else:
+                        line += "".center(col_width)
+                self._output.write(line.rstrip() + "\n")
+
             # Print horizontal connecting line
             self._output.write(
                 self._build_horizontal_connector(col_width, len(children)) + "\n"
@@ -140,21 +162,26 @@ class OtStackClient:
             # Print root branch
             self._output.write(self._center_text(pr_tree.branch_name, width) + "\n")
 
+    def _get_chain(self, node: PRTree) -> list[PRTree]:
+        """Get a list of nodes from this node up to the deepest descendant (single-child chains only)."""
+        chain = [node]
+        current = node
+        while current.children and len(current.children) == 1:
+            current = current.children[0]
+            chain.append(current)
+        return chain
+
     def _print_chain(self, node: PRTree, width: int) -> None:
         """Print a chain of PRs vertically (top-down from deepest to this node)."""
-        # First print any children (recursively)
-        if node.children:
-            # For now, only handle single child chains
-            if len(node.children) == 1:
-                self._print_chain(node.children[0], width)
+        # Get the chain and print from deepest to shallowest
+        chain = self._get_chain(node)
+        for n in reversed(chain):
+            branch_name = n.branch_name
+            pr_title = f'"{n.pull_request.title}"' if n.pull_request else ""
 
-        # Then print this node
-        branch_name = node.branch_name
-        pr_title = f'"{node.pull_request.title}"' if node.pull_request else ""
-
-        self._output.write(self._center_text(branch_name, width) + "\n")
-        self._output.write(self._center_text(pr_title, width) + "\n")
-        self._output.write(self._center_text("|", width) + "\n")
+            self._output.write(self._center_text(branch_name, width) + "\n")
+            self._output.write(self._center_text(pr_title, width) + "\n")
+            self._output.write(self._center_text("|", width) + "\n")
 
     def _center_text(self, text: str, width: int) -> str:
         """Center text within width, without trailing whitespace."""
