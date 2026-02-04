@@ -31,7 +31,7 @@ alias getsid="ssh -t root@kangaroo2 id -u "
 alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
 function otstack() {
-	local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/](.+/.+?)(\.git)?$|\1|')
+	local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/]||; s|\.git$||')
 	if [[ -n "$repo_name" ]]; then
 		uv --directory $NIX_HOME/otstack run main.py --repo "$repo_name" "$@"
 	else
