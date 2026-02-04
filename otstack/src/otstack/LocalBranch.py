@@ -56,3 +56,11 @@ class LocalBranch(Branch):
 
     def is_local(self) -> bool:
         return True
+
+    def push(self) -> bool:
+        """Push this branch to origin. Returns True if successful, False otherwise."""
+        try:
+            self._repo.git.push("origin", self.name)
+            return True
+        except GitCommandError:
+            return False

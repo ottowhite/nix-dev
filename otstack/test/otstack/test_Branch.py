@@ -73,3 +73,48 @@ class TestSimpleBranchPush:
 
         with pytest.raises(NotImplementedError):
             branch.push()
+
+
+class TestLocalBranchPush:
+    def test_push_returns_true_on_success(self, tmp_path) -> None:
+        """LocalBranch.push() returns True when push to origin succeeds."""
+        from git import Repo
+
+        # Setup: create a bare "origin" repo and a clone
+        origin_path = tmp_path / "origin.git"
+        clone_path = tmp_path / "clone"
+        origin_repo = Repo.init(origin_path, bare=True)
+
+        # Create clone with initial commit
+        clone_repo = Repo.clone_from(str(origin_path), str(clone_path))
+        (clone_path / "file.txt").write_text("content")
+        clone_repo.index.add(["file.txt"])
+        clone_repo.index.commit("Initial commit")
+        clone_repo.git.push("origin", "master")
+
+        # Create a new commit to push
+        (clone_path / "file.txt").write_text("updated content")
+        clone_repo.index.add(["file.txt"])
+        clone_repo.index.commit("Update file")
+
+        branch = LocalBranch(name="master", _repo=clone_repo)
+
+        result = branch.push()
+
+        assert result is True
+
+    def test_push_returns_false_when_no_remote(self, tmp_path) -> None:
+        """LocalBranch.push() returns False when push fails (no remote)."""
+        from git import Repo
+
+        # Setup: create a repo with no remote
+        repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        repo.index.add(["file.txt"])
+        repo.index.commit("Initial commit")
+
+        branch = LocalBranch(name="master", _repo=repo)
+
+        result = branch.push()
+
+        assert result is False
