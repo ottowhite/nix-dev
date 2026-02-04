@@ -29,6 +29,7 @@ def main() -> None:
                             "from within a git repository with a GitHub remote."
                         )
                         exit(-1)
+                    print(f"Detected repository: {repo_name}")
                 repo = client.get_repo(repo_name)
                 client.tree(repo)
     except ValueError as e:
