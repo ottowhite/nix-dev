@@ -54,8 +54,18 @@ class OtStackClient:
     def tree(self, repo: Repository) -> None:
         """Display the PR dependency tree for a repository."""
         prs = repo.get_open_pull_requests()
-        if prs:
-            self._print_tree(prs)
+        if not prs:
+            return
+
+        # Find root branches (destinations that are not source branches of any PR)
+        source_branches = {pr.source_branch.name for pr in prs}
+        dest_branches = {pr.destination_branch.name for pr in prs}
+        roots = [dest for dest in dest_branches if dest not in source_branches]
+
+        for root in roots:
+            pr_tree = self.get_pr_tree(repo, root)
+            self._output.write(f"{pr_tree.branch_name}\n")
+            self._print_pr_tree(pr_tree, "")
 
     def get_repo(self, name: str) -> Repository:
         """Get a repository by name (e.g., 'owner/repo')."""
@@ -80,46 +90,15 @@ class OtStackClient:
         ]
         return PRTree(branch_name=branch, pull_request=pull_request, children=children)
 
-    def _print_tree(self, prs: list[PullRequest]) -> None:
-        """Print the PR dependency tree."""
-        # Build a mapping of destination -> list of PRs that target it
-        children: dict[str, list[PullRequest]] = {}
-        for pr in prs:
-            dest = pr.destination_branch.name
-            if dest not in children:
-                children[dest] = []
-            children[dest].append(pr)
-
-        # Find root destinations (destinations that are not source branches of any PR)
-        source_branches = {pr.source_branch.name for pr in prs}
-        roots = [dest for dest in children if dest not in source_branches]
-
-        for root in roots:
-            self._output.write(f"{root}\n")
-            self._print_subtree(root, children, "", True)
-
-    def _print_subtree(
-        self,
-        branch: str,
-        children: dict[str, list[PullRequest]],
-        prefix: str,
-        is_last: bool,
-    ) -> None:
-        """Recursively print a subtree."""
-        if branch not in children:
-            return
-
-        branch_prs = children[branch]
-        for i, pr in enumerate(branch_prs):
-            is_last_child = i == len(branch_prs) - 1
-            connector = "└── " if is_last_child else "├── "
-            self._output.write(
-                f'{prefix}{connector}{pr.source_branch.name} (PR: "{pr.title}")\n'
-            )
-            extension = "    " if is_last_child else "│   "
-            self._print_subtree(
-                pr.source_branch.name, children, prefix + extension, is_last_child
-            )
+    def _print_pr_tree(self, pr_tree: PRTree, prefix: str) -> None:
+        """Recursively print a PRTree."""
+        for i, child in enumerate(pr_tree.children):
+            is_last = i == len(pr_tree.children) - 1
+            connector = "└── " if is_last else "├── "
+            pr_title = child.pull_request.title if child.pull_request else ""
+            self._output.write(f'{prefix}{connector}{child.branch_name} (PR: "{pr_title}")\n')
+            extension = "    " if is_last else "│   "
+            self._print_pr_tree(child, prefix + extension)
 
     @property
     def github(self) -> GitHubClient:
