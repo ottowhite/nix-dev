@@ -25,3 +25,8 @@ class SimpleBranch(Branch):
 
     def is_local(self) -> bool:
         return False
+
+    def push(self) -> bool:
+        raise NotImplementedError(
+            "SimpleBranch does not support push. Use LocalBranch for local git operations."
+        )

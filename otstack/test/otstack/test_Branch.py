@@ -1,3 +1,5 @@
+import pytest
+
 from otstack.Branch import Branch
 from otstack.LocalBranch import LocalBranch
 from otstack.SimpleBranch import SimpleBranch
@@ -62,3 +64,12 @@ class TestBranchPush:
 
         assert success_branch.push() is True
         assert fail_branch.push() is False
+
+
+class TestSimpleBranchPush:
+    def test_simple_branch_push_raises_not_implemented_error(self) -> None:
+        """SimpleBranch.push() raises NotImplementedError."""
+        branch = SimpleBranch(name="some-branch")
+
+        with pytest.raises(NotImplementedError):
+            branch.push()
