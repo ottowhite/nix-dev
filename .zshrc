@@ -166,6 +166,10 @@ nixup() {
 	)
 }
 
+nixrefresh() {
+	nix develop --refresh github:ottowhite/nix-dev --extra-experimental-features nix-command --extra-experimental-features flakes
+}
+
 drawline() {
         printf %"$(tput cols)"s | tr " " "-"
 }
