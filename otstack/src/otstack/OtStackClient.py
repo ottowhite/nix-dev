@@ -179,6 +179,7 @@ class OtStackClient:
         for n in reversed(chain):
             branch_name = self._truncate_text(n.branch_name, max_text_width)
             pr_title = f'"{n.pull_request.title}"' if n.pull_request else ""
+            pr_title = self._truncate_text(pr_title, max_text_width)
 
             self._output.write(self._center_text(branch_name, width) + "\n")
             self._output.write(self._center_text(pr_title, width) + "\n")

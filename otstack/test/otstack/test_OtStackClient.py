@@ -301,6 +301,31 @@ class TestTree:
 """
         assert output.getvalue() == expected
 
+    def test_long_pr_title_is_truncated(self) -> None:
+        """PR titles longer than column width - 2 are truncated with ..."""
+        pr = _make_pr(
+            title="This is a very long PR title that definitely exceeds the width",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr])
+        # With width=40, max text width is 38
+        client, output = _make_client_with_output(repos=[repo], terminal_width=40)
+
+        client.tree(repo)
+
+        # PR title (with quotes) should be truncated to 38 chars
+        # Title with quotes: '"This is a very long PR title that definitely exceeds the width"' (64 chars)
+        # Truncated to: '"This is a very long PR title that ...' (38 chars)
+        # centered in 40: (40 - 38) // 2 = 1 space
+        expected = """\
+               feature-a
+ "This is a very long PR title that ...
+                   |
+                  main
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
