@@ -57,6 +57,26 @@ class TestGetPrTree:
         assert tree.pull_request is None
         assert tree.children == []
 
+    def test_returns_tree_with_child_for_pr_targeting_branch(self) -> None:
+        """When a PR targets the given branch, return a tree with that PR as a child."""
+        pr = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr])
+        client = _make_client(repos=[repo])
+
+        tree = client.get_pr_tree(repo, "main")
+
+        assert tree.branch_name == "main"
+        assert tree.pull_request is None
+        assert len(tree.children) == 1
+        child = tree.children[0]
+        assert child.branch_name == "feature-a"
+        assert child.pull_request == pr
+        assert child.children == []
+
 
 class TestTree:
     def test_no_prs_returns_empty_output(self) -> None:
