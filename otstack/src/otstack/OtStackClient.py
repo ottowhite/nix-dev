@@ -115,6 +115,7 @@ class OtStackClient:
         else:
             # For multiple PRs, divide into columns
             col_width = width // len(children)
+            max_text_width = col_width - 2  # Leave 1 char margin on each side
 
             # Get chains for each column (from deepest to shallowest)
             chains = [self._get_chain(child) for child in children]
@@ -126,7 +127,10 @@ class OtStackClient:
                 line = ""
                 for chain in chains:
                     if level < len(chain):
-                        line += chain[level].branch_name.center(col_width)
+                        branch_name = self._truncate_text(
+                            chain[level].branch_name, max_text_width
+                        )
+                        line += branch_name.center(col_width)
                     else:
                         line += "".center(col_width)
                 self._output.write(line.rstrip() + "\n")
@@ -139,6 +143,7 @@ class OtStackClient:
                         pr_title = (
                             f'"{node.pull_request.title}"' if node.pull_request else ""
                         )
+                        pr_title = self._truncate_text(pr_title, max_text_width)
                         line += pr_title.center(col_width)
                     else:
                         line += "".center(col_width)

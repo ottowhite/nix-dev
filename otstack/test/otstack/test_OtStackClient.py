@@ -326,6 +326,37 @@ class TestTree:
 """
         assert output.getvalue() == expected
 
+    def test_truncation_in_multi_column_layout(self) -> None:
+        """Long branch names and titles are truncated in multi-column layout."""
+        pr1 = _make_pr(
+            title="This is a very long title for A",
+            source_branch="feature-a-with-long-name",
+            destination_branch="main",
+        )
+        pr2 = _make_pr(
+            title="Short B",
+            source_branch="feature-b",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr1, pr2])
+        # With width=50, each column is 25 chars, max text width is 23
+        client, output = _make_client_with_output(repos=[repo], terminal_width=50)
+
+        client.tree(repo)
+
+        # Column width is 25, max text width is 23 (25-2)
+        # "feature-a-with-long-name" (24 chars) -> "feature-a-with-long-..." (23 chars)
+        # '"This is a very long title for A"' (33 chars) -> '"This is a very long...' (23 chars)
+        expected = """\
+ feature-a-with-long-...         feature-b
+ "This is a very long...         "Short B"
+            |                        |
+            +------------------------+
+                        |
+                       main
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
