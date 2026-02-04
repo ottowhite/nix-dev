@@ -53,6 +53,29 @@ main
 """
         assert output.getvalue() == expected
 
+    def test_multiple_independent_prs_to_same_base(self) -> None:
+        pr1 = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr2 = _make_pr(
+            title="Add feature C",
+            source_branch="feature-c",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr1, pr2])
+        client, output = _make_client_with_output(repos=[repo])
+
+        client.tree()
+
+        expected = """\
+main
+├── feature-a (PR: "Add feature A")
+└── feature-c (PR: "Add feature C")
+"""
+        assert output.getvalue() == expected
+
 
 # Test helpers
 
