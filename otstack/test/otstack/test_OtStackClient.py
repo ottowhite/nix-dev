@@ -2,6 +2,7 @@ from io import StringIO
 
 from otstack.OtStackClient import OtStackClient
 from otstack.PullRequest import PullRequest
+from otstack.Repository import Repository
 
 from .helpers.MockBranch import MockBranch
 from .helpers.MockGitHubClient import MockGitHubClient
@@ -141,7 +142,7 @@ main
 
 
 def _make_client_with_output(
-    repos: list[MockRepository],
+    repos: list[Repository],
 ) -> tuple[OtStackClient, StringIO]:
     """Create an OtStackClient with captured stdout."""
     mock_client = MockGitHubClient(repos=repos)
