@@ -1,5 +1,6 @@
 from typing import Protocol
 
+from .Branch import Branch
 from .PullRequest import PullRequest
 
 
@@ -17,7 +18,15 @@ class Repository(Protocol):
         ...
 
     def create_pr(
-        self, source_branch: str, destination_branch: str, title: str
+        self, source_branch: Branch, destination_branch: Branch, title: str
     ) -> PullRequest:
         """Create a pull request from source_branch to destination_branch."""
+        ...
+
+    def pull(self) -> None:
+        """Pull latest changes from remote."""
+        ...
+
+    def get_branches(self) -> list[Branch]:
+        """Get all branches in this repository."""
         ...

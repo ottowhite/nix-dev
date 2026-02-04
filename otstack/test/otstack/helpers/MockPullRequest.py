@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from otstack.Branch import Branch
 from otstack.PullRequest import PullRequest
 
 
@@ -7,9 +8,9 @@ from otstack.PullRequest import PullRequest
 class MockPullRequest(PullRequest):
     title: str
     description: str | None
-    source_branch: str
-    destination_branch: str
+    source_branch: Branch
+    destination_branch: Branch
     url: str
 
-    def change_destination(self, new_destination: str) -> None:
+    def change_destination(self, new_destination: Branch) -> None:
         self.destination_branch = new_destination
