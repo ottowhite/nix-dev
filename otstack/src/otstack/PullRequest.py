@@ -23,3 +23,13 @@ class PullRequest(Protocol):
     def is_local(self) -> bool:
         """Return True if both source and destination branches are local."""
         ...
+
+    def sync(self) -> bool:
+        """
+        Sync the PR by pulling destination, merging into source, and pushing source.
+
+        Precondition: is_local() must return True.
+        Raises ValueError if is_local() returns False.
+        Returns True if sync succeeded, False if merge would conflict (no push performed).
+        """
+        ...

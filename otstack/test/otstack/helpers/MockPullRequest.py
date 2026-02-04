@@ -20,3 +20,12 @@ class MockPullRequest(PullRequest):
 
     def is_local(self) -> bool:
         return self.source_branch.is_local() and self.destination_branch.is_local()
+
+    def sync(self) -> bool:
+        if not self.is_local():
+            raise ValueError("sync() requires is_local() to return True, but it returned False")
+        self.destination_branch.pull()
+        if not self.source_branch.merge(self.destination_branch):
+            return False
+        self.source_branch.push()
+        return True
