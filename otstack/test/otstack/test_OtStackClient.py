@@ -383,6 +383,90 @@ class TestTree:
         assert output.getvalue() == expected
 
 
+class TestSync:
+    def test_sync_returns_true_when_no_prs(self) -> None:
+        """sync() returns True when there are no PRs."""
+        repo = _make_repo(pull_requests=[])
+        client, output = _make_client_with_output(repos=[repo])
+
+        result = client.sync(repo)
+
+        assert result is True
+
+    def test_sync_returns_true_when_all_local_prs_synced(self) -> None:
+        """sync() returns True when all local PRs are synced successfully."""
+        pr = _make_local_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr])
+        client, output = _make_client_with_output(repos=[repo])
+
+        result = client.sync(repo)
+
+        assert result is True
+        assert "Synced: feature-a" in output.getvalue()
+        assert "main" in output.getvalue()
+
+    def test_sync_returns_false_when_merge_conflicts(self) -> None:
+        """sync() returns False when a merge would conflict."""
+        pr = _make_local_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+            source_merge_will_conflict=True,
+        )
+        repo = _make_repo(pull_requests=[pr])
+        client, output = _make_client_with_output(repos=[repo])
+
+        result = client.sync(repo)
+
+        assert result is False
+        assert "Sync failed" in output.getvalue()
+        assert "conflicts" in output.getvalue()
+
+    def test_sync_skips_non_local_prs(self) -> None:
+        """sync() skips PRs that are not local."""
+        # Non-local PR (default MockBranch has _is_local=False)
+        pr = _make_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        repo = _make_repo(pull_requests=[pr])
+        client, output = _make_client_with_output(repos=[repo])
+
+        result = client.sync(repo)
+
+        assert result is True
+        # No sync output for non-local PR
+        assert "Synced:" not in output.getvalue()
+
+    def test_sync_processes_prs_in_topdown_order(self) -> None:
+        """sync() processes PRs from root (main) toward leaves."""
+        # PR chain: main <- feature-a <- feature-b
+        pr_a = _make_local_pr(
+            title="Add feature A",
+            source_branch="feature-a",
+            destination_branch="main",
+        )
+        pr_b = _make_local_pr(
+            title="Add feature B",
+            source_branch="feature-b",
+            destination_branch="feature-a",
+        )
+        repo = _make_repo(pull_requests=[pr_a, pr_b])
+        client, output = _make_client_with_output(repos=[repo])
+
+        result = client.sync(repo)
+
+        assert result is True
+        output_text = output.getvalue()
+        # feature-a should be synced before feature-b (topdown order)
+        assert output_text.index("feature-a") < output_text.index("feature-b")
+
+
 # Test helpers
 
 
@@ -431,5 +515,25 @@ def _make_pr(
         description=None,
         source_branch=MockBranch(name=source_branch),
         destination_branch=MockBranch(name=destination_branch),
+        url="https://github.com/test-user/test-repo/pull/1",
+    )
+
+
+def _make_local_pr(
+    title: str,
+    source_branch: str,
+    destination_branch: str,
+    source_merge_will_conflict: bool = False,
+) -> MockPullRequest:
+    """Create a MockPullRequest with local branches for sync testing."""
+    return MockPullRequest(
+        title=title,
+        description=None,
+        source_branch=MockBranch(
+            name=source_branch,
+            _is_local=True,
+            _merge_will_conflict=source_merge_will_conflict,
+        ),
+        destination_branch=MockBranch(name=destination_branch, _is_local=True),
         url="https://github.com/test-user/test-repo/pull/1",
     )

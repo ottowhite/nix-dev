@@ -231,6 +231,58 @@ class OtStackClient:
 
         return result
 
+    def sync(self, repo: Repository) -> bool:
+        """
+        Sync all local PRs by performing top-down traversal from root toward leaves.
+
+        For each PR where is_local() is True, calls sync() which:
+        - Pulls destination branch
+        - Merges destination into source
+        - Pushes source branch
+
+        Returns True if all syncs succeeded, False if any merge would conflict.
+        """
+        prs = repo.get_open_pull_requests()
+        if not prs:
+            return True
+
+        # Find root branches (destinations that are not source branches of any PR)
+        source_branches = {pr.source_branch.name for pr in prs}
+        dest_branches = {pr.destination_branch.name for pr in prs}
+        roots = [dest for dest in dest_branches if dest not in source_branches]
+
+        # Process PRs level by level (top-down from root toward leaves)
+        for root in roots:
+            pr_tree = self.get_pr_tree(repo, root)
+            if not self._sync_tree(pr_tree):
+                return False
+
+        return True
+
+    def _sync_tree(self, pr_tree: PRTree) -> bool:
+        """Recursively sync PRs in top-down order (root toward leaves)."""
+        # First, sync PRs at this level (children of current node)
+        for child in pr_tree.children:
+            if child.pull_request is not None:
+                pr = child.pull_request
+                if pr.is_local():
+                    if not pr.sync():
+                        self._output.write(
+                            f"Sync failed: Merging '{pr.destination_branch.name}' into "
+                            f"'{pr.source_branch.name}' would result in conflicts.\n"
+                            f"Please resolve conflicts manually.\n"
+                        )
+                        return False
+                    self._output.write(
+                        f"Synced: {pr.source_branch.name} <- {pr.destination_branch.name}\n"
+                    )
+
+            # Then recursively sync children (deeper in the tree)
+            if not self._sync_tree(child):
+                return False
+
+        return True
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
