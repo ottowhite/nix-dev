@@ -27,3 +27,7 @@ class PyGitHubPullRequest(PullRequest):
     def get_branch(self) -> Branch:
         """Get the source branch of this pull request."""
         return self.source_branch
+
+    def is_local(self) -> bool:
+        """Return True if both source and destination branches are local."""
+        return self.source_branch.is_local() and self.destination_branch.is_local()
