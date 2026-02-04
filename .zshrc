@@ -30,6 +30,7 @@ alias nrbs="sudo nixos-rebuild switch"
 alias getsid="ssh -t root@kangaroo2 id -u "
 alias stgcommit="python3 $NIX_HOME/stg-logged-commit.py commit"
 alias stguncommit="python3 $NIX_HOME/stg-logged-commit.py uncommit"
+alias otstack="uv --directory $NIX_HOME/otstack run main.py "
 
 alias loadenv='export $(grep -v ^# .env | xargs)'
 
