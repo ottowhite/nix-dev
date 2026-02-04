@@ -8,6 +8,7 @@ from .GitPythonBranch import GitPythonBranch
 from .PullRequest import PullRequest
 from .PyGitHubPullRequest import PyGitHubPullRequest
 from .Repository import Repository
+from .SimpleBranch import SimpleBranch
 
 
 @dataclass
@@ -24,20 +25,26 @@ class PyGitHubRepository(Repository):
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         """Get all open pull requests for this repository."""
-        if self._gh_repo is None or self._git_repo is None:
+        if self._gh_repo is None:
             return []
         prs: list[PullRequest] = []
         for pr in self._gh_repo.get_pulls(state="open"):
+            if self._git_repo is not None:
+                source_branch: Branch = GitPythonBranch(
+                    name=pr.head.ref, _repo=self._git_repo
+                )
+                dest_branch: Branch = GitPythonBranch(
+                    name=pr.base.ref, _repo=self._git_repo
+                )
+            else:
+                source_branch = SimpleBranch(name=pr.head.ref)
+                dest_branch = SimpleBranch(name=pr.base.ref)
             prs.append(
                 PyGitHubPullRequest(
                     title=pr.title,
                     description=pr.body,
-                    source_branch=GitPythonBranch(
-                        name=pr.head.ref, _repo=self._git_repo
-                    ),
-                    destination_branch=GitPythonBranch(
-                        name=pr.base.ref, _repo=self._git_repo
-                    ),
+                    source_branch=source_branch,
+                    destination_branch=dest_branch,
                     url=pr.html_url,
                     _gh_pr=pr,
                 )
