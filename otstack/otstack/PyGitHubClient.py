@@ -1,10 +1,11 @@
 from github import Github, Auth
 
+from .GitHubClient import GitHubClient
 from .Repository import Repository
 from .PyGitHubRepository import PyGitHubRepository
 
 
-class PyGitHubClient:
+class PyGitHubClient(GitHubClient):
     """Concrete implementation of GitHubClient using PyGithub."""
 
     def __init__(self, access_token: str) -> None:

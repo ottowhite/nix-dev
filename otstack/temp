@@ -1,0 +1,12 @@
+- refactor  the main method into a new class called OtStackClient. This authentication should all happen in the constructor of OtStackClient. Additionally, create a GitHubClient Protocol, and PyGitHubClient concrete implementation that wraps all of the GitHub related functionalities that can be mocked and passed into tests. This should expose a high level interface over GitHub.
+
+- Add two top-level commands to otstack, called from the cli using "main.py depend --from <BRANCH_NAME> --to <BRANCH_NAME>" or "main.py sync". These should be new methods in OtstackClient. These should be empty implementations at this point.
+
+- Also add a new method in GitHubClient called list_repos, which simply does the repo listing that we did before and make a CLI entrypoint for this called "main.py test_conn" which simply class list_repos from the GitHubClient from the OtStackClient.
+
+- Add a top-level feature to the Otstack client accessible via the CLI that pretty-prints a tree of PRs open, pointing from main, in the order that they will be merged. This should be "main.py tree".
+
+- Implement in the GitHubClient functionalities to - get all open PRs. This should return a new class which is a PullRequest
+- Implement in the OtStackClient in tree, getting all open PRs 
+
+Ask about any ambiguities before continuing

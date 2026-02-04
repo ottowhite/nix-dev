@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 
+from .Repository import Repository
+
 
 @dataclass
-class PyGitHubRepository:
+class PyGitHubRepository(Repository):
     """Concrete implementation of Repository."""
 
     name: str

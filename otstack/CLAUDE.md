@@ -10,6 +10,7 @@
 
 ### Protocols and Interfaces
 - Define Protocol classes for abstractions that will have multiple implementations or need to be mocked
-- Protocol properties should use `@property` decorator with `...` as the body
 - Protocol methods should have `...` as the body
+- For data-holding protocols intended for dataclass implementations, use attribute annotations (e.g., `name: str`) rather than `@property` decorators
 - Concrete implementations can use dataclasses for simple data-holding classes that implement protocols
+- All protocol implementations should explicitly inherit from the protocol definition for clarity (e.g., `class PyGitHubClient(GitHubClient):`)
