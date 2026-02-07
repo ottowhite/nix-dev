@@ -90,6 +90,7 @@
       nrb = "sudo nixos-rebuild ";
       nrbt = "sudo nixos-rebuild test";
       nrbs = "sudo nixos-rebuild switch";
+      hms = "home-manager switch --flake $NIX_HOME --extra-experimental-features 'nix-command flakes'";
       getsid = "ssh -t root@kangaroo2 id -u ";
       stgcommit = "python3 $NIX_HOME/stg-logged-commit.py commit";
       stguncommit = "python3 $NIX_HOME/stg-logged-commit.py uncommit";
