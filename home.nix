@@ -395,6 +395,8 @@
       -- Keybindings
       vim.keymap.set("n", "<leader>h", "gT")
       vim.keymap.set("n", "<leader>l", "gt")
+      vim.keymap.set("n", "<C-j>", "gT")
+      vim.keymap.set("n", "<C-l>", "gt")
       vim.keymap.set("n", "<C-p>", vim.lsp.buf.definition)
       vim.keymap.set("n", "<C-S-p>", vim.lsp.buf.references)
       vim.keymap.set("n", "<C-f>", "<cmd>Telescope find_files<CR>")
