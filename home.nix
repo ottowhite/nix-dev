@@ -63,6 +63,7 @@
       KEA04_TAILSCALE_IP = "100.67.99.38";
       VI_MODE_SET_CURSOR = "true";
       KEYTIMEOUT = "20";
+      PATH = "$PATH:${homeDirectory}/.local/bin";
     };
 
     shellAliases = {
@@ -277,6 +278,9 @@
     enable = true;
     prefix = "C-a";
     extraConfig = ''
+      # Send prefix to nested tmux
+      bind-key C-a send-prefix
+
       # Vim keybindings for window navigation
       bind h select-pane -L
       bind j select-pane -D
