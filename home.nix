@@ -357,6 +357,8 @@
       plenary-nvim
       tokyonight-nvim
       (nvim-treesitter.withPlugins (p: [ p.python ]))
+      nvim-cmp
+      cmp-nvim-lsp
     ];
 
     initLua = ''
@@ -389,6 +391,19 @@
         signs = true,
         underline = true,
         update_in_insert = true,
+      })
+
+      -- Completion setup
+      local cmp = require('cmp')
+      cmp.setup({
+        sources = {
+          { name = 'nvim_lsp' },
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        }),
       })
 
       -- Telescope setup with custom keybindings
