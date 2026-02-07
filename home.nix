@@ -357,14 +357,6 @@
       plenary-nvim
       tokyonight-nvim
       (nvim-treesitter.withPlugins (p: [ p.python ]))
-
-      # Completion
-      nvim-cmp
-      cmp-nvim-lsp
-      cmp-buffer
-      cmp-path
-      luasnip
-      cmp_luasnip
     ];
 
     initLua = ''
@@ -385,66 +377,18 @@
       })
 
       -- LSP: ty (Python type checker)
-      local lspconfig = require('lspconfig')
-      local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-      -- Configure ty LSP with cmp capabilities
-      lspconfig.ty.setup({
+      vim.lsp.config('ty', {
         cmd = { 'ty', 'server' },
         filetypes = { 'python' },
-        root_dir = lspconfig.util.root_pattern('pyproject.toml', 'ty.toml', '.git'),
-        capabilities = lsp_capabilities,
+        root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
       })
+      vim.lsp.enable('ty')
 
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
         underline = true,
         update_in_insert = true,
-      })
-
-      -- Completion setup
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'buffer' },
-          { name = 'path' },
-        }),
       })
 
       -- Telescope setup with custom keybindings
