@@ -420,7 +420,7 @@
       vim.keymap.set("n", "<C-j>", "gT")
       vim.keymap.set("n", "<C-l>", "gt")
       vim.keymap.set("n", "<C-p>", "<cmd>Telescope lsp_definitions<CR>")
-      vim.keymap.set("n", "<leader>r", "<cmd>Telescope lsp_references<CR>")
+      vim.keymap.set("n", "<C-S-p>", "<cmd>Telescope lsp_references<CR>")
       vim.keymap.set("n", "<C-f>", "<cmd>Telescope find_files<CR>")
       vim.keymap.set("n", "<C-d>", "<cmd>Telescope live_grep<CR>")
     '';
