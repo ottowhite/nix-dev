@@ -31,7 +31,7 @@
   # Zsh configuration
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
 
     oh-my-zsh = {
       enable = true;
@@ -99,7 +99,7 @@
       "??" = "noglob _ask_gpt";
     };
 
-    initExtra = ''
+    initContent = ''
       # Vim mode
       bindkey -v
       bindkey -M viins 'ii' vi-cmd-mode
@@ -304,7 +304,7 @@
       nvim-lspconfig
     ];
 
-    extraLuaConfig = ''
+    initLua = ''
       vim.g.mapleader = " "
       vim.opt.number = true
       vim.opt.relativenumber = true
