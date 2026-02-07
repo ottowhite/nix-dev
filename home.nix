@@ -355,6 +355,7 @@
       nvim-lspconfig
       telescope-nvim
       plenary-nvim
+      (nvim-treesitter.withPlugins (p: [ p.python ]))
     ];
 
     initLua = ''
@@ -376,6 +377,11 @@
         signs = true,
         underline = true,
         update_in_insert = true,
+      })
+
+      -- Treesitter for syntax highlighting
+      require('nvim-treesitter.configs').setup({
+        highlight = { enable = true },
       })
 
       -- Telescope setup with custom keybindings
