@@ -27,6 +27,7 @@
     jq
     uv
     ty
+    pyright
     ripgrep
   ];
 
@@ -375,6 +376,14 @@
           vim.treesitter.start()
         end,
       })
+
+      -- LSP: pyright (full Python LSP with references support)
+      vim.lsp.config('pyright', {
+        cmd = { 'pyright-langserver', '--stdio' },
+        filetypes = { 'python' },
+        root_markers = { 'pyproject.toml', 'pyrightconfig.json', '.git' },
+      })
+      vim.lsp.enable('pyright')
 
       -- LSP: ty (Python type checker)
       vim.lsp.config('ty', {
