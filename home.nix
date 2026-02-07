@@ -69,6 +69,7 @@
     shellAliases = {
       # Configuration aliases
       cff = "configure_file flake.nix";
+      cfhome = "configure_file home.nix";
       cfz = "configure_file .zshrc && source $NIX_HOME/.zshrc";
       cfzenv = "configure_file .zshenv && source $NIX_HOME/.zshenv";
       cfn = "configure_file init.vim";
