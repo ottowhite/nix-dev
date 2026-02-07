@@ -379,11 +379,6 @@
         update_in_insert = true,
       })
 
-      -- Treesitter for syntax highlighting
-      require('nvim-treesitter.configs').setup({
-        highlight = { enable = true },
-      })
-
       -- Telescope setup with custom keybindings
       local actions = require('telescope.actions')
       require('telescope').setup({
