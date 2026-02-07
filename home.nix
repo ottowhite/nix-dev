@@ -26,6 +26,7 @@
     nodejs_24
     jq
     uv
+    ty
   ];
 
   # Zsh configuration
@@ -362,12 +363,18 @@
       vim.opt.clipboard:append("unnamedplus")
 
       -- LSP: ty (Python type checker)
+      vim.lsp.enable('ty')
       vim.lsp.config('ty', {
         cmd = { 'ty', 'server' },
         filetypes = { 'python' },
         root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
       })
-      vim.lsp.enable('ty')
+      vim.diagnostic.config({
+        virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = true,
+      })
     '';
   };
 
