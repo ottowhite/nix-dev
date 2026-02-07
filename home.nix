@@ -355,6 +355,7 @@
       nvim-lspconfig
       telescope-nvim
       plenary-nvim
+      tokyonight-nvim
       (nvim-treesitter.withPlugins (p: [ p.python ]))
     ];
 
@@ -363,6 +364,17 @@
       vim.opt.number = true
       vim.opt.relativenumber = true
       vim.opt.clipboard:append("unnamedplus")
+
+      -- Colorscheme with treesitter support
+      vim.cmd.colorscheme("tokyonight")
+
+      -- Enable treesitter highlighting for all buffers
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "python",
+        callback = function()
+          vim.treesitter.start()
+        end,
+      })
 
       -- LSP: ty (Python type checker)
       vim.lsp.config('ty', {
