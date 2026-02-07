@@ -270,6 +270,45 @@
         echo "Stopping avahi-daemon"
         sudo systemctl stop avahi-daemon.service avahi-daemon.socket
       }
+
+      nixsetup() {
+        echo ""
+        echo "=========================================="
+        echo "  Nix + Home Manager Setup Instructions"
+        echo "=========================================="
+        echo ""
+        echo "Step 1: Install Nix (multi-user)"
+        echo "--------------------------------"
+        echo ""
+        echo "  sh <(curl -L https://nixos.org/nix/install) --daemon"
+        echo ""
+        echo "  Then log out and back in, or run:"
+        echo ""
+        echo "  . /etc/profile"
+        echo ""
+        echo "Step 2: Apply Home Manager configuration"
+        echo "-----------------------------------------"
+        echo ""
+        echo "  nix run home-manager/master -- switch \\"
+        echo "    --flake github:ottowhite/nix-dev#USERNAME@MACHINE \\"
+        echo "    -b backup \\"
+        echo "    --extra-experimental-features 'nix-command flakes'"
+        echo ""
+        echo "  Replace USERNAME@MACHINE with your config, e.g.:"
+        echo "    ow20@nixos   - NixOS desktop"
+        echo "    ow20@server  - Generic Linux server"
+        echo ""
+        echo "That's it! Your shell, neovim, tmux, and tools are now configured."
+        echo ""
+        echo "=========================================="
+        echo "  Updating an existing installation"
+        echo "=========================================="
+        echo ""
+        echo "  home-manager switch \\"
+        echo "    --flake github:ottowhite/nix-dev#USERNAME@MACHINE \\"
+        echo "    --extra-experimental-features 'nix-command flakes'"
+        echo ""
+      }
     '';
   };
 
