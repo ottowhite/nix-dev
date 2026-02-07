@@ -360,10 +360,13 @@
       nvim-cmp
       cmp-nvim-lsp
       nvim-tree-lua
+      copilot-vim
     ];
 
     initLua = ''
       vim.g.mapleader = " "
+      vim.g.copilot_no_tab_map = true
+      vim.keymap.set('i', '<C-y>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false })
       vim.opt.number = true
       vim.opt.relativenumber = true
       vim.opt.clipboard:append("unnamedplus")
