@@ -362,7 +362,7 @@
       vim.opt.number = true
       vim.opt.relativenumber = true
       vim.opt.clipboard:append("unnamedplus")
-    
+
       -- LSP: ty (Python type checker)
       vim.lsp.config('ty', {
         cmd = { 'ty', 'server' },
@@ -370,14 +370,28 @@
         root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
       })
       vim.lsp.enable('ty')
-    
+
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
         underline = true,
         update_in_insert = true,
       })
-    
+
+      -- Telescope setup with custom keybindings
+      local actions = require('telescope.actions')
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            i = {
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<CR>"] = actions.select_tab,
+            },
+          },
+        },
+      })
+
       -- Keybindings
       vim.keymap.set("n", "<leader>h", "gT")
       vim.keymap.set("n", "<leader>l", "gt")
