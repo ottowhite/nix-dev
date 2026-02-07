@@ -361,7 +361,12 @@
       vim.keymap.set("n", "<leader>l", "gt")
       vim.opt.clipboard:append("unnamedplus")
 
-      -- Extensions
+      -- LSP: ty (Python type checker)
+      vim.lsp.config('ty', {
+        cmd = { 'ty', 'server' },
+        filetypes = { 'python' },
+        root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
+      })
       vim.lsp.enable('ty')
     '';
   };
