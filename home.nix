@@ -359,6 +359,7 @@
       (nvim-treesitter.withPlugins (p: [ p.python ]))
       nvim-cmp
       cmp-nvim-lsp
+      nvim-tree-lua
     ];
 
     initLua = ''
@@ -405,6 +406,10 @@
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
         }),
       })
+
+      -- File explorer
+      require('nvim-tree').setup()
+      vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<CR>')
 
       -- Telescope setup with custom keybindings
       local actions = require('telescope.actions')
