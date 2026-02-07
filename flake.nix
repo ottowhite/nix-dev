@@ -23,7 +23,7 @@
             cp .zshrc $out
             cp .zshenv $out
             cp .tmux.conf $out
-            cp init.vim $out
+            cp init.lua $out
             cp CLAUDE.md $out
           '';
         };
@@ -166,7 +166,7 @@
             copy_and_own .tmux.conf ${nix-dev-deps}     ~
             copy_and_own .zshrc     ${nix-dev-deps}     ~/.config/zsh
             copy_and_own .oh-my-zsh ${oh-my-zsh-custom} ~/.config/zsh
-            copy_and_own init.vim   ${nix-dev-deps}     ~/.config/nvim
+            copy_and_own init.lua   ${nix-dev-deps}     ~/.config/nvim
 
             export SHELL=${pkgs.zsh}/bin/zsh
             # NOTE: Fixes rendering issues on macOS for some reason: https://github.com/NixOS/nixpkgs/issues/376958
