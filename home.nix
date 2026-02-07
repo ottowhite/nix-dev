@@ -52,7 +52,7 @@
 
     sessionVariables = {
       XDG_CONFIG_HOME = "${homeDirectory}/.config";
-      XDG_DATA_HOME = "${homeDirectory}/.config/local/share";
+      XDG_DATA_HOME = "${homeDirectory}/.local/share";
       XDG_CACHE_HOME = "${homeDirectory}/.config/cache";
       SCM = "${homeDirectory}/.config/scm";
       PCF = "${homeDirectory}/.config/scm/personal-config-files";
@@ -362,9 +362,6 @@
       vim.opt.number = true
       vim.opt.relativenumber = true
       vim.opt.clipboard:append("unnamedplus")
-    
-      -- Telescope
-      require("telescope").setup()
     
       -- LSP: ty (Python type checker)
       vim.lsp.config('ty', {
