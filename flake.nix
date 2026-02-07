@@ -26,10 +26,10 @@
       # Home Manager configurations for different machines/users
       homeConfigurations = {
         # NixOS desktop
-        "ow20@nixos" = mkHomeConfiguration {
+        "otto@nixos" = mkHomeConfiguration {
           system = "x86_64-linux";
-          username = "ow20";
-          homeDirectory = "/home/ow20";
+          username = "otto";
+          homeDirectory = "/home/otto";
         };
 
         # Generic Linux server (add more as needed)
