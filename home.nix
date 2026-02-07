@@ -27,6 +27,7 @@
     jq
     uv
     ty
+    ripgrep
   ];
 
   # Zsh configuration
@@ -352,29 +353,41 @@
 
     plugins = with pkgs.vimPlugins; [
       nvim-lspconfig
+      telescope-nvim
+      plenary-nvim
     ];
 
     initLua = ''
       vim.g.mapleader = " "
       vim.opt.number = true
       vim.opt.relativenumber = true
-      vim.keymap.set("n", "<leader>h", "gT")
-      vim.keymap.set("n", "<leader>l", "gt")
       vim.opt.clipboard:append("unnamedplus")
-
+    
+      -- Telescope
+      require("telescope").setup()
+    
       -- LSP: ty (Python type checker)
-      vim.lsp.enable('ty')
       vim.lsp.config('ty', {
         cmd = { 'ty', 'server' },
         filetypes = { 'python' },
         root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
       })
+      vim.lsp.enable('ty')
+    
       vim.diagnostic.config({
         virtual_text = true,
-	signs = true,
-	underline = true,
-	update_in_insert = true,
+        signs = true,
+        underline = true,
+        update_in_insert = true,
       })
+    
+      -- Keybindings
+      vim.keymap.set("n", "<leader>h", "gT")
+      vim.keymap.set("n", "<leader>l", "gt")
+      vim.keymap.set("n", "<C-p>", vim.lsp.buf.definition)
+      vim.keymap.set("n", "<C-S-p>", vim.lsp.buf.references)
+      vim.keymap.set("n", "<C-f>", "<cmd>Telescope find_files<CR>")
+      vim.keymap.set("n", "<C-d>", "<cmd>Telescope live_grep<CR>")
     '';
   };
 
