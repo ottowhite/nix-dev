@@ -134,7 +134,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
     git
     wget
     zsh
@@ -143,6 +142,18 @@
     tailscale
     libreoffice-qt
   ];
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    configure = {
+      packages.myPlugins = with pkgs.vimPlugins; {
+        start = [
+          nvim-lspconfig
+        ];
+      };
+    };
+  };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
