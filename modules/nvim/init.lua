@@ -6,8 +6,7 @@ vim.opt.relativenumber = true
 vim.opt.clipboard:append("unnamedplus")
 
 -- Colorscheme
-require('onedark').setup({ style = 'dark' })
-require('onedark').load()
+vim.cmd.colorscheme("carbonfox")
 
 -- Enable treesitter highlighting for all buffers
 vim.api.nvim_create_autocmd("FileType", {
