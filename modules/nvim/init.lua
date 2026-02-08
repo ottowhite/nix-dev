@@ -5,8 +5,9 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.clipboard:append("unnamedplus")
 
--- Colorscheme with treesitter support
-vim.cmd.colorscheme("tokyonight")
+-- Colorscheme
+require('onedark').setup({ style = 'dark' })
+require('onedark').load()
 
 -- Enable treesitter highlighting for all buffers
 vim.api.nvim_create_autocmd("FileType", {

@@ -9,7 +9,7 @@
       nvim-lspconfig
       telescope-nvim
       plenary-nvim
-      tokyonight-nvim
+      onedark-nvim
       (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua ]))
       nvim-cmp
       cmp-nvim-lsp
