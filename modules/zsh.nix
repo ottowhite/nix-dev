@@ -24,12 +24,9 @@
       XDG_CONFIG_HOME = "${homeDirectory}/.config";
       XDG_DATA_HOME = "${homeDirectory}/.local/share";
       XDG_CACHE_HOME = "${homeDirectory}/.config/cache";
-      SCM = "${homeDirectory}/.config/scm";
-      PCF = "${homeDirectory}/.config/scm/personal-config-files";
       NIX_HOME = "${homeDirectory}/nix-dev";
       EDITOR = "nvim";
       VISUAL = "nvim";
-      TRASH = "${homeDirectory}/.local/share/Trash/files";
       BABY_SERVER_TAILSCALE_IP = "100.67.151.15";
       STRAWBERRY_SHORTCAKE_TAILSCALE_IP = "100.115.111.12";
       KEA04_TAILSCALE_IP = "100.67.99.38";
@@ -41,9 +38,7 @@
     shellAliases = {
       cff = "configure_file flake.nix";
       cfhome = "configure_file home.nix";
-      ctl = "ssh ow20@shell4.doc.ic.ac.uk";
       getsid = "ssh -t root@kangaroo2 id -u ";
-      clipboard = "xclip -selection c";
       sx = "startx";
       ka = "killall";
       svm = "sudo systemctl start libvirtd && sudo virsh net-start default";
@@ -52,7 +47,6 @@
       nrb = "sudo nixos-rebuild ";
       nrbt = "sudo nixos-rebuild test";
       nrbs = "sudo nixos-rebuild switch";
-      loadenv = "export $(grep -v ^# .env | xargs)";
       tailhome = "sudo tailscale set --exit-node=";
       tailbaby = "sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP";
       tailberry = "sudo tailscale set --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP";
@@ -199,10 +193,6 @@
 
       gfza() {
         git add $(git diff --name-only | fzf)
-      }
-
-      gsfe() {
-        git submodule foreach $@
       }
 
       nixsetup() {
