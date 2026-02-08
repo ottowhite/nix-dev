@@ -85,8 +85,6 @@
       -- Keybindings
       vim.keymap.set("n", "<leader>h", "gT")
       vim.keymap.set("n", "<leader>l", "gt")
-      vim.keymap.set("n", "<C-j>", "gT")
-      vim.keymap.set("n", "<C-l>", "gt")
       vim.keymap.set("n", "<C-p>", "<cmd>Telescope lsp_definitions<CR>")
       vim.keymap.set("n", "<C-S-p>", "<cmd>Telescope lsp_references<CR>")
       vim.keymap.set("n", "<C-f>", "<cmd>Telescope find_files<CR>")
