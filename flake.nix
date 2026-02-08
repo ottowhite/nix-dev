@@ -23,35 +23,25 @@
         };
     in
     {
-      # Home Manager configurations for different machines/users
       homeConfigurations = {
-        # NixOS desktop
+        "ottowhite@Ottos-MacBook-Pro.local" = mkHomeConfiguration {
+          system = "aarch64-darwin";
+          username = "ottowhite";
+          homeDirectory = "/Users/ottowhite";
+        };
+
         "otto@nixos" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "otto";
           homeDirectory = "/home/otto";
         };
 
-        # Generic Linux server (add more as needed)
+        # Generic Linux server
         "ow20@server" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "ow20";
           homeDirectory = "/home/ow20";
         };
-
-        # Example: different user on a server
-        # "otto@production" = mkHomeConfiguration {
-        #   system = "x86_64-linux";
-        #   username = "otto";
-        #   homeDirectory = "/home/otto";
-        # };
-
-        # Example: macOS
-        # "otto@macbook" = mkHomeConfiguration {
-        #   system = "aarch64-darwin";
-        #   username = "otto";
-        #   homeDirectory = "/Users/otto";
-        # };
       };
 
       # Keep the dev shell for backwards compatibility during transition
