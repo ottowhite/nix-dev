@@ -314,7 +314,16 @@
       }
 
       hms() {
-        local config="''${1:-$(whoami)@$(hostname)}"
+        local config="$1"
+        if [[ -z "$config" ]]; then
+          local user=$(whoami)
+          local host=$(hostname)
+          if [[ "$user" == "ow20" && "$HOME" == "/home/ow20" ]]; then
+            config="ow20@server"
+          else
+            config="$user@$host"
+          fi
+        fi
         home-manager switch --flake "$NIX_HOME#$config" --extra-experimental-features 'nix-command flakes'
       }
     '';
