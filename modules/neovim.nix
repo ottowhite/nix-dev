@@ -10,7 +10,7 @@
       telescope-nvim
       plenary-nvim
       tokyonight-nvim
-      (nvim-treesitter.withPlugins (p: [ p.python p.nix ]))
+      (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua ]))
       nvim-cmp
       cmp-nvim-lsp
       nvim-tree-lua

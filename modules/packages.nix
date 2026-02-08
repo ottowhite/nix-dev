@@ -21,5 +21,6 @@
     ty
     ripgrep
     nil
+    lua-language-server
   ];
 }
