@@ -17,6 +17,6 @@
       copilot-vim
     ];
 
-    extraLuaConfig = builtins.readFile ./nvim/init.lua;
+    initLua = builtins.readFile ./nvim/init.lua;
   };
 }
