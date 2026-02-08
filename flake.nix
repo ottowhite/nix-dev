@@ -66,6 +66,7 @@
               echo "Or for a different machine:"
               echo "  home-manager switch --flake .#ow20@server"
 
+	      export SHELL=$(which zsh)
 	      exec zsh
             '';
           };
