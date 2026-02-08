@@ -39,20 +39,10 @@
     };
 
     shellAliases = {
-      # Configuration aliases
       cff = "configure_file flake.nix";
       cfhome = "configure_file home.nix";
-      cfz = "configure_file .zshrc && source $NIX_HOME/.zshrc";
-      cfzenv = "configure_file .zshenv && source $NIX_HOME/.zshenv";
-      cfn = "configure_file init.vim";
-      cfi = "$EDITOR ~/.config/i3/config";
-      cfa = "$EDITOR ~/.config/alacritty/alacritty.yml";
-      cfx = "$EDITOR ~/.config/X/.xinitrc";
-      cfnix = "sudo $EDITOR /etc/nixos/configuration.nix";
-
-      # Useful aliases
-      idea = "~/Applications/idea-IC-231.9011.34/bin/idea.sh";
       ctl = "ssh ow20@shell4.doc.ic.ac.uk";
+      getsid = "ssh -t root@kangaroo2 id -u ";
       clipboard = "xclip -selection c";
       sx = "startx";
       ka = "killall";
@@ -62,9 +52,6 @@
       nrb = "sudo nixos-rebuild ";
       nrbt = "sudo nixos-rebuild test";
       nrbs = "sudo nixos-rebuild switch";
-      getsid = "ssh -t root@kangaroo2 id -u ";
-      stgcommit = "python3 $NIX_HOME/stg-logged-commit.py commit";
-      stguncommit = "python3 $NIX_HOME/stg-logged-commit.py uncommit";
       loadenv = "export $(grep -v ^# .env | xargs)";
       tailhome = "sudo tailscale set --exit-node=";
       tailbaby = "sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP";
@@ -169,12 +156,6 @@
         networksetup -setsecurewebproxystate Wi-Fi off
       }
 
-      function oversight() {
-        tunnel 3333 3000 komodo01
-        ssh -t komodo01 "cd code/oversight && ./start_oversight.sh up"
-        open "http://localhost:3333"
-      }
-
       space() {
         sudo du -sh * -t 1G | sort -nr
         drawline
@@ -222,26 +203,6 @@
 
       gsfe() {
         git submodule foreach $@
-      }
-
-      bins() {
-        pacman -Ql $1 | grep bin
-      }
-
-      wp() {
-        sudo pacman -Fy && pacman -F $1
-      }
-
-      backup() {
-        sudo rsync -aAXvv --info=progress2 --delete --exclude /dev/ --exclude /proc/ --exclude /sys/ --exclude /tmp/ --exclude /mnt/ --exclude /usr/tmp/ --exclude /run/ --exclude /media/ --exclude /var/cache/ --exclude /lost+found/ --exclude /home/otto/Downloads/ --exclude /home/otto/.cache/ / $1
-      }
-
-      startsc() {
-        echo "Starting avahi-daemon"
-        sudo systemctl start avahi-daemon
-        uxplay
-        echo "Stopping avahi-daemon"
-        sudo systemctl stop avahi-daemon.service avahi-daemon.socket
       }
 
       nixsetup() {
