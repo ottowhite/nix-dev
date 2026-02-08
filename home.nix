@@ -324,7 +324,8 @@
             config="$user@$host"
           fi
         fi
-        home-manager switch --flake "$NIX_HOME#$config" --extra-experimental-features 'nix-command flakes'
+        home-manager switch --flake "$NIX_HOME#$config" --extra-experimental-features 'nix-command flakes' \
+          && exec zsh
       }
     '';
   };
