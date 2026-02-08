@@ -10,7 +10,7 @@
       telescope-nvim
       plenary-nvim
       tokyonight-nvim
-      (nvim-treesitter.withPlugins (p: [ p.python ]))
+      (nvim-treesitter.withPlugins (p: [ p.python p.nix ]))
       nvim-cmp
       cmp-nvim-lsp
       nvim-tree-lua
@@ -43,6 +43,14 @@
         root_markers = { 'pyproject.toml', 'ty.toml', '.git' },
       })
       vim.lsp.enable('ty')
+
+      -- LSP: nil (Nix)
+      vim.lsp.config('nil_ls', {
+        cmd = { 'nil' },
+        filetypes = { 'nix' },
+        root_markers = { 'flake.nix', '.git' },
+      })
+      vim.lsp.enable('nil_ls')
 
       vim.diagnostic.config({
         virtual_text = true,

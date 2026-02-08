@@ -20,5 +20,6 @@
     uv
     ty
     ripgrep
+    nil
   ];
 }
