@@ -21,18 +21,12 @@
     };
 
     sessionVariables = {
-      XDG_CONFIG_HOME = "${homeDirectory}/.config";
-      XDG_DATA_HOME = "${homeDirectory}/.local/share";
-      XDG_CACHE_HOME = "${homeDirectory}/.config/cache";
       NIX_HOME = "${homeDirectory}/nix-dev";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
       BABY_SERVER_TAILSCALE_IP = "100.67.151.15";
       STRAWBERRY_SHORTCAKE_TAILSCALE_IP = "100.115.111.12";
       KEA04_TAILSCALE_IP = "100.67.99.38";
       VI_MODE_SET_CURSOR = "true";
       KEYTIMEOUT = "20";
-      PATH = "$PATH:${homeDirectory}/.local/bin";
     };
 
     shellAliases = {
@@ -61,9 +55,6 @@
 
       # Do ls when change directory
       chpwd() ls
-
-      # Enable direnv
-      eval "$(direnv hook zsh)"
 
       # Custom functions
       function otstack() {

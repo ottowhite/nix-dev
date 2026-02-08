@@ -13,6 +13,9 @@
   home.username = username;
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.05";
+  home.sessionPath = [ "${homeDirectory}/.local/bin" ];
+
+  xdg.enable = true;
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
