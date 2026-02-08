@@ -10,6 +10,14 @@
       telescope-nvim
       plenary-nvim
       onedark-nvim
+      tokyonight-nvim
+      catppuccin-nvim
+      gruvbox-nvim
+      rose-pine
+      kanagawa-nvim
+      nightfox-nvim
+      dracula-nvim
+      nord-nvim
       (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua ]))
       nvim-cmp
       cmp-nvim-lsp
