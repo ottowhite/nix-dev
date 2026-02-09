@@ -35,6 +35,63 @@ def main() -> None:
         help="Path to local git repository. If not provided, uses current directory.",
     )
 
+    below_parser = subparsers.add_parser(
+        "below", help="Insert a new PR below the current PR in the stack"
+    )
+    below_parser.add_argument(
+        "--branch",
+        "-b",
+        type=str,
+        required=True,
+        help="Name for the new branch to create",
+    )
+    below_parser.add_argument(
+        "--title",
+        "-t",
+        type=str,
+        required=True,
+        help="Title for the new PR",
+    )
+    below_parser.add_argument(
+        "--worktree",
+        "-w",
+        type=str,
+        required=True,
+        help="Path where the new worktree will be created",
+    )
+    below_parser.add_argument(
+        "--repo",
+        "-r",
+        type=str,
+        required=False,
+        help="Repository name (owner/repo). Auto-detected from git remote if omitted.",
+    )
+    below_parser.add_argument(
+        "--path",
+        "-p",
+        type=str,
+        required=False,
+        help="Path to local git repository. Defaults to current directory.",
+    )
+    below_parser.add_argument(
+        "--direnv",
+        action="store_true",
+        help="Run 'direnv allow' in the new worktree after creation",
+    )
+    below_parser.add_argument(
+        "--copy",
+        "-c",
+        action="append",
+        dest="copy_files",
+        help="Copy a file from current worktree to new worktree (can be specified multiple times)",
+    )
+    below_parser.add_argument(
+        "--dry-run",
+        "-n",
+        action="store_true",
+        help="Show what would happen without making any changes",
+    )
+
     args = parser.parse_args()
 
     try:
@@ -61,6 +118,20 @@ def main() -> None:
                     print("All PRs synced successfully!")
                 else:
                     exit(1)
+            elif args.command == "below":
+                result = client.below(
+                    repo=repo,
+                    new_branch_name=args.branch,
+                    pr_title=args.title,
+                    worktree_path=args.worktree,
+                    copy_files=args.copy_files,
+                    run_direnv=args.direnv,
+                    dry_run=args.dry_run,
+                )
+                print(f"\nSuccessfully inserted '{args.branch}' below your current PR!")
+                print(f"\nNew PR: {result.new_pr.url}")
+                print(f"Original PR (retargeted): {result.original_pr.url}")
+                print(f"Worktree: {result.worktree_path}")
     except ValueError as e:
         print(e)
         exit(-1)

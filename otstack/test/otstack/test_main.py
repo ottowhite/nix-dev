@@ -49,6 +49,43 @@ class TestSyncCommand:
             assert "All PRs synced successfully!" in output
 
 
+class TestBelowCommand:
+    def test_below_command_prints_summary(self, tmp_path) -> None:
+        """below command prints summary with PR URLs and worktree path."""
+        repo = _make_repo_with_pr()
+        mock_client = MockGitHubClient(repos=[repo])
+        mock_detector = MockGitRepoDetector(repo_name=None)
+        worktree_path = str(tmp_path / "new-worktree")
+
+        with (
+            patch.object(
+                sys,
+                "argv",
+                [
+                    "otstack",
+                    "below",
+                    "-b",
+                    "prep-work",
+                    "-t",
+                    "Preparatory refactor",
+                    "-w",
+                    worktree_path,
+                    "--repo",
+                    "test-user/test-repo",
+                ],
+            ),
+            patch(
+                "main.OtStackClient",
+                return_value=_make_mock_client_context(mock_client, mock_detector),
+            ),
+            patch.object(sys, "stdout", new_callable=StringIO) as mock_stdout,
+        ):
+            main()
+            output = mock_stdout.getvalue()
+            assert "prep-work" in output
+            assert worktree_path in output
+
+
 # Test helpers
 
 
@@ -68,6 +105,26 @@ def _make_repo_with_local_pr() -> MockRepository:
         private=False,
         url="https://github.com/test-user/test-repo",
         _pull_requests=[pr],
+    )
+
+
+def _make_repo_with_pr() -> MockRepository:
+    """Create a repo with a PR for testing below command."""
+    pr = MockPullRequest(
+        title="Add feature",
+        description=None,
+        source_branch=MockBranch(name="feature"),
+        destination_branch=MockBranch(name="main"),
+        url="https://github.com/test-user/test-repo/pull/1",
+    )
+    return MockRepository(
+        name="test-repo",
+        full_name="test-user/test-repo",
+        description="Test repository",
+        private=False,
+        url="https://github.com/test-user/test-repo",
+        _pull_requests=[pr],
+        _current_branch=MockBranch(name="feature"),
     )
 
 
