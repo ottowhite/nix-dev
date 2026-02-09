@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, otstack-pkg, ... }:
 
 {
   home.packages = with pkgs; [
@@ -22,5 +22,6 @@
     ripgrep
     nil
     lua-language-server
+    otstack-pkg
   ];
 }

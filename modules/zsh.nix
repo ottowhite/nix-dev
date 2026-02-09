@@ -57,13 +57,13 @@
       chpwd() ls
 
       # Custom functions
-      function otstack() {
+      function ots() {
         local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/]||; s|\.git$||')
         local repo_path=$(pwd)
         if [[ -n "$repo_name" ]]; then
-          uv --directory $NIX_HOME/otstack run main.py "$1" --repo "$repo_name" --path "$repo_path" "''${@:2}"
+          otstack "$1" --repo "$repo_name" --path "$repo_path" "''${@:2}"
         else
-          uv --directory $NIX_HOME/otstack run main.py "$@"
+          otstack "$@"
         fi
       }
 

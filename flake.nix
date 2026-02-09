@@ -7,9 +7,13 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    otstack = {
+      url = "github:ottowhite/otstack";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, otstack, ... }:
     let
       # Helper function to create a home configuration
       mkHomeConfiguration = { system, username, homeDirectory }:
@@ -18,7 +22,10 @@
             inherit system;
             config.allowUnfree = true;
           };
-          extraSpecialArgs = { inherit username homeDirectory; };
+          extraSpecialArgs = {
+            inherit username homeDirectory;
+            otstack-pkg = otstack.packages.${system}.default;
+          };
           modules = [ ./home.nix ];
         };
     in
