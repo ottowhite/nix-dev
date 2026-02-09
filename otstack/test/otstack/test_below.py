@@ -201,6 +201,29 @@ class TestBelow:
         assert destination.name == "main"
         assert title == "Preparatory refactor"
 
+    def test_retargets_original_pr_to_new_branch(self, tmp_path) -> None:
+        """below() changes original PR's destination to the new branch."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+        )
+
+        # Verify original PR was retargeted
+        assert pr.destination_branch.name == "prep-work"
+
 
 # Test helpers
 
