@@ -446,6 +446,11 @@ class OtStackClient:
                 f"Multiple open PRs found for branch '{current_branch.name}'. This is ambiguous."
             )
 
+        # Check if new branch already exists
+        existing_branches = repo.get_branches()
+        if any(b.name == new_branch_name for b in existing_branches):
+            raise ValueError(f"Branch '{new_branch_name}' already exists.")
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""

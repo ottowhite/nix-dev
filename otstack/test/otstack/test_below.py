@@ -70,6 +70,26 @@ class TestBelow:
                 worktree_path="/tmp/project-prep-work",
             )
 
+    def test_raises_error_when_new_branch_already_exists(self) -> None:
+        """below() raises ValueError when new branch name already exists."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        existing_branch = MockBranch(name="prep-work")
+        repo = _make_repo(
+            current_branch=current_branch,
+            pull_requests=[pr],
+            branches=[existing_branch],
+        )
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(ValueError, match="Branch 'prep-work' already exists"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+            )
+
 
 # Test helpers
 
@@ -84,6 +104,7 @@ def _make_repo(
     current_branch: MockBranch | None = None,
     pull_requests: list[MockPullRequest] | None = None,
     has_uncommitted_changes: bool = False,
+    branches: list[MockBranch] | None = None,
     name: str = "test-repo",
 ) -> MockRepository:
     """Create a MockRepository with configurable current branch."""
@@ -96,6 +117,7 @@ def _make_repo(
         _pull_requests=pull_requests or [],
         _current_branch=current_branch,
         _has_uncommitted_changes=has_uncommitted_changes,
+        _branches=branches or [],
     )
 
 
