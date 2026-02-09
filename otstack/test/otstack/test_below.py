@@ -283,6 +283,30 @@ class TestBelow:
         assert new_env_file.exists()
         assert new_env_file.read_text() == "SECRET=abc123"
 
+    def test_raises_error_when_copy_file_does_not_exist(self, tmp_path) -> None:
+        """below() raises ValueError when file to copy doesn't exist."""
+        current_worktree = tmp_path / "current"
+        current_worktree.mkdir()
+        new_worktree = tmp_path / "new-worktree"
+
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(
+            current_branch=current_branch,
+            pull_requests=[pr],
+            working_dir=str(current_worktree),
+        )
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(ValueError, match="Cannot copy '.env': file does not exist"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path=str(new_worktree),
+                copy_files=[".env"],
+            )
+
 
 # Test helpers
 
