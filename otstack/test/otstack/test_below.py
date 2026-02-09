@@ -496,6 +496,100 @@ class TestBelowDryRun:
         assert result.copy_files == [".env", ".env.local"]
         assert result.run_direnv is True
 
+    def test_dry_run_result_format_output_includes_header(self, tmp_path) -> None:
+        """BelowDryRunResult.format_output() includes dry-run header."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        output = result.format_output()
+        assert "Dry run - no changes will be made" in output
+
+    def test_dry_run_result_format_output_includes_current_state(self, tmp_path) -> None:
+        """BelowDryRunResult.format_output() includes current state section."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+            title="Add user authentication",
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        output = result.format_output()
+        assert "Current state:" in output
+        assert "Branch: feature-branch" in output
+        assert '"Add user authentication"' in output
+        assert "main" in output
+
+    def test_dry_run_result_format_output_includes_planned_actions(
+        self, tmp_path
+    ) -> None:
+        """BelowDryRunResult.format_output() includes all planned actions."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+            title="Add user authentication",
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="auth-refactor",
+            pr_title="Extract auth utilities",
+            worktree_path=worktree_path,
+            copy_files=[".env", ".env.local"],
+            run_direnv=True,
+            dry_run=True,
+        )
+
+        output = result.format_output()
+        assert "Actions that would be performed:" in output
+        assert "Create branch 'auth-refactor'" in output
+        assert "Create worktree at" in output
+        assert "Push 'auth-refactor' to origin" in output
+        assert "Create PR:" in output
+        assert "'auth-refactor'" in output
+        assert "'main'" in output
+        assert '"Extract auth utilities"' in output
+        assert "Retarget" in output
+        assert "'feature-branch'" in output
+        assert "Copy files:" in output
+        assert ".env" in output
+        assert ".env.local" in output
+        assert "direnv allow" in output
+
 
 class TestBelowDirenv:
     def test_runs_direnv_allow_in_worktree_when_flag_is_set(self, tmp_path) -> None:
