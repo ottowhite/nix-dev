@@ -49,6 +49,9 @@
     };
 
     initContent = ''
+      # Source environment variables from ~/.env if it exists
+      [[ -f ~/.env ]] && source ~/.env
+
       # Vim mode
       bindkey -v
       bindkey -M viins 'ii' vi-cmd-mode
