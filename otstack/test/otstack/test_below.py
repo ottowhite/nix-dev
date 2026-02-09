@@ -154,6 +154,26 @@ class TestBelow:
         assert branch.name == "prep-work"
         assert path == worktree_path
 
+    def test_pushes_new_branch_to_origin(self, tmp_path) -> None:
+        """below() pushes the new branch to origin."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+        )
+
+        # Verify push was called on the new branch
+        assert len(repo.created_branches) == 1
+        new_branch = repo.created_worktrees[0][0]  # Get the branch from worktree
+        assert new_branch.push_called is True
+
 
 # Test helpers
 
