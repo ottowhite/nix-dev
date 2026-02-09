@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from git import InvalidGitRepositoryError, Repo
 
 from .BelowResult import BelowResult
+from .CommandRunner import CommandRunner
 from .GitHubClient import GitHubClient
 from .GitRepoDetector import GitPythonRepoDetector, GitRepoDetector
 from .PRTree import PRTree
@@ -17,6 +18,7 @@ from .PullRequest import PullRequest
 from .PyGitHubClient import PyGitHubClient
 from .PyGitHubRepository import PyGitHubRepository
 from .Repository import Repository
+from .SubprocessCommandRunner import SubprocessCommandRunner
 
 
 class OtStackClient:
@@ -29,6 +31,7 @@ class OtStackClient:
         output: TextIO | None = None,
         terminal_width: int | None = None,
         repo_detector: GitRepoDetector | None = None,
+        command_runner: CommandRunner | None = None,
     ) -> None:
         """
         Initialize OtStackClient.
@@ -42,6 +45,8 @@ class OtStackClient:
                            will use os.get_terminal_size().columns with fallback to 80.
             repo_detector: Optional GitRepoDetector for detecting the current repo
                           from git remotes. Defaults to GitPythonRepoDetector.
+            command_runner: Optional CommandRunner for running shell commands.
+                           Defaults to SubprocessCommandRunner.
 
         Raises:
             ValueError: If no access token is provided or found in environment.
@@ -72,6 +77,7 @@ class OtStackClient:
             self._github_client = PyGitHubClient(token)
 
         self._repo_detector = repo_detector or GitPythonRepoDetector()
+        self._command_runner = command_runner or SubprocessCommandRunner()
 
     def detect_repo_name(self) -> str | None:
         """
@@ -464,6 +470,14 @@ class OtStackClient:
         current_pr = current_pr_list[0]
         original_destination = current_pr.destination_branch
 
+        if dry_run:
+            return BelowResult(
+                new_branch=original_destination,  # placeholder
+                new_pr=current_pr,  # placeholder
+                original_pr=current_pr,
+                worktree_path=worktree_path,
+            )
+
         # Create new branch from the original destination
         new_branch = repo.create_branch(new_branch_name, original_destination)
 
@@ -490,6 +504,10 @@ class OtStackClient:
                     shutil.copy2(src, dst)
                 else:
                     raise ValueError(f"Cannot copy '{file_path}': file does not exist.")
+
+        # Run direnv allow if requested
+        if run_direnv:
+            self._command_runner.run(["direnv", "allow"], cwd=worktree_path)
 
         return BelowResult(
             new_branch=new_branch,

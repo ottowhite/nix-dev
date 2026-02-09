@@ -1,11 +1,13 @@
 import pytest
 
+from otstack.CommandRunner import CommandRunner
 from otstack.OtStackClient import OtStackClient
 
 from .helpers.MockBranch import MockBranch
 from .helpers.MockGitHubClient import MockGitHubClient
 from .helpers.MockPullRequest import MockPullRequest
 from .helpers.MockRepository import MockRepository
+from .helpers.TrackingCommandRunner import TrackingCommandRunner
 
 
 class TestBelow:
@@ -308,13 +310,41 @@ class TestBelow:
             )
 
 
+class TestBelowDryRun:
+    def test_dry_run_does_not_create_branch(self, tmp_path) -> None:
+        """below() with dry_run=True does not create a branch."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        assert len(repo.created_branches) == 0
+
+
 # Test helpers
 
 
-def _make_client(repos: list[MockRepository]) -> OtStackClient:
+def _make_client(
+    repos: list[MockRepository],
+    command_runner: TrackingCommandRunner | None = None,
+) -> OtStackClient:
     """Create an OtStackClient with the given repos."""
     mock_client = MockGitHubClient(repos=repos)
-    return OtStackClient(github_client=mock_client)
+    return OtStackClient(github_client=mock_client, command_runner=command_runner)
 
 
 def _make_repo(
