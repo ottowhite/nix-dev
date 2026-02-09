@@ -1,6 +1,8 @@
 import os
+import shutil
 import subprocess
 import sys
+from pathlib import Path
 from typing import TextIO
 
 from dotenv import load_dotenv
@@ -476,6 +478,18 @@ class OtStackClient:
 
         # Retarget original PR to new branch
         current_pr.change_destination(new_branch)
+
+        # Copy files if specified
+        if copy_files:
+            current_working_dir = repo.get_working_dir()
+            for file_path in copy_files:
+                src = Path(current_working_dir) / file_path
+                dst = Path(worktree_path) / file_path
+                if src.exists():
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(src, dst)
+                else:
+                    raise ValueError(f"Cannot copy '{file_path}': file does not exist.")
 
         return BelowResult(
             new_branch=new_branch,

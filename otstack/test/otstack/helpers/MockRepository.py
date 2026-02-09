@@ -23,6 +23,7 @@ class MockRepository(Repository):
     created_branches: list[tuple[str, Branch]] = field(default_factory=list)
     created_worktrees: list[tuple[Branch, str]] = field(default_factory=list)
     created_prs: list[tuple[Branch, Branch, str]] = field(default_factory=list)
+    _working_dir: str | None = field(default=None)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         return self._pull_requests
@@ -60,3 +61,8 @@ class MockRepository(Repository):
 
     def create_worktree(self, branch: Branch, path: str) -> None:
         self.created_worktrees.append((branch, path))
+
+    def get_working_dir(self) -> str:
+        if self._working_dir is None:
+            raise ValueError("No local git repository associated")
+        return self._working_dir

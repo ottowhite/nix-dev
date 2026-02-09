@@ -250,6 +250,39 @@ class TestBelow:
         assert result.original_pr == pr
         assert result.worktree_path == worktree_path
 
+    def test_copies_files_to_new_worktree(self, tmp_path) -> None:
+        """below() copies specified files to the new worktree."""
+        # Set up current worktree with a file
+        current_worktree = tmp_path / "current"
+        current_worktree.mkdir()
+        env_file = current_worktree / ".env"
+        env_file.write_text("SECRET=abc123")
+
+        # Set up new worktree path
+        new_worktree = tmp_path / "new-worktree"
+
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(
+            current_branch=current_branch,
+            pull_requests=[pr],
+            working_dir=str(current_worktree),
+        )
+        client = _make_client(repos=[repo])
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=str(new_worktree),
+            copy_files=[".env"],
+        )
+
+        # Verify file was copied
+        new_env_file = new_worktree / ".env"
+        assert new_env_file.exists()
+        assert new_env_file.read_text() == "SECRET=abc123"
+
 
 # Test helpers
 
@@ -265,6 +298,7 @@ def _make_repo(
     pull_requests: list[MockPullRequest] | None = None,
     has_uncommitted_changes: bool = False,
     branches: list[MockBranch] | None = None,
+    working_dir: str | None = None,
     name: str = "test-repo",
 ) -> MockRepository:
     """Create a MockRepository with configurable current branch."""
@@ -278,6 +312,7 @@ def _make_repo(
         _current_branch=current_branch,
         _has_uncommitted_changes=has_uncommitted_changes,
         _branches=branches or [],
+        _working_dir=working_dir,
     )
 
 

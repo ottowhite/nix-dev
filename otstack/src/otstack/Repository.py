@@ -76,3 +76,11 @@ class Repository(Protocol):
             path: Path where the worktree will be created.
         """
         ...
+
+    def get_working_dir(self) -> str:
+        """
+        Get the working directory path for this repository.
+
+        Raises ValueError if no local git repository is associated.
+        """
+        ...
