@@ -151,3 +151,18 @@ class PyGitHubRepository(Repository):
             pass
 
         return branches
+
+    def get_current_branch(self) -> Branch | None:
+        """
+        Get the currently checked-out branch.
+
+        Returns None if in detached HEAD state.
+        Raises ValueError if no local git repository is associated.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        if self._git_repo.head.is_detached:
+            return None
+
+        return LocalBranch(name=self._git_repo.active_branch.name, _repo=self._git_repo)

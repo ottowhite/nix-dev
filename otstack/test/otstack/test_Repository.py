@@ -36,6 +36,67 @@ class TestRepositoryGetLocalBranches:
             repo.get_local_branches()
 
 
+class TestPyGitHubRepositoryGetCurrentBranch:
+    def test_raises_value_error_when_no_git_repo(self) -> None:
+        """PyGitHubRepository.get_current_branch() raises ValueError when _git_repo is None."""
+        repo = _make_pygithub_repo(git_repo=None)
+
+        with pytest.raises(ValueError, match="No local git repository"):
+            repo.get_current_branch()
+
+    def test_returns_current_branch_in_main_repo(self, tmp_path) -> None:
+        """Returns the branch currently checked out in the main repo."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.get_current_branch()
+
+        assert result is not None
+        assert result.name == "master"
+        assert isinstance(result, LocalBranch)
+
+    def test_returns_none_when_head_is_detached(self, tmp_path) -> None:
+        """Returns None when HEAD is in detached state."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        commit = git_repo.index.commit("Initial commit")
+        # Detach HEAD by checking out a specific commit
+        git_repo.git.checkout(commit.hexsha)
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.get_current_branch()
+
+        assert result is None
+
+    def test_returns_current_branch_when_opened_from_worktree(self, tmp_path) -> None:
+        """Returns the worktree's branch when Repo is opened from within a worktree."""
+        main_path = tmp_path / "main"
+        main_path.mkdir()
+        main_repo = Repo.init(main_path)
+        (main_path / "file.txt").write_text("content")
+        main_repo.index.add(["file.txt"])
+        main_repo.index.commit("Initial commit")
+
+        # Create a feature branch and worktree
+        main_repo.git.branch("feature-1")
+        worktree_path = tmp_path / "worktree-feature-1"
+        main_repo.git.worktree("add", str(worktree_path), "feature-1")
+
+        # Open Repo from the worktree directory (simulating running command from worktree)
+        worktree_repo = Repo(worktree_path)
+        repo = _make_pygithub_repo(git_repo=worktree_repo)
+
+        result = repo.get_current_branch()
+
+        assert result is not None
+        assert result.name == "feature-1"
+        assert isinstance(result, LocalBranch)
+
+
 class TestPyGitHubRepositoryGetLocalBranches:
     def test_raises_value_error_when_no_git_repo(self) -> None:
         """PyGitHubRepository.get_local_branches() raises ValueError when _git_repo is None."""
