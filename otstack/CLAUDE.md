@@ -20,6 +20,12 @@
 ### Type Checking
 - Never use `if TYPE_CHECKING:` guards - we always type check, so these are unnecessary indirection
 
+### Git Worktree Support
+- All commands work correctly from within git worktrees
+- When opening a git repo, use `Repo(path)` which correctly detects worktree context
+- The `get_current_branch()` method returns the worktree's checked-out branch, not the main repo's branch
+- PyGitHubRepository implements all Repository protocol methods for worktree compatibility
+
 ## Commands
 
 ### below
