@@ -22,6 +22,20 @@ class TestBelow:
                 worktree_path="/tmp/project-prep-work",
             )
 
+    def test_raises_error_when_uncommitted_changes_exist(self) -> None:
+        """below() raises ValueError when there are uncommitted changes."""
+        current_branch = MockBranch(name="feature-branch")
+        repo = _make_repo(current_branch=current_branch, has_uncommitted_changes=True)
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(ValueError, match="You have uncommitted changes"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+            )
+
 
 # Test helpers
 
@@ -35,6 +49,7 @@ def _make_client(repos: list[MockRepository]) -> OtStackClient:
 def _make_repo(
     current_branch: MockBranch | None = None,
     pull_requests: list[MockPullRequest] | None = None,
+    has_uncommitted_changes: bool = False,
     name: str = "test-repo",
 ) -> MockRepository:
     """Create a MockRepository with configurable current branch."""
@@ -46,4 +61,5 @@ def _make_repo(
         url=f"https://github.com/test-user/{name}",
         _pull_requests=pull_requests or [],
         _current_branch=current_branch,
+        _has_uncommitted_changes=has_uncommitted_changes,
     )

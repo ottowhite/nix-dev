@@ -425,6 +425,11 @@ class OtStackClient:
                 "You are in detached HEAD state. Checkout a branch first."
             )
 
+        if repo.has_uncommitted_changes():
+            raise ValueError(
+                "You have uncommitted changes. Commit or stash them first."
+            )
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""

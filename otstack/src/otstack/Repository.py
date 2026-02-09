@@ -44,3 +44,12 @@ class Repository(Protocol):
         Raises ValueError if no local git repository is associated.
         """
         ...
+
+    def has_uncommitted_changes(self) -> bool:
+        """
+        Check if there are uncommitted changes in the working directory.
+
+        Returns True if there are uncommitted changes, False otherwise.
+        Raises ValueError if no local git repository is associated.
+        """
+        ...

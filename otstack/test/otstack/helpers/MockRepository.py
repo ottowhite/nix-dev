@@ -18,6 +18,7 @@ class MockRepository(Repository):
     _pull_requests: list[PullRequest] = field(default_factory=list)
     _local_branches: list[Branch] | None = field(default_factory=list)
     _current_branch: Branch | None = field(default=None)
+    _has_uncommitted_changes: bool = field(default=False)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         return self._pull_requests
@@ -43,3 +44,6 @@ class MockRepository(Repository):
 
     def get_current_branch(self) -> Branch | None:
         return self._current_branch
+
+    def has_uncommitted_changes(self) -> bool:
+        return self._has_uncommitted_changes
