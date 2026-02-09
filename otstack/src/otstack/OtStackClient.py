@@ -470,6 +470,9 @@ class OtStackClient:
         # Push new branch to origin
         new_branch.push()
 
+        # Create PR from new branch to original destination
+        new_pr = repo.create_pr(new_branch, original_destination, pr_title)
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""

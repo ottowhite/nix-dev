@@ -22,6 +22,7 @@ class MockRepository(Repository):
     _has_uncommitted_changes: bool = field(default=False)
     created_branches: list[tuple[str, Branch]] = field(default_factory=list)
     created_worktrees: list[tuple[Branch, str]] = field(default_factory=list)
+    created_prs: list[tuple[Branch, Branch, str]] = field(default_factory=list)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         return self._pull_requests
@@ -29,6 +30,7 @@ class MockRepository(Repository):
     def create_pr(
         self, source_branch: Branch, destination_branch: Branch, title: str
     ) -> PullRequest:
+        self.created_prs.append((source_branch, destination_branch, title))
         return MockPullRequest(
             title=title,
             description=None,
