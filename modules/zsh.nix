@@ -56,17 +56,6 @@
       # Do ls when change directory
       chpwd() ls
 
-      # Custom functions
-      function ots() {
-        local repo_name=$(git remote get-url origin 2>/dev/null | sed -E 's|.*github\.com[:/]||; s|\.git$||')
-        local repo_path=$(pwd)
-        if [[ -n "$repo_name" ]]; then
-          otstack "$1" --repo "$repo_name" --path "$repo_path" "''${@:2}"
-        else
-          otstack "$@"
-        fi
-      }
-
       # "Worktree add"
       function wta {
         git worktree add "$1"
