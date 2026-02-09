@@ -19,3 +19,28 @@
 
 ### Type Checking
 - Never use `if TYPE_CHECKING:` guards - we always type check, so these are unnecessary indirection
+
+## Commands
+
+### below
+Insert a new PR "below" the current PR in a stack. Creates a new branch and PR that becomes the new base for the current PR, with a git worktree for parallel development.
+
+**Usage:** `otstack below --branch <name> --title <title> --worktree <path> [options]`
+
+**Required arguments:**
+- `--branch, -b` - Name for the new branch
+- `--title, -t` - Title for the new PR
+- `--worktree, -w` - Path where the new worktree will be created
+
+**Optional arguments:**
+- `--repo, -r` - Repository name (owner/repo), auto-detected if omitted
+- `--path, -p` - Path to local git repository (defaults to `.`)
+- `--direnv` - Run `direnv allow` in new worktree after creation
+- `--copy, -c` - Copy file from current worktree to new (repeatable)
+- `--dry-run, -n` - Show what would happen without changes
+
+### tree
+Show PR dependency tree for a repository.
+
+### sync
+Sync all local PRs by pulling destination and merging into source.
