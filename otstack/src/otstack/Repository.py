@@ -35,3 +35,12 @@ class Repository(Protocol):
         Invariant: No two branches in the returned list have the same name.
         """
         ...
+
+    def get_current_branch(self) -> Branch | None:
+        """
+        Get the currently checked-out branch.
+
+        Returns None if in detached HEAD state.
+        Raises ValueError if no local git repository is associated.
+        """
+        ...

@@ -17,6 +17,7 @@ class MockRepository(Repository):
     _branches: list[Branch] = field(default_factory=list)
     _pull_requests: list[PullRequest] = field(default_factory=list)
     _local_branches: list[Branch] | None = field(default_factory=list)
+    _current_branch: Branch | None = field(default=None)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         return self._pull_requests
@@ -39,3 +40,6 @@ class MockRepository(Repository):
         if self._local_branches is None:
             raise ValueError("No local git repository associated")
         return self._local_branches
+
+    def get_current_branch(self) -> Branch | None:
+        return self._current_branch

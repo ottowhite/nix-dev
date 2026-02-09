@@ -404,6 +404,27 @@ class OtStackClient:
         self._output.write(f"  Merged and pushed.\n")
         return True
 
+    def below(
+        self,
+        repo: Repository,
+        new_branch_name: str,
+        pr_title: str,
+        worktree_path: str,
+        copy_files: list[str] | None = None,
+        run_direnv: bool = False,
+        dry_run: bool = False,
+    ) -> None:
+        """
+        Insert a new PR below the current PR in the stack.
+
+        This creates a new branch and PR that becomes the new base for the current PR.
+        """
+        current_branch = repo.get_current_branch()
+        if current_branch is None:
+            raise ValueError(
+                "You are in detached HEAD state. Checkout a branch first."
+            )
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
