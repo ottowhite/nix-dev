@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from git import InvalidGitRepositoryError, Repo
 
+from .BelowDryRunResult import BelowDryRunResult
 from .BelowResult import BelowResult
 from .CommandRunner import CommandRunner
 from .GitHubClient import GitHubClient
@@ -422,7 +423,7 @@ class OtStackClient:
         copy_files: list[str] | None = None,
         run_direnv: bool = False,
         dry_run: bool = False,
-    ) -> BelowResult:
+    ) -> BelowResult | BelowDryRunResult:
         """
         Insert a new PR below the current PR in the stack.
 
@@ -471,11 +472,15 @@ class OtStackClient:
         original_destination = current_pr.destination_branch
 
         if dry_run:
-            return BelowResult(
-                new_branch=original_destination,  # placeholder
-                new_pr=current_pr,  # placeholder
-                original_pr=current_pr,
+            return BelowDryRunResult(
+                current_branch_name=current_branch.name,
+                current_pr=current_pr,
+                new_branch_name=new_branch_name,
+                pr_title=pr_title,
                 worktree_path=worktree_path,
+                original_destination_name=original_destination.name,
+                copy_files=copy_files,
+                run_direnv=run_direnv,
             )
 
         # Create new branch from the original destination
@@ -507,7 +512,12 @@ class OtStackClient:
 
         # Run direnv allow if requested
         if run_direnv:
-            self._command_runner.run(["direnv", "allow"], cwd=worktree_path)
+            try:
+                self._command_runner.run(["direnv", "allow"], cwd=worktree_path)
+            except FileNotFoundError:
+                self._output.write(
+                    "Warning: 'direnv' command not found. Skipping direnv allow.\n"
+                )
 
         return BelowResult(
             new_branch=new_branch,

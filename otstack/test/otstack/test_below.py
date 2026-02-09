@@ -1,6 +1,7 @@
+import io
+
 import pytest
 
-from otstack.CommandRunner import CommandRunner
 from otstack.OtStackClient import OtStackClient
 
 from .helpers.MockBranch import MockBranch
@@ -444,7 +445,6 @@ class TestBelowDryRun:
             source_branch="feature-branch",
             destination_branch="main",
             destination_branch_obj=main_branch,
-            pr_number=123,
         )
         repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
         client = _make_client(repos=[repo])
@@ -481,6 +481,50 @@ class TestBelowDirenv:
 
         assert (["direnv", "allow"], worktree_path) in command_runner.commands
 
+    def test_does_not_run_direnv_when_flag_is_not_set(self, tmp_path) -> None:
+        """below() does NOT run 'direnv allow' when run_direnv=False (default)."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        command_runner = TrackingCommandRunner()
+        client = _make_client(repos=[repo], command_runner=command_runner)
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            run_direnv=False,
+        )
+
+        assert command_runner.commands == []
+
+    def test_prints_warning_when_direnv_not_found(self, tmp_path) -> None:
+        """below() prints a warning when 'direnv' command is not found."""
+        import io
+
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        command_runner = TrackingCommandRunner(raise_file_not_found_for=["direnv"])
+        output = io.StringIO()
+        client = _make_client(
+            repos=[repo], command_runner=command_runner, output=output
+        )
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            run_direnv=True,
+        )
+
+        output_text = output.getvalue()
+        assert "Warning: 'direnv' command not found" in output_text
+
 
 # Test helpers
 
@@ -488,10 +532,13 @@ class TestBelowDirenv:
 def _make_client(
     repos: list[MockRepository],
     command_runner: TrackingCommandRunner | None = None,
+    output: "io.StringIO | None" = None,
 ) -> OtStackClient:
     """Create an OtStackClient with the given repos."""
     mock_client = MockGitHubClient(repos=repos)
-    return OtStackClient(github_client=mock_client, command_runner=command_runner)
+    return OtStackClient(
+        github_client=mock_client, command_runner=command_runner, output=output
+    )
 
 
 def _make_repo(
