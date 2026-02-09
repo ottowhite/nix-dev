@@ -90,6 +90,23 @@ class TestBelow:
                 worktree_path="/tmp/project-prep-work",
             )
 
+    def test_raises_error_when_worktree_path_already_exists(self, tmp_path) -> None:
+        """below() raises ValueError when worktree path already exists."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        existing_path = tmp_path / "existing-dir"
+        existing_path.mkdir()
+
+        with pytest.raises(ValueError, match="Path .* already exists"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path=str(existing_path),
+            )
+
 
 # Test helpers
 

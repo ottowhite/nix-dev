@@ -451,6 +451,12 @@ class OtStackClient:
         if any(b.name == new_branch_name for b in existing_branches):
             raise ValueError(f"Branch '{new_branch_name}' already exists.")
 
+        # Check if worktree path already exists
+        if os.path.exists(worktree_path):
+            raise ValueError(
+                f"Path '{worktree_path}' already exists. Choose a different worktree path."
+            )
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
