@@ -334,6 +334,153 @@ class TestBelowDryRun:
 
         assert len(repo.created_branches) == 0
 
+    def test_dry_run_does_not_create_worktree(self, tmp_path) -> None:
+        """below() with dry_run=True does not create a worktree."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        assert len(repo.created_worktrees) == 0
+
+    def test_dry_run_does_not_create_pr(self, tmp_path) -> None:
+        """below() with dry_run=True does not create a PR."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        assert len(repo.created_prs) == 0
+
+    def test_dry_run_does_not_retarget_original_pr(self, tmp_path) -> None:
+        """below() with dry_run=True does not change original PR's destination."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        # Original PR destination should still be 'main', not 'prep-work'
+        assert pr.destination_branch.name == "main"
+
+    def test_dry_run_does_not_copy_files(self, tmp_path) -> None:
+        """below() with dry_run=True does not copy files."""
+        current_worktree = tmp_path / "current"
+        current_worktree.mkdir()
+        env_file = current_worktree / ".env"
+        env_file.write_text("SECRET=abc123")
+
+        new_worktree = tmp_path / "new-worktree"
+
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(
+            current_branch=current_branch,
+            pull_requests=[pr],
+            working_dir=str(current_worktree),
+        )
+        client = _make_client(repos=[repo])
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=str(new_worktree),
+            copy_files=[".env"],
+            dry_run=True,
+        )
+
+        # Worktree directory should not exist (no files copied)
+        assert not new_worktree.exists()
+
+    def test_dry_run_returns_dry_run_result(self, tmp_path) -> None:
+        """below() with dry_run=True returns a BelowDryRunResult."""
+        from otstack.BelowDryRunResult import BelowDryRunResult
+
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+            pr_number=123,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            dry_run=True,
+        )
+
+        assert isinstance(result, BelowDryRunResult)
+
+
+class TestBelowDirenv:
+    def test_runs_direnv_allow_in_worktree_when_flag_is_set(self, tmp_path) -> None:
+        """below() runs 'direnv allow' in the new worktree when run_direnv=True."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        command_runner = TrackingCommandRunner()
+        client = _make_client(repos=[repo], command_runner=command_runner)
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+            run_direnv=True,
+        )
+
+        assert (["direnv", "allow"], worktree_path) in command_runner.commands
+
 
 # Test helpers
 
