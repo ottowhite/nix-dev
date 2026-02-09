@@ -52,6 +52,24 @@ class TestBelow:
                 worktree_path="/tmp/project-prep-work",
             )
 
+    def test_raises_error_when_multiple_open_prs_for_current_branch(self) -> None:
+        """below() raises ValueError when multiple open PRs exist for current branch."""
+        current_branch = MockBranch(name="feature-branch")
+        pr1 = _make_pr(source_branch="feature-branch", destination_branch="main")
+        pr2 = _make_pr(source_branch="feature-branch", destination_branch="develop")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr1, pr2])
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(
+            ValueError, match="Multiple open PRs found for branch 'feature-branch'"
+        ):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+            )
+
 
 # Test helpers
 
@@ -78,4 +96,19 @@ def _make_repo(
         _pull_requests=pull_requests or [],
         _current_branch=current_branch,
         _has_uncommitted_changes=has_uncommitted_changes,
+    )
+
+
+def _make_pr(
+    source_branch: str,
+    destination_branch: str,
+    title: str = "Test PR",
+) -> MockPullRequest:
+    """Create a MockPullRequest with the given branches."""
+    return MockPullRequest(
+        title=title,
+        description=None,
+        source_branch=MockBranch(name=source_branch),
+        destination_branch=MockBranch(name=destination_branch),
+        url="https://github.com/test-user/test-repo/pull/1",
     )

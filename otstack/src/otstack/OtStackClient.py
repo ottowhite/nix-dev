@@ -441,6 +441,11 @@ class OtStackClient:
                 f"No open PR found for branch '{current_branch.name}'. Create a PR first."
             )
 
+        if len(current_pr_list) > 1:
+            raise ValueError(
+                f"Multiple open PRs found for branch '{current_branch.name}'. This is ambiguous."
+            )
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
