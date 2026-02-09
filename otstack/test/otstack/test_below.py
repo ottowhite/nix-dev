@@ -590,6 +590,41 @@ class TestBelowDryRun:
         assert ".env.local" in output
         assert "direnv allow" in output
 
+    def test_dry_run_still_validates_detached_head(self) -> None:
+        """dry_run=True still raises error when in detached HEAD state."""
+        repo = _make_repo(current_branch=None)
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(ValueError, match="You are in detached HEAD state"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+                dry_run=True,
+            )
+
+    def test_dry_run_still_validates_branch_exists(self) -> None:
+        """dry_run=True still raises error when branch already exists."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        existing_branch = MockBranch(name="prep-work")
+        repo = _make_repo(
+            current_branch=current_branch,
+            pull_requests=[pr],
+            branches=[existing_branch],
+        )
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(ValueError, match="Branch 'prep-work' already exists"):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+                dry_run=True,
+            )
+
 
 class TestBelowDirenv:
     def test_runs_direnv_allow_in_worktree_when_flag_is_set(self, tmp_path) -> None:
