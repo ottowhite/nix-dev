@@ -97,6 +97,56 @@ class TestPyGitHubRepositoryGetCurrentBranch:
         assert isinstance(result, LocalBranch)
 
 
+class TestPyGitHubRepositoryHasUncommittedChanges:
+    def test_raises_value_error_when_no_git_repo(self) -> None:
+        """PyGitHubRepository.has_uncommitted_changes() raises ValueError when _git_repo is None."""
+        repo = _make_pygithub_repo(git_repo=None)
+
+        with pytest.raises(ValueError, match="No local git repository"):
+            repo.has_uncommitted_changes()
+
+    def test_returns_false_when_working_tree_is_clean(self, tmp_path) -> None:
+        """Returns False when there are no uncommitted changes."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.has_uncommitted_changes()
+
+        assert result is False
+
+    def test_returns_true_when_there_are_staged_changes(self, tmp_path) -> None:
+        """Returns True when there are staged changes."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        # Make a change and stage it
+        (tmp_path / "file.txt").write_text("modified content")
+        git_repo.index.add(["file.txt"])
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.has_uncommitted_changes()
+
+        assert result is True
+
+    def test_returns_true_when_there_are_unstaged_changes(self, tmp_path) -> None:
+        """Returns True when there are unstaged changes to tracked files."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        # Make a change but don't stage it
+        (tmp_path / "file.txt").write_text("modified content")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.has_uncommitted_changes()
+
+        assert result is True
+
+
 class TestPyGitHubRepositoryGetLocalBranches:
     def test_raises_value_error_when_no_git_repo(self) -> None:
         """PyGitHubRepository.get_local_branches() raises ValueError when _git_repo is None."""

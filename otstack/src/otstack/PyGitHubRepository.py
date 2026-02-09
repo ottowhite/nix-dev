@@ -166,3 +166,15 @@ class PyGitHubRepository(Repository):
             return None
 
         return LocalBranch(name=self._git_repo.active_branch.name, _repo=self._git_repo)
+
+    def has_uncommitted_changes(self) -> bool:
+        """
+        Check if there are uncommitted changes in the working directory.
+
+        Returns True if there are uncommitted changes, False otherwise.
+        Raises ValueError if no local git repository is associated.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        return self._git_repo.is_dirty()
