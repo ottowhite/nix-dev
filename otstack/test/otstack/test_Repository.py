@@ -198,6 +198,81 @@ class TestPyGitHubRepositoryGetLocalBranches:
             assert isinstance(branch, LocalBranch)
 
 
+class TestPyGitHubRepositoryCreateBranch:
+    def test_raises_value_error_when_no_git_repo(self) -> None:
+        """PyGitHubRepository.create_branch() raises ValueError when _git_repo is None."""
+        repo = _make_pygithub_repo(git_repo=None)
+        from_branch = MockBranch(name="master")
+
+        with pytest.raises(ValueError, match="No local git repository"):
+            repo.create_branch("new-branch", from_branch)
+
+    def test_creates_new_branch_at_same_commit_as_from_branch(self, tmp_path) -> None:
+        """Creates a new branch pointing to the same commit as from_branch."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+        from_branch = LocalBranch(name="master", _repo=git_repo)
+
+        result = repo.create_branch("feature-1", from_branch)
+
+        assert result.name == "feature-1"
+        assert isinstance(result, LocalBranch)
+        # Verify the new branch exists in git
+        branch_names = [ref.name for ref in git_repo.branches]
+        assert "feature-1" in branch_names
+
+
+class TestPyGitHubRepositoryCreateWorktree:
+    def test_raises_value_error_when_no_git_repo(self) -> None:
+        """PyGitHubRepository.create_worktree() raises ValueError when _git_repo is None."""
+        repo = _make_pygithub_repo(git_repo=None)
+        branch = MockBranch(name="feature-1")
+
+        with pytest.raises(ValueError, match="No local git repository"):
+            repo.create_worktree(branch, "/tmp/worktree")
+
+    def test_creates_worktree_at_specified_path(self, tmp_path) -> None:
+        """Creates a git worktree at the specified path."""
+        git_repo = Repo.init(tmp_path / "main")
+        ((tmp_path / "main") / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        git_repo.git.branch("feature-1")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+        branch = LocalBranch(name="feature-1", _repo=git_repo)
+        worktree_path = str(tmp_path / "worktree-feature-1")
+
+        repo.create_worktree(branch, worktree_path)
+
+        # Verify the worktree was created
+        assert (tmp_path / "worktree-feature-1").exists()
+        assert (tmp_path / "worktree-feature-1" / "file.txt").exists()
+
+
+class TestPyGitHubRepositoryGetWorkingDir:
+    def test_raises_value_error_when_no_git_repo(self) -> None:
+        """PyGitHubRepository.get_working_dir() raises ValueError when _git_repo is None."""
+        repo = _make_pygithub_repo(git_repo=None)
+
+        with pytest.raises(ValueError, match="No local git repository"):
+            repo.get_working_dir()
+
+    def test_returns_working_directory_path(self, tmp_path) -> None:
+        """Returns the working directory path of the git repo."""
+        git_repo = Repo.init(tmp_path)
+        (tmp_path / "file.txt").write_text("content")
+        git_repo.index.add(["file.txt"])
+        git_repo.index.commit("Initial commit")
+        repo = _make_pygithub_repo(git_repo=git_repo)
+
+        result = repo.get_working_dir()
+
+        assert result == str(tmp_path)
+
+
 # Test helpers
 
 

@@ -178,3 +178,44 @@ class PyGitHubRepository(Repository):
             raise ValueError("No local git repository associated")
 
         return self._git_repo.is_dirty()
+
+    def create_branch(self, name: str, from_branch: Branch) -> Branch:
+        """
+        Create a new branch at the same commit as from_branch.
+
+        Args:
+            name: Name for the new branch.
+            from_branch: Branch to create the new branch from.
+
+        Returns:
+            The newly created Branch.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        self._git_repo.git.branch(name, from_branch.name)
+        return LocalBranch(name=name, _repo=self._git_repo)
+
+    def create_worktree(self, branch: Branch, path: str) -> None:
+        """
+        Create a git worktree for the given branch at the specified path.
+
+        Args:
+            branch: Branch to create worktree for.
+            path: Path where the worktree will be created.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        self._git_repo.git.worktree("add", path, branch.name)
+
+    def get_working_dir(self) -> str:
+        """
+        Get the working directory path for this repository.
+
+        Raises ValueError if no local git repository is associated.
+        """
+        if self._git_repo is None:
+            raise ValueError("No local git repository associated")
+
+        return str(self._git_repo.working_dir)
