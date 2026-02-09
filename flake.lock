@@ -47,11 +47,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1770647814,
-        "narHash": "sha256-Nu1eeddzl10dwNdki3Pl4aMPtxgGV0CpFRb1WBhNIFw=",
+        "lastModified": 1770648477,
+        "narHash": "sha256-DaJwpeCbZQ9rFrL+rfhzSjKxR1cStVmD1gX5msZS7V4=",
         "owner": "ottowhite",
         "repo": "otstack",
-        "rev": "b578102568bd320692c22e4423f33fec97604d21",
+        "rev": "024f5a6997b6f8d9defaa96a4fb3a0522d285332",
         "type": "github"
       },
       "original": {
