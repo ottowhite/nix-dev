@@ -133,6 +133,27 @@ class TestBelow:
         assert branch_name == "prep-work"
         assert from_branch.name == "main"
 
+    def test_creates_worktree_for_new_branch(self, tmp_path) -> None:
+        """below() creates a git worktree for the new branch."""
+        current_branch = MockBranch(name="feature-branch")
+        pr = _make_pr(source_branch="feature-branch", destination_branch="main")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+        )
+
+        # Verify worktree was created
+        assert len(repo.created_worktrees) == 1
+        branch, path = repo.created_worktrees[0]
+        assert branch.name == "prep-work"
+        assert path == worktree_path
+
 
 # Test helpers
 

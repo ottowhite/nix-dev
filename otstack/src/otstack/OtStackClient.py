@@ -464,6 +464,9 @@ class OtStackClient:
         # Create new branch from the original destination
         new_branch = repo.create_branch(new_branch_name, original_destination)
 
+        # Create worktree for the new branch
+        repo.create_worktree(new_branch, worktree_path)
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""

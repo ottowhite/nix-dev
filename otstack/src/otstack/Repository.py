@@ -66,3 +66,13 @@ class Repository(Protocol):
             The newly created Branch.
         """
         ...
+
+    def create_worktree(self, branch: Branch, path: str) -> None:
+        """
+        Create a git worktree for the given branch at the specified path.
+
+        Args:
+            branch: Branch to create worktree for.
+            path: Path where the worktree will be created.
+        """
+        ...
