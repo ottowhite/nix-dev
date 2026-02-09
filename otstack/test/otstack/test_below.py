@@ -107,6 +107,32 @@ class TestBelow:
                 worktree_path=str(existing_path),
             )
 
+    def test_creates_new_branch_from_original_destination(self, tmp_path) -> None:
+        """below() creates new branch at the same commit as original PR destination."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+        )
+
+        # Verify the new branch was created from main
+        assert len(repo.created_branches) == 1
+        branch_name, from_branch = repo.created_branches[0]
+        assert branch_name == "prep-work"
+        assert from_branch.name == "main"
+
 
 # Test helpers
 
@@ -142,12 +168,13 @@ def _make_pr(
     source_branch: str,
     destination_branch: str,
     title: str = "Test PR",
+    destination_branch_obj: MockBranch | None = None,
 ) -> MockPullRequest:
     """Create a MockPullRequest with the given branches."""
     return MockPullRequest(
         title=title,
         description=None,
         source_branch=MockBranch(name=source_branch),
-        destination_branch=MockBranch(name=destination_branch),
+        destination_branch=destination_branch_obj or MockBranch(name=destination_branch),
         url="https://github.com/test-user/test-repo/pull/1",
     )

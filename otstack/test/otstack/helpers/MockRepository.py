@@ -4,6 +4,7 @@ from otstack.Branch import Branch
 from otstack.PullRequest import PullRequest
 from otstack.Repository import Repository
 
+from .MockBranch import MockBranch
 from .MockPullRequest import MockPullRequest
 
 
@@ -19,6 +20,7 @@ class MockRepository(Repository):
     _local_branches: list[Branch] | None = field(default_factory=list)
     _current_branch: Branch | None = field(default=None)
     _has_uncommitted_changes: bool = field(default=False)
+    created_branches: list[tuple[str, Branch]] = field(default_factory=list)
 
     def get_open_pull_requests(self) -> list[PullRequest]:
         return self._pull_requests
@@ -47,3 +49,7 @@ class MockRepository(Repository):
 
     def has_uncommitted_changes(self) -> bool:
         return self._has_uncommitted_changes
+
+    def create_branch(self, name: str, from_branch: Branch) -> Branch:
+        self.created_branches.append((name, from_branch))
+        return MockBranch(name=name)

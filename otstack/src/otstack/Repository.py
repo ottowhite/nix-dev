@@ -53,3 +53,16 @@ class Repository(Protocol):
         Raises ValueError if no local git repository is associated.
         """
         ...
+
+    def create_branch(self, name: str, from_branch: Branch) -> Branch:
+        """
+        Create a new branch at the same commit as from_branch.
+
+        Args:
+            name: Name for the new branch.
+            from_branch: Branch to create the new branch from.
+
+        Returns:
+            The newly created Branch.
+        """
+        ...

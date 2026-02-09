@@ -457,6 +457,13 @@ class OtStackClient:
                 f"Path '{worktree_path}' already exists. Choose a different worktree path."
             )
 
+        # Get the current PR (we already validated there's exactly one)
+        current_pr = current_pr_list[0]
+        original_destination = current_pr.destination_branch
+
+        # Create new branch from the original destination
+        new_branch = repo.create_branch(new_branch_name, original_destination)
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
