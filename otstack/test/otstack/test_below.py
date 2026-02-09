@@ -460,6 +460,42 @@ class TestBelowDryRun:
 
         assert isinstance(result, BelowDryRunResult)
 
+    def test_dry_run_result_contains_planned_actions(self, tmp_path) -> None:
+        """BelowDryRunResult contains all information about planned actions."""
+        from otstack.BelowDryRunResult import BelowDryRunResult
+
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+            title="Add user authentication",
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="auth-refactor",
+            pr_title="Extract auth utilities",
+            worktree_path=worktree_path,
+            copy_files=[".env", ".env.local"],
+            run_direnv=True,
+            dry_run=True,
+        )
+
+        assert isinstance(result, BelowDryRunResult)
+        assert result.current_branch_name == "feature-branch"
+        assert result.current_pr.title == "Add user authentication"
+        assert result.new_branch_name == "auth-refactor"
+        assert result.pr_title == "Extract auth utilities"
+        assert result.worktree_path == worktree_path
+        assert result.original_destination_name == "main"
+        assert result.copy_files == [".env", ".env.local"]
+        assert result.run_direnv is True
+
 
 class TestBelowDirenv:
     def test_runs_direnv_allow_in_worktree_when_flag_is_set(self, tmp_path) -> None:
