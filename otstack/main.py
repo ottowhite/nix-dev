@@ -1,5 +1,6 @@
 import argparse
 
+from otstack.BelowDryRunResult import BelowDryRunResult
 from otstack.OtStackClient import OtStackClient
 
 
@@ -128,10 +129,15 @@ def main() -> None:
                     run_direnv=args.direnv,
                     dry_run=args.dry_run,
                 )
-                print(f"\nSuccessfully inserted '{args.branch}' below your current PR!")
-                print(f"\nNew PR: {result.new_pr.url}")
-                print(f"Original PR (retargeted): {result.original_pr.url}")
-                print(f"Worktree: {result.worktree_path}")
+                if isinstance(result, BelowDryRunResult):
+                    print(result.format_output())
+                else:
+                    print(
+                        f"\nSuccessfully inserted '{args.branch}' below your current PR!"
+                    )
+                    print(f"\nNew PR: {result.new_pr.url}")
+                    print(f"Original PR (retargeted): {result.original_pr.url}")
+                    print(f"Worktree: {result.worktree_path}")
     except ValueError as e:
         print(e)
         exit(-1)
