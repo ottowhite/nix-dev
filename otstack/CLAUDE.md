@@ -37,7 +37,12 @@ Insert a new PR "below" the current PR in a stack. Creates a new branch and PR t
 - `--path, -p` - Path to local git repository (defaults to `.`)
 - `--direnv` - Run `direnv allow` in new worktree after creation
 - `--copy, -c` - Copy file from current worktree to new (repeatable)
-- `--dry-run, -n` - Show what would happen without changes
+- `--dry-run, -n` - Show what would happen without making any changes
+
+**Dry run behavior:**
+When `--dry-run` is passed, the command performs all validation checks (which are read-only and safe) and then prints what would happen instead of executing. The output includes:
+- Current state (branch and PR info)
+- Numbered list of actions that would be performed (create branch, worktree, push, create PR, retarget, copy files, run direnv)
 
 ### tree
 Show PR dependency tree for a repository.
