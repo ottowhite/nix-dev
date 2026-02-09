@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from git import InvalidGitRepositoryError, Repo
 
+from .BelowResult import BelowResult
 from .GitHubClient import GitHubClient
 from .GitRepoDetector import GitPythonRepoDetector, GitRepoDetector
 from .PRTree import PRTree
@@ -413,7 +414,7 @@ class OtStackClient:
         copy_files: list[str] | None = None,
         run_direnv: bool = False,
         dry_run: bool = False,
-    ) -> None:
+    ) -> BelowResult:
         """
         Insert a new PR below the current PR in the stack.
 
@@ -475,6 +476,13 @@ class OtStackClient:
 
         # Retarget original PR to new branch
         current_pr.change_destination(new_branch)
+
+        return BelowResult(
+            new_branch=new_branch,
+            new_pr=new_pr,
+            original_pr=current_pr,
+            worktree_path=worktree_path,
+        )
 
     @property
     def github(self) -> GitHubClient:

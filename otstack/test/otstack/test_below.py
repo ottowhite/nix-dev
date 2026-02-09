@@ -224,6 +224,32 @@ class TestBelow:
         # Verify original PR was retargeted
         assert pr.destination_branch.name == "prep-work"
 
+    def test_returns_below_result_with_all_artifacts(self, tmp_path) -> None:
+        """below() returns BelowResult with new branch, PRs, and worktree path."""
+        current_branch = MockBranch(name="feature-branch")
+        main_branch = MockBranch(name="main")
+        pr = _make_pr(
+            source_branch="feature-branch",
+            destination_branch="main",
+            destination_branch_obj=main_branch,
+        )
+        repo = _make_repo(current_branch=current_branch, pull_requests=[pr])
+        client = _make_client(repos=[repo])
+        worktree_path = str(tmp_path / "new-worktree")
+
+        result = client.below(
+            repo=repo,
+            new_branch_name="prep-work",
+            pr_title="Preparatory refactor",
+            worktree_path=worktree_path,
+        )
+
+        # Verify result contains all expected information
+        assert result.new_branch.name == "prep-work"
+        assert result.new_pr.title == "Preparatory refactor"
+        assert result.original_pr == pr
+        assert result.worktree_path == worktree_path
+
 
 # Test helpers
 
