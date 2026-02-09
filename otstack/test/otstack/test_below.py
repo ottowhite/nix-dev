@@ -36,6 +36,22 @@ class TestBelow:
                 worktree_path="/tmp/project-prep-work",
             )
 
+    def test_raises_error_when_no_open_pr_for_current_branch(self) -> None:
+        """below() raises ValueError when no open PR exists for current branch."""
+        current_branch = MockBranch(name="feature-branch")
+        repo = _make_repo(current_branch=current_branch, pull_requests=[])
+        client = _make_client(repos=[repo])
+
+        with pytest.raises(
+            ValueError, match="No open PR found for branch 'feature-branch'"
+        ):
+            client.below(
+                repo=repo,
+                new_branch_name="prep-work",
+                pr_title="Preparatory refactor",
+                worktree_path="/tmp/project-prep-work",
+            )
+
 
 # Test helpers
 

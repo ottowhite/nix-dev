@@ -430,6 +430,17 @@ class OtStackClient:
                 "You have uncommitted changes. Commit or stash them first."
             )
 
+        # Find PR for current branch
+        prs = repo.get_open_pull_requests()
+        current_pr_list = [
+            pr for pr in prs if pr.source_branch.name == current_branch.name
+        ]
+
+        if not current_pr_list:
+            raise ValueError(
+                f"No open PR found for branch '{current_branch.name}'. Create a PR first."
+            )
+
     @property
     def github(self) -> GitHubClient:
         """Get the GitHub client."""
