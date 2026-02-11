@@ -161,6 +161,7 @@
           cd $NIX_HOME
           source pull-configs.sh
           clear
+	  nix flake update otstack
           git --no-pager diff
           git status
           drawline
