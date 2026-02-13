@@ -24,6 +24,14 @@ vim.lsp.config('ty', {
 })
 vim.lsp.enable('ty')
 
+-- LSP: ruff (Python linter)
+vim.lsp.config('ruff', {
+  cmd = { 'ruff', 'server' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', '.git' },
+})
+vim.lsp.enable('ruff')
+
 -- LSP: nil (Nix)
 vim.lsp.config('nil_ls', {
   cmd = { 'nil' },

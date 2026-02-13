@@ -19,6 +19,7 @@
     jq
     uv
     ty
+    ruff
     ripgrep
     nil
     lua-language-server
