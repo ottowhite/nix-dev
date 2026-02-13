@@ -32,6 +32,17 @@ vim.lsp.config('ruff', {
 })
 vim.lsp.enable('ruff')
 
+-- Ruff autofix on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.py",
+  callback = function()
+    vim.lsp.buf.code_action({
+      context = { only = { "source.fixAll.ruff" } },
+      apply = true,
+    })
+  end,
+})
+
 -- LSP: nil (Nix)
 vim.lsp.config('nil_ls', {
   cmd = { 'nil' },
