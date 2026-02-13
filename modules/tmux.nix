@@ -24,6 +24,10 @@
       bind B source-file ~/.tmux/debug
 
       bind X setw synchronize-panes on
+
+      # Allow OSC 52 clipboard to pass through to outer terminal
+      set -g set-clipboard on
+      set -g allow-passthrough on
     '';
   };
 }
