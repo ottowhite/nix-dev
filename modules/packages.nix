@@ -23,6 +23,7 @@
     ripgrep
     nil
     lua-language-server
+    gh
     otstack-pkg
   ];
 }
