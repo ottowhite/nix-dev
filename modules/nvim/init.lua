@@ -88,6 +88,8 @@ cmp.setup({
 -- File explorer
 require('nvim-tree').setup()
 vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<CR>')
+vim.keymap.set('n', '<C-w>>', '20<C-w>>')
+vim.keymap.set('n', '<C-w><', '20<C-w><')
 
 -- Telescope setup with custom keybindings
 local actions = require('telescope.actions')
