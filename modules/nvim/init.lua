@@ -102,15 +102,28 @@ local function select_tab_or_replace_empty(prompt_bufnr)
   end
 end
 
+local file_picker_mappings = {
+  i = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+    ["<CR>"] = select_tab_or_replace_empty,
+  },
+}
+
 require('telescope').setup({
   defaults = {
     mappings = {
       i = {
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
-        ["<CR>"] = select_tab_or_replace_empty,
       },
     },
+  },
+  pickers = {
+    find_files = { mappings = file_picker_mappings },
+    live_grep = { mappings = file_picker_mappings },
+    lsp_definitions = { mappings = file_picker_mappings },
+    lsp_references = { mappings = file_picker_mappings },
   },
 })
 
