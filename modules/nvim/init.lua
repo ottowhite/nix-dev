@@ -3,7 +3,18 @@ vim.g.copilot_no_tab_map = true
 vim.keymap.set('i', '<C-y>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false })
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.clipboard:append("unnamedplus")
+vim.opt.clipboard = "unnamedplus"
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = function() return vim.split(vim.fn.getreg(""), "\n") end,
+    ["*"] = function() return vim.split(vim.fn.getreg(""), "\n") end,
+  },
+}
 
 -- Colorscheme
 vim.cmd.colorscheme("carbonfox")
