@@ -80,13 +80,35 @@ vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<CR>')
 
 -- Telescope setup with custom keybindings
 local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
+
+-- Custom action: open in new tab, or replace if current buffer is empty
+local function select_tab_or_replace_empty(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local original_win = picker.original_win_id
+  local original_buf = vim.api.nvim_win_get_buf(original_win)
+
+  local buf_name = vim.api.nvim_buf_get_name(original_buf)
+  local buf_modified = vim.bo[original_buf].modified
+  local line_count = vim.api.nvim_buf_line_count(original_buf)
+  local first_line = vim.api.nvim_buf_get_lines(original_buf, 0, 1, false)[1] or ""
+
+  local is_empty = buf_name == "" and not buf_modified and line_count == 1 and first_line == ""
+
+  if is_empty then
+    actions.select_default(prompt_bufnr)
+  else
+    actions.select_tab(prompt_bufnr)
+  end
+end
+
 require('telescope').setup({
   defaults = {
     mappings = {
       i = {
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
-        ["<CR>"] = actions.select_tab,
+        ["<CR>"] = select_tab_or_replace_empty,
       },
     },
   },
