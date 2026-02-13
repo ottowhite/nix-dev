@@ -95,7 +95,7 @@ require('telescope').setup({
 -- Keybindings
 vim.keymap.set("n", "<leader>h", "gT")
 vim.keymap.set("n", "<leader>l", "gt")
-vim.keymap.set("n", "<C-p>", "<cmd>Telescope lsp_definitions<CR>")
-vim.keymap.set("n", "<C-S-p>", "<cmd>Telescope lsp_references<CR>")
+vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
+vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>")
 vim.keymap.set("n", "<C-f>", "<cmd>Telescope find_files<CR>")
 vim.keymap.set("n", "<C-d>", "<cmd>Telescope live_grep<CR>")
