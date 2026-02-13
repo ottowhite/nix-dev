@@ -4,6 +4,7 @@
   programs.tmux = {
     enable = true;
     prefix = "C-a";
+    keyMode = "vi";
     extraConfig = ''
       # Send prefix to nested tmux
       bind-key C-a send-prefix
