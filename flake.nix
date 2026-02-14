@@ -49,6 +49,12 @@
           username = "ow20";
           homeDirectory = "/home/ow20";
         };
+        # Generic Linux server (ansible user)
+        "ansible@server" = mkHomeConfiguration {
+          system = "x86_64-linux";
+          username = "ansible";
+          homeDirectory = "/home/ansible";
+        };
       };
 
       # Keep the dev shell for backwards compatibility during transition
