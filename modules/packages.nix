@@ -24,6 +24,7 @@
     nil
     lua-language-server
     gopls
+    go
     gh
     otstack-pkg
   ];
