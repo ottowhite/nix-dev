@@ -19,9 +19,9 @@ vim.g.clipboard = {
 -- Colorscheme
 vim.cmd.colorscheme("carbonfox")
 
--- Enable treesitter highlighting for all buffers
+-- Enable treesitter highlighting
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
+  pattern = { "python", "go", "gomod" },
   callback = function()
     vim.treesitter.start()
   end,
