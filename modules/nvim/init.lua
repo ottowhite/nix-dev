@@ -77,11 +77,12 @@ vim.lsp.config('lua_ls', {
 vim.lsp.enable('lua_ls')
 
 -- LSP: gopls (Go)
-require('lspconfig').gopls.setup({
+vim.lsp.config('gopls', {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
-  root_dir = require('lspconfig.util').root_pattern('go.mod', 'go.work', '.git'),
+  root_markers = { 'go.mod', 'go.work', '.git' },
 })
+vim.lsp.enable('gopls')
 
 vim.diagnostic.config({
   virtual_text = true,
