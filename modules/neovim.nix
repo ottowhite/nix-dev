@@ -18,7 +18,7 @@
       nightfox-nvim
       dracula-nvim
       nord-nvim
-      (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua ]))
+      (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua p.go p.gomod p.gosum ]))
       nvim-cmp
       cmp-nvim-lsp
       nvim-tree-lua

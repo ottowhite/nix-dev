@@ -76,6 +76,14 @@ vim.lsp.config('lua_ls', {
 })
 vim.lsp.enable('lua_ls')
 
+-- LSP: gopls (Go)
+vim.lsp.config('gopls', {
+  cmd = { 'gopls' },
+  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  root_markers = { 'go.mod', 'go.work', '.git' },
+})
+vim.lsp.enable('gopls')
+
 vim.diagnostic.config({
   virtual_text = true,
   signs = true,
