@@ -45,6 +45,8 @@
       tailbaby = "sudo tailscale set --exit-node=$BABY_SERVER_TAILSCALE_IP";
       tailberry = "sudo tailscale set --exit-node=$STRAWBERRY_SHORTCAKE_TAILSCALE_IP";
       tailkea = "sudo tailscale set --exit-node=$KEA04_TAILSCALE_IP";
+      gsur="git submodule update --init --recursive";
+      gsda="git submodule deinit --all";
       "??" = "noglob _ask_gpt";
     };
 
