@@ -2,7 +2,9 @@
   description = "Otto's Nix Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Temporarily update for the new claude code version
+    nixpkgs.url = "github:ottowhite/nixpkgs/bump-claude-code";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
