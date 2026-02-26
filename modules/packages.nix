@@ -13,7 +13,6 @@
     claude-code
     github-copilot-cli
     graphite-cli
-    shell-gpt
     opkssh
     nodejs_24
     jq
