@@ -4,4 +4,7 @@ nix/develop/local:
 nix/develop/remote:
 	nix develop --extra-experimental-features nix-command --extra-experimental-features flakes --refresh github:ottowhite/nix-dev#default --command echo "Configuration synchronized"
 
+update:
+	nix flake update
+
 # test -n "$NIX_GCROOT" || nix develop --extra-experimental-features nix-command --extra-experimental-features flakes --refresh github:ottowhite/nix-dev#default --command echo "Configuration synchronized"
