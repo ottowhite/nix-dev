@@ -26,5 +26,6 @@
     go
     gh
     otstack-pkg
+    opencode
   ];
 }
