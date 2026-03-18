@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772845525,
-        "narHash": "sha256-Dp5Ir2u4jJDGCgeMRviHvEQDe+U37hMxp6RSNOoMMPc=",
+        "lastModified": 1773810247,
+        "narHash": "sha256-6Vz1Thy/1s7z+Rq5OfkWOBAdV4eD+OrvDs10yH6xJzQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "27b93804fbef1544cb07718d3f0a451f4c4cd6c0",
+        "rev": "d47357a4c806d18a3e853ad2699eaec3c01622e7",
         "type": "github"
       },
       "original": {
@@ -23,16 +23,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1772096504,
-        "narHash": "sha256-2ruNuUGE+ZjjgFrHz/2ZMQ4YJ2JoHL2jN28ZQ29oR/A=",
-        "owner": "ottowhite",
+        "lastModified": 1773734432,
+        "narHash": "sha256-IF5ppUWh6gHGHYDbtVUyhwy/i7D261P7fWD1bPefOsw=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "a0a4d7e28dac9f60e35edf2dcc1e33294e2166db",
+        "rev": "cda48547b432e8d3b18b4180ba07473762ec8558",
         "type": "github"
       },
       "original": {
-        "owner": "ottowhite",
-        "ref": "bump-claude-code",
+        "owner": "nixos",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -47,11 +47,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1772914102,
-        "narHash": "sha256-iVaWSpZkBMKhM1jJv+kmdHode4Pu/gefzvbRshVnhR0=",
+        "lastModified": 1772918905,
+        "narHash": "sha256-G+hm3daW8zclIWpeznwdtw5mLpyN3sax6yq9X9qqR5c=",
         "owner": "ottowhite",
         "repo": "otstack",
-        "rev": "5b1b671dcb60d46275aa92ce2a76c5be79edb5a8",
+        "rev": "c46d6cdb541dd1a3e566a9f5ace8b610d7ed3d24",
         "type": "github"
       },
       "original": {
