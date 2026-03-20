@@ -77,6 +77,7 @@
       function wtrm {
         rm -rf "$1"
         git worktree prune
+	git branch -D $(basename "$1")
       }
 
       # "Claude worktree add"
