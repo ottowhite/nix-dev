@@ -113,7 +113,7 @@
   users.users.otto = {
     isNormalUser = true;
     description = "Otto White";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "input" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
@@ -124,6 +124,9 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.zsh.enable = true;
+
+  # Enable ydotool
+  programs.ydotool.enable = true;
 
   # Dynamically linked libraries
   # programs.nix-ld.enable = true;
@@ -138,6 +141,12 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Register appimage interpreter for appimage binary files
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -150,6 +159,8 @@
     tailscale
     libreoffice-qt
     appimage-run
+    xclip
+    ydotool
   ];
 
   nix.settings = {
@@ -169,11 +180,26 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  systemd.user.services.ydotoold = {
+    description = "ydotoold - ydotool daemon";
+    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.ydotool}/bin/ydotoold";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+  };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  services.udev.extraRules = ''
+    KERNEL=="uinput", GROUP="input", MODE="0660", TAG+="uaccess"
+  '';
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -188,5 +214,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
+
 
 }
