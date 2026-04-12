@@ -114,7 +114,7 @@
     isNormalUser = true;
     description = "Otto White";
     extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.bash;
+    shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -125,6 +125,13 @@
   programs.firefox.enable = true;
   programs.zsh.enable = true;
 
+  # Dynamically linked libraries
+  # programs.nix-ld.enable = true;
+  # programs.nix-ld.libraries = with pkgs; [
+  #   # Add any missing dynamic libraries for unpackaged programs here, NOT in environment.systemPackages
+  #   fuse # Needed for openwhisper appimage
+  # ];
+
   # SSH related options
   programs.ssh.startAgent = true;
 
@@ -134,6 +141,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    neovim
     git
     wget
     zsh
@@ -141,19 +149,8 @@
     cudatoolkit
     tailscale
     libreoffice-qt
+    appimage-run
   ];
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    configure = {
-      packages.myPlugins = with pkgs.vimPlugins; {
-        start = [
-          nvim-lspconfig
-        ];
-      };
-    };
-  };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
