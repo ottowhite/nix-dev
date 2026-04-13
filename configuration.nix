@@ -16,6 +16,8 @@
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -124,6 +126,7 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.zsh.enable = true;
+  programs.zoom-us.enable = true;
 
   # Enable ydotool
   programs.ydotool.enable = true;
@@ -161,6 +164,8 @@
     appimage-run
     xclip
     ydotool
+    zoom-us
+    xdg-utils
   ];
 
   nix.settings = {
