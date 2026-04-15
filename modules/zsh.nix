@@ -239,6 +239,20 @@
         home-manager switch --flake "$NIX_HOME#$config" --extra-experimental-features 'nix-command flakes' \
           && exec zsh
       }
+
+      hmsr() {
+        local config="$1"
+        if [[ -z "$config" ]]; then
+          local user=$(whoami)
+          local host=$(hostname)
+          if [[ "$user" == "ow20" && "$HOME" == "/home/ow20" ]]; then
+            config="ow20@server"
+          else
+            config="$user@$host"
+          fi
+        fi
+        nix run --extra-experimental-features "nix-command flakes" home-manager/master -- switch --extra-experimental-features "nix-command flakes" --flake github:ottowhite/nix-dev#$config
+      }
     '';
   };
 }
