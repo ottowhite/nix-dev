@@ -38,7 +38,6 @@
       svm = "sudo systemctl start libvirtd && sudo virsh net-start default";
       x = "exit";
       nixmac = "sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist";
-      nrb = "sudo nixos-rebuild ";
       nrbt = "sudo nixos-rebuild test";
       nrbs = "sudo nixos-rebuild switch";
       tailhome = "sudo tailscale set --exit-node=";
