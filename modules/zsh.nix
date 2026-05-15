@@ -50,6 +50,15 @@
     };
 
     initContent = ''
+      # On macOS, /etc/zprofile runs path_helper which reorders PATH and pushes
+      # Nix paths behind /usr/bin. Re-prepend so Nix-installed tools (e.g. git)
+      # win over Apple stubs that depend on DEVELOPER_DIR.
+      if [[ "$OSTYPE" == darwin* ]]; then
+        typeset -U path PATH
+        path=("$HOME/.nix-profile/bin" "/nix/var/nix/profiles/default/bin" $path)
+        export PATH
+      fi
+
       # Source and export environment variables from ~/.env if it exists
       if [[ -f ~/.env ]]; then
         set -a  # automatically export all variables
