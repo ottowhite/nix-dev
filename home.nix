@@ -15,6 +15,9 @@
   home.stateVersion = "24.05";
   home.sessionPath = [ "${homeDirectory}/.local/bin" ];
 
+  nix.package = pkgs.nix;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   xdg.enable = true;
 
   # Let Home Manager manage itself
