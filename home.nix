@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, homeDirectory, otstack-pkg, ... }:
+{ config, pkgs, lib, username, homeDirectory, ... }:
 
 {
   imports = [

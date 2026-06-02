@@ -1,4 +1,4 @@
-{ pkgs, otstack-pkg, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -8,14 +8,10 @@
     tmux
     watch
     mosh
-    stgit
     direnv
     nix-direnv
     claude-code
-    github-copilot-cli
-    graphite-cli
     opkssh
-    nodejs_24
     jq
     uv
     ty
@@ -26,7 +22,5 @@
     gopls
     go
     gh
-    otstack-pkg
-    opencode
   ];
 }
