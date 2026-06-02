@@ -44,6 +44,12 @@
           username = "ow20";
           homeDirectory = "/home/ow20";
         };
+        # Generic Linux server
+        "ow20@csgserver" = mkHomeConfiguration {
+          system = "x86_64-linux";
+          username = "ow20";
+          homeDirectory = "/homes/ow20";
+        };
         # Generic Linux server (ansible user)
         "ansible@server" = mkHomeConfiguration {
           system = "x86_64-linux";
