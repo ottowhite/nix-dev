@@ -164,7 +164,10 @@
         else
           git clone git@github.com:ottowhite/nix-dev.git $NIX_HOME
         fi
-        $EDITOR $NIX_HOME/$1
+	(
+	  cd $NIX_HOME && $EDITOR $1
+	)
+        
       }
 
       nixup() {
@@ -172,7 +175,6 @@
           cd $NIX_HOME
           source pull-configs.sh
           clear
-	  nix flake update otstack
           git --no-pager diff
           git status
           drawline
