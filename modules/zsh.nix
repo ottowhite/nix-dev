@@ -30,6 +30,7 @@
     };
 
     shellAliases = {
+      hm = "NIX_CONFIG='experimental-features = nix-command flakes' nix run home-manager/master --";
       cff = "configure_file flake.nix";
       cfhome = "configure_file home.nix";
       getsid = "ssh -t root@kangaroo2 id -u ";
