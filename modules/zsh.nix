@@ -246,7 +246,8 @@
             config="$user@$host"
           fi
         fi
-        home-manager switch --flake "$NIX_HOME#$config" --extra-experimental-features 'nix-command flakes' \
+        NIX_CONFIG="experimental-features = nix-command flakes" \
+          home-manager switch --flake "$NIX_HOME#$config" \
           && exec zsh
       }
 
@@ -261,7 +262,8 @@
             config="$user@$host"
           fi
         fi
-        nix run --extra-experimental-features "nix-command flakes" home-manager/master -- switch --extra-experimental-features "nix-command flakes" --flake github:ottowhite/nix-dev#$config
+        NIX_CONFIG="experimental-features = nix-command flakes" \
+          nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#$config
       }
     '';
   };
