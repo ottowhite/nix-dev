@@ -247,7 +247,7 @@
           fi
         fi
         NIX_CONFIG="experimental-features = nix-command flakes" \
-          home-manager switch --flake "$NIX_HOME#$config" \
+          nix run home-manager/master -- switch --flake "$NIX_HOME#$config" \
           && exec zsh
       }
 
