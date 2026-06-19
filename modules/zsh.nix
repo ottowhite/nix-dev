@@ -266,6 +266,14 @@
         NIX_CONFIG="experimental-features = nix-command flakes" \
           nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#$config
       }
+
+      nfu() {
+        NIX_CONFIG="experimental-features = nix-command flakes" \
+          nix flake update --flake "$NIX_HOME" \
+          && git -C "$NIX_HOME" diff flake.lock \
+          && git -C "$NIX_HOME" add flake.lock \
+          && git -C "$NIX_HOME" status
+      }
     '';
   };
 }
