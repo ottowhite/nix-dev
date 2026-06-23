@@ -12,14 +12,14 @@
   outputs = { self, nixpkgs, home-manager, ... }:
     let
       # Helper function to create a home configuration
-      mkHomeConfiguration = { system, username, homeDirectory }:
+      mkHomeConfiguration = { system, username, homeDirectory, isLaptop ? false }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = true;
           };
           extraSpecialArgs = {
-            inherit username homeDirectory;
+            inherit username homeDirectory isLaptop;
           };
           modules = [ ./home.nix ];
         };
@@ -30,12 +30,14 @@
           system = "aarch64-darwin";
           username = "ottowhite";
           homeDirectory = "/Users/ottowhite";
+          isLaptop = true;
         };
 
         "otto@nixos" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "otto";
           homeDirectory = "/home/otto";
+          isLaptop = true;
         };
 
         # Generic Linux server

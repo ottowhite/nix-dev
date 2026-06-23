@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, homeDirectory, ... }:
+{ config, pkgs, lib, username, homeDirectory, isLaptop ? false, ... }:
 
 {
   imports = [
@@ -8,8 +8,8 @@
     ./modules/neovim.nix
     ./modules/direnv.nix
     ./modules/fzf.nix
-    ./modules/ssh.nix
-  ];
+    ./modules/ssh.common.nix
+  ] ++ lib.optional isLaptop ./modules/ssh.local.nix;
 
   home.username = username;
   home.homeDirectory = homeDirectory;
