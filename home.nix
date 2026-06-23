@@ -8,6 +8,7 @@
     ./modules/neovim.nix
     ./modules/direnv.nix
     ./modules/fzf.nix
+    ./modules/ssh.nix
   ];
 
   home.username = username;
