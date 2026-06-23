@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, homeDirectory, isLaptop ? false, ... }:
+{ pkgs, lib, username, homeDirectory, isLaptop ? false, ... }:
 
 {
   imports = [
