@@ -274,6 +274,20 @@
           && git -C "$NIX_HOME" add flake.lock \
           && git -C "$NIX_HOME" status
       }
+
+      # Stable ssh-agent socket for forwarded (remote) sessions. A forwarded agent
+      # socket dies with the SSH connection that created it, and tmux panes keep the
+      # old path — so a dropped connection leaves agent auth broken until you open a
+      # fresh pane. Pin a fixed symlink that each genuine login repoints at the live
+      # socket; shells always read the fixed path, so reconnecting repairs every
+      # existing pane. tmux panes with a dead socket fail the -S test and skip the
+      # relink, so they never clobber the symlink with a stale path.
+      if [ -n "$SSH_CONNECTION" ]; then
+        if [ -S "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/ssh_auth_sock" ]; then
+          ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+        fi
+        export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+      fi
     '';
   };
 }
