@@ -5,6 +5,11 @@
     enable = true;
     defaultEditor = true;
 
+    # Keep legacy provider defaults (these flipped to false for stateVersion
+    # >= 26.05); pin them so the build doesn't warn.
+    withRuby = true;
+    withPython3 = true;
+
     plugins = with pkgs.vimPlugins; [
       nvim-lspconfig
       telescope-nvim
