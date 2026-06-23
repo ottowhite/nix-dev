@@ -15,7 +15,7 @@
       User = "ow20";
       ProxyJump = "opk1";
     };
-    "*.doc.res.ic.ac.uk !emu3.doc.res.ic.ac.uk" = {
+    "*.doc.res.ic.ac.uk *.doc.ic.ac.uk !emu3.doc.res.ic.ac.uk !shell1.doc.res.ic.ac.uk" = {
       User = "ow20";
       ProxyJump = "opk1";
     };
