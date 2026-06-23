@@ -1,6 +1,5 @@
 {
   description = "Otto's Nix Configuration";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -8,10 +7,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
     let
-      # Helper function to create a home configuration
       mkHomeConfiguration = { system, username, homeDirectory, isLaptop ? false }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
@@ -32,61 +29,27 @@
           homeDirectory = "/Users/ottowhite";
           isLaptop = true;
         };
-
         "otto@nixos" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "otto";
           homeDirectory = "/home/otto";
           isLaptop = true;
         };
-
-        # Generic Linux server
         "ow20@server" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "ow20";
           homeDirectory = "/home/ow20";
         };
-        # Generic Linux server
-        "ow20@csgserver" = mkHomeConfiguration {
-          system = "x86_64-linux";
-          username = "ow20";
-          homeDirectory = "/homes/ow20";
-        };
-        # Generic Linux server (ansible user)
         "ansible@server" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "ansible";
           homeDirectory = "/home/ansible";
         };
+        "ow20@csgserver" = mkHomeConfiguration {
+          system = "x86_64-linux";
+          username = "ow20";
+          homeDirectory = "/homes/ow20";
+        };
       };
-
-      # Keep the dev shell for backwards compatibility during transition
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in
-        {
-          default = pkgs.mkShell {
-            packages = [
-              home-manager.packages.${system}.default
-            ];
-            shellHook = ''
-              echo "Home Manager dev shell"
-              echo ""
-              echo "To apply your home configuration:"
-              echo "  home-manager switch --flake .#ow20@nixos"
-              echo ""
-              echo "Or for a different machine:"
-              echo "  home-manager switch --flake .#ow20@server"
-
-	      export SHELL=$(which zsh)
-	      exec zsh
-            '';
-          };
-        }
-      );
     };
 }
