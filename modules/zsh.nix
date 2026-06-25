@@ -272,7 +272,7 @@
           fi
         fi
         NIX_CONFIG="experimental-features = nix-command flakes" \
-          nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#$config
+          nix run home-manager/master -- switch --refresh --flake github:ottowhite/nix-dev#$config
       }
 
       nfu() {
