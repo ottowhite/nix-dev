@@ -8,6 +8,7 @@
     ./modules/neovim.nix
     ./modules/direnv.nix
     ./modules/fzf.nix
+    ./modules/ghostty-terminfo.nix
     ./modules/ssh.common.nix
   ] ++ lib.optional isLaptop ./modules/ssh.local.nix;
 
