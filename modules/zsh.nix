@@ -168,7 +168,9 @@
       }
 
       configure_file() {
-        pull_nix_dev()
+
+        pull_nix_dev
+
 	(
 	  cd $NIX_HOME && $EDITOR $1
 	)
@@ -241,7 +243,8 @@
       }
 
       hms() {
-	pull_nix_dev()
+	pull_nix_dev
+
         local config="$1"
         if [[ -z "$config" ]]; then
           local user=$(whoami)
