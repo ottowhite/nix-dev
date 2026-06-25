@@ -26,4 +26,8 @@
 
   # Ensure .claude directory exists
   home.file.".claude/.keep".text = "";
+
+  # Suppress the "Last login:" and "You have mail." messages printed by
+  # login(1) at the start of each login shell.
+  home.file.".hushlogin".text = "";
 }
