@@ -159,12 +159,16 @@
         git diff $1~ $1
       }
 
-      configure_file() {
+      pull_nix_dev() {
         if [ -d $NIX_HOME ]; then
           git -C $NIX_HOME pull
         else
           git clone git@github.com:ottowhite/nix-dev.git $NIX_HOME
         fi
+      }
+
+      configure_file() {
+        pull_nix_dev()
 	(
 	  cd $NIX_HOME && $EDITOR $1
 	)
@@ -237,6 +241,7 @@
       }
 
       hms() {
+	pull_nix_dev()
         local config="$1"
         if [[ -z "$config" ]]; then
           local user=$(whoami)
