@@ -26,5 +26,10 @@
       HostName = "emu3.doc.res.ic.ac.uk";
       User = "ansible";
     };
+    boogle = {
+      HostName = "135.181.56.36";
+      User = "ow20";
+      ControlMaster = "auto";
+    };
   };
 }
