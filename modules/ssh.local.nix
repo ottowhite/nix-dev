@@ -19,17 +19,5 @@
       User = "ow20";
       ProxyJump = "opk1";
     };
-    "emu3.doc.res.ic.ac.uk" = {
-      User = "ow20";
-    };
-    emu3_ansible = {
-      HostName = "emu3.doc.res.ic.ac.uk";
-      User = "ansible";
-    };
-    boogle = {
-      HostName = "135.181.56.36";
-      User = "ow20";
-      ControlMaster = "auto";
-    };
   };
 }

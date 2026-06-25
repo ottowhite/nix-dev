@@ -25,6 +25,17 @@
 
       baby-server.HostName = "100.67.151.15";
       strawberry-shortcake.HostName = "100.115.111.12";
+
+      boogle = {
+        HostName = "135.181.56.36";
+        User = "ow20";
+        ControlMaster = "auto";
+      };
+
+      emu3_ansible = {
+        HostName = "emu3.doc.res.ic.ac.uk";
+        User = "ansible";
+      };
     };
   };
 }
