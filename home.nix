@@ -9,6 +9,7 @@
     ./modules/direnv.nix
     ./modules/fzf.nix
     ./modules/ghostty-terminfo.nix
+    ./modules/claude-code.nix
     ./modules/ssh.common.nix
   ] ++ lib.optional isLaptop ./modules/ssh.local.nix;
 
@@ -24,9 +25,6 @@
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
-
-  # Ensure .claude directory exists
-  home.file.".claude/.keep".text = "";
 
   # Suppress the "Last login:" and "You have mail." messages printed by
   # login(1) at the start of each login shell.

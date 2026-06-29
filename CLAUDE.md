@@ -1,3 +1,4 @@
 - Perform atomic git commits with standard git tags and descriptions as you work, and always push directly after committing.
 - Always keep the project-level CLAUDE.md up to date as you make changes
 - `README.md` documents the machine-bootstrap commands and the available `homeConfigurations` flake outputs; keep its config list in sync with `flake.nix`.
+- `modules/claude-code.nix` configures `programs.claude-code`; Remote Control is enabled by default via `settings.remoteControlAtStartup = true`.
