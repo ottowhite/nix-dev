@@ -275,12 +275,40 @@
           nix run home-manager/master -- switch --refresh --flake github:ottowhite/nix-dev#$config
       }
 
+      # "Nix flake update": update flake.lock, review the diff, then prompt to
+      # commit+push with a fixed message or roll the change back.
       nfu() {
-        NIX_CONFIG="experimental-features = nix-command flakes" \
-          nix flake update --flake "$NIX_HOME" \
-          && git -C "$NIX_HOME" diff flake.lock \
-          && git -C "$NIX_HOME" add flake.lock \
-          && git -C "$NIX_HOME" status
+        pull_nix_dev
+
+        (
+          cd $NIX_HOME || return 1
+
+          NIX_CONFIG="experimental-features = nix-command flakes" \
+            nix flake update || return 1
+
+          if git diff --quiet flake.lock; then
+            echo "flake.lock is already up to date, nothing to commit."
+            return 0
+          fi
+
+          git add flake.lock
+          clear
+          git --no-pager diff --staged flake.lock
+          drawline
+          git status
+          drawline
+
+          local commit_msg="nix: update flake.lock"
+          echo -n "Commit and push with message \"$commit_msg\"? [y/N] "
+          read -r reply
+          if [[ "$reply" =~ ^[Yy]$ ]]; then
+            git commit -m "$commit_msg" && git push
+          else
+            echo "Rolling back flake.lock..."
+            git restore --staged flake.lock
+            git checkout -- flake.lock
+          fi
+        )
       }
 
       # Stable ssh-agent socket for forwarded (remote) sessions. A forwarded agent
