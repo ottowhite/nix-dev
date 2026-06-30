@@ -9,7 +9,13 @@
       {
         # Powerline theme; tmux-power accepts a custom hex for an exact shade.
         plugin = power-theme;
-        extraConfig = "set -g @tmux_power_theme '#0099ff'"; # electric blue
+        # tmux-power styles the center bar via the deprecated `status-bg`, which
+        # tmux 3.6 ignores (leaving it default green), so set status-style to the
+        # theme's own background/foreground (G04/G10) ourselves.
+        extraConfig = ''
+          set -g @tmux_power_theme '#0099ff'
+          set -g status-style 'bg=#262626,fg=#626262'
+        ''; # electric blue
       }
     ];
     extraConfig = ''
