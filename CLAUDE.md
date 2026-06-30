@@ -2,3 +2,4 @@
 - Always keep the project-level CLAUDE.md up to date as you make changes
 - `README.md` documents the machine-bootstrap commands and the available `homeConfigurations` flake outputs; keep its config list in sync with `flake.nix`.
 - `modules/claude-code.nix` configures `programs.claude-code`; Remote Control is enabled by default via `settings.remoteControlAtStartup = true`.
+- `modules/claude-code.nix` also registers a `playwright` stdio MCP server (`pkgs.playwright-mcp`) under `programs.claude-code.mcpServers`, making Playwright browser automation available to every Claude session (delivered as a `--plugin-dir` plugin, so no per-project `.mcp.json`). It runs `--headless` on non-laptops. Do not also list `claude-code` in `modules/packages.nix` — the module installs its own plugin-wrapped `claude` and the two collide in `buildEnv`.
