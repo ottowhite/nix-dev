@@ -1,10 +1,17 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.tmux = {
     enable = true;
     prefix = "C-a";
     keyMode = "vi";
+    plugins = with pkgs.tmuxPlugins; [
+      {
+        # Powerline theme; tmux-power accepts a custom hex for an exact shade.
+        plugin = power-theme;
+        extraConfig = "set -g @tmux_power_theme '#0099ff'"; # electric blue
+      }
+    ];
     extraConfig = ''
       # Send prefix to nested tmux
       bind-key C-a send-prefix
