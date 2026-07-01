@@ -1,5 +1,17 @@
-{ ... }:
+{ lib, ... }:
 
+let
+  # Imperial DoC cluster aliases: <prefix><n> -> <host><nn>.doc.res.ic.ac.uk
+  # (hosts are zero-padded to two digits, e.g. ko3 -> komodo03).
+  mkCluster = prefix: host: count:
+    builtins.listToAttrs (map (i: {
+      name = "${prefix}${toString i}";
+      value = {
+        HostName = "${host}${lib.fixedWidthNumber 2 i}.doc.res.ic.ac.uk";
+        User = "ow20";
+      };
+    }) (lib.range 1 count));
+in
 {
   programs.ssh = {
     enable = true;
@@ -36,6 +48,20 @@
         HostName = "emu3.doc.res.ic.ac.uk";
         User = "ansible";
       };
-    };
+
+      e3 = {
+        HostName = "emu3.doc.res.ic.ac.uk";
+        User = "ow20";
+      };
+
+      lsds = {
+        HostName = "lsds.doc.ic.ac.uk";
+        User = "ow20";
+      };
+    }
+    # ko1..ko4, ke1..ke8, q1..q5 -> komodo/kea/quokka NN.doc.res.ic.ac.uk
+    // mkCluster "ko" "komodo" 4
+    // mkCluster "ke" "kea" 8
+    // mkCluster "q" "quokka" 5;
   };
 }
