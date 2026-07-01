@@ -1,15 +1,22 @@
-{ lib, ... }:
+{ lib, isLaptop ? false, ... }:
 
 let
   # Imperial DoC cluster aliases: <prefix><n> -> <host><nn>.doc.res.ic.ac.uk
   # (hosts are zero-padded to two digits, e.g. ko3 -> komodo03).
+  #
+  # These are internal research hosts: reaching them requires jumping via opk1
+  # (emu3), the same ProxyJump the `*.doc.res.ic.ac.uk` wildcard in
+  # ssh.local.nix applies. Because `ssh ko1` matches Host against the alias
+  # `ko1` (not the resolved hostname), that wildcard no longer fires, so we set
+  # ProxyJump here explicitly. opk1 only exists on laptops (ssh.local.nix), so
+  # gate it on isLaptop to avoid a dangling ProxyJump on other machines.
   mkCluster = prefix: host: count:
     builtins.listToAttrs (map (i: {
       name = "${prefix}${toString i}";
       value = {
         HostName = "${host}${lib.fixedWidthNumber 2 i}.doc.res.ic.ac.uk";
         User = "ow20";
-      };
+      } // lib.optionalAttrs isLaptop { ProxyJump = "opk1"; };
     }) (lib.range 1 count));
 in
 {
