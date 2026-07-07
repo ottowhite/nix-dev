@@ -24,5 +24,6 @@
     go
     gh
     playwright-mcp
+    ncdu
   ];
 }
