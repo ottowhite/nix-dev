@@ -11,23 +11,24 @@ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --yes --d
 # Activate nix in the current shell
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-# Enable flakes + nix-command for this session
-export NIX_CONFIG="experimental-features = nix-command flakes"
+# Enable flakes + nix-command, and build derivations in parallel, for this session
+export NIX_CONFIG="experimental-features = nix-command flakes
+max-jobs = auto"
 
 # Bootstrap with home-manager (pick the config that matches the machine below)
-nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#ow20@server --max-jobs auto
+nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#ow20@server
 
 # Make the newly installed zsh the default shell
 sudo usermod -s $(which zsh) $(whoami)
 ```
 
-> `--max-jobs auto` builds derivations in parallel. The configs set
+> The `max-jobs = auto` line builds derivations in parallel. The configs set
 > `nix.settings.max-jobs = "auto"`, but that only takes effect *after* the first
 > activation, and Nix otherwise defaults to `max-jobs = 1` (fully serial). Since a
 > cold bootstrap builds ~75 local derivations (a config-specific neovim wrapper
-> plus plugins that miss the public cache), passing the flag on the first switch
-> roughly halves wall-clock on a multi-core machine. Every rebuild after the first
-> picks it up automatically.
+> plus plugins that miss the public cache), setting it in `NIX_CONFIG` for the
+> bootstrap session roughly halves wall-clock on a multi-core machine. Every
+> rebuild after the first picks it up from the activated config automatically.
 
 ## Available configurations
 
@@ -51,9 +52,9 @@ nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#ansible@s
 nix run home-manager/master -- switch --flake github:ottowhite/nix-dev#ow20@csgserver
 ```
 
-> All `nix run`/`nix flake` invocations assume
-> `NIX_CONFIG="experimental-features = nix-command flakes"` is exported (see the
-> bootstrap step above). This matches the style used in `modules/zsh.nix`, so
+> All `nix run`/`nix flake` invocations assume the `NIX_CONFIG` export from the
+> bootstrap step above is in effect (`experimental-features = nix-command flakes`,
+> plus `max-jobs = auto`). This matches the style used in `modules/zsh.nix`, so
 > after the first switch the `hms` / `hmsr` shell helpers are available.
 
 ## Measuring cold-build cost
