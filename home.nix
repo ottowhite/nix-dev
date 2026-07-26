@@ -20,6 +20,10 @@
 
   nix.package = pkgs.nix;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Build derivations in parallel. Nix defaults max-jobs to 1, which serialises
+  # every local build (e.g. the ~75 neovim/plugin derivations built cold); on a
+  # multi-core box this alone roughly halved cold-build wall-clock in testing.
+  nix.settings.max-jobs = "auto";
 
   xdg.enable = true;
 
