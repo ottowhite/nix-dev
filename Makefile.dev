@@ -7,4 +7,25 @@ nix/develop/remote:
 update:
 	nix flake update
 
+# Which homeConfiguration to build. Override on the CLI for other machines, e.g.
+#   make -f Makefile.dev cold-build CONFIG='otto@nixos'
+CONFIG ?= ow20@server
+NIXFLAGS := --extra-experimental-features 'nix-command flakes'
+
+# Measure a true cold bootstrap: build the config into a fresh, empty chroot
+# store so nothing already on this machine counts as cached. --refresh also
+# forces a cold flake eval. Everything is re-fetched from cache.nixos.org (or
+# built locally), timed, then the throwaway store is removed on exit. Your real
+# /nix/store and active generation are left untouched.
+.PHONY: cold-build
+cold-build:
+	@STORE=$$(mktemp -d); \
+	echo ">>> Cold build of .#$(CONFIG) into throwaway store $$STORE"; \
+	trap 'chmod -R u+w "$$STORE" 2>/dev/null; rm -rf "$$STORE"' EXIT INT TERM; \
+	start=$$(date +%s); \
+	nix build $(NIXFLAGS) --refresh --store "$$STORE" \
+	  ".#homeConfigurations.\"$(CONFIG)\".activationPackage"; \
+	end=$$(date +%s); \
+	echo ">>> Cold build wall-clock: $$((end - start))s"
+
 # test -n "$NIX_GCROOT" || nix develop --extra-experimental-features nix-command --extra-experimental-features flakes --refresh github:ottowhite/nix-dev#default --command echo "Configuration synchronized"
