@@ -17,20 +17,14 @@
       nvim-lspconfig
       telescope-nvim
       plenary-nvim
-      onedark-nvim
-      tokyonight-nvim
-      catppuccin-nvim
-      gruvbox-nvim
-      rose-pine
-      kanagawa-nvim
-      nightfox-nvim
-      dracula-nvim
-      nord-nvim
+      # Colorscheme: use neovim's built-in `habamax` (see nvim/init.lua) instead of
+      # a plugin. Each colorscheme plugin is a cache-missing, locally-built
+      # derivation (~10-19s each cold), so dropping them removes the whole
+      # colorscheme-build chunk from a cold build.
       (nvim-treesitter.withPlugins (p: [ p.python p.nix p.lua p.go p.gomod p.gosum ]))
       nvim-cmp
       cmp-nvim-lsp
       nvim-tree-lua
-      copilot-vim
     ];
 
     initLua = builtins.readFile ./nvim/init.lua;

@@ -1,6 +1,4 @@
 vim.g.mapleader = " "
-vim.g.copilot_no_tab_map = true
-vim.keymap.set('i', '<C-y>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false })
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.clipboard = "unnamedplus"
@@ -16,8 +14,8 @@ vim.g.clipboard = {
   },
 }
 
--- Colorscheme
-vim.cmd.colorscheme("carbonfox")
+-- Colorscheme (neovim built-in; no plugin required)
+vim.cmd.colorscheme("habamax")
 
 -- Enable treesitter highlighting
 vim.api.nvim_create_autocmd("FileType", {
