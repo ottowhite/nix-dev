@@ -39,8 +39,10 @@ subprocess.run(["nix", "eval", "--raw", f"{attr}.drvPath", "--refresh", *FEAT],
 eval_t = time.monotonic() - te0
 
 # Phase 2 (realize): build into the fresh store with a warm eval cache, so the
-# internal-json activity stream is download + local-build only.
-cmd = ["nix", "build", attr, "--store", store, "-v",
+# internal-json activity stream is download + local-build only. Force
+# --max-jobs auto to match the flake's nix.settings.max-jobs (which only takes
+# effect post-activation, so a real first cold bootstrap should pass it too).
+cmd = ["nix", "build", attr, "--store", store, "-v", "--max-jobs", "auto",
        "--log-format", "internal-json", *FEAT]
 
 t0 = time.monotonic()
