@@ -28,4 +28,12 @@ cold-build:
 	end=$$(date +%s); \
 	echo ">>> Cold build wall-clock: $$((end - start))s"
 
+# Timed breakdown of the cold build: attributes wall-clock to eval / download /
+# local-build phases and lists the slowest downloads and derivations, using
+# nix's internal-json log. Same throwaway-store approach as cold-build, so it
+# leaves your real store untouched.
+.PHONY: cold-build-breakdown
+cold-build-breakdown:
+	@python3 $(dir $(lastword $(MAKEFILE_LIST)))cold-build-profile.py '$(CONFIG)'
+
 # test -n "$NIX_GCROOT" || nix develop --extra-experimental-features nix-command --extra-experimental-features flakes --refresh github:ottowhite/nix-dev#default --command echo "Configuration synchronized"
