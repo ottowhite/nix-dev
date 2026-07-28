@@ -24,7 +24,7 @@
       NIX_HOME = "${homeDirectory}/nix-dev";
       BABY_SERVER_TAILSCALE_IP = "100.67.151.15";
       STRAWBERRY_SHORTCAKE_TAILSCALE_IP = "100.115.111.12";
-      KEA04_TAILSCALE_IP = "100.67.99.38";
+      KEA04_TAILSCALE_IP = "100.81.155.10";
       VI_MODE_SET_CURSOR = "true";
       KEYTIMEOUT = "20";
     };
