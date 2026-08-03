@@ -68,9 +68,10 @@
       fi
 
       prdiff() {
+          (( $# )) || set -- ""
           git diff --numstat main...HEAD \
               | awk '{a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, $3}' \
-              | grep -- "''${1:-}" \
+              | grep "$@" \
               | sort -rn \
               | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";N="\033[0m"}
                      {ta+=$2; td+=$3; tc+=$1
