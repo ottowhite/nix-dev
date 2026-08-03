@@ -73,14 +73,19 @@
               | awk '{a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, $3}' \
               | grep "$@" \
               | sort -rn \
-              | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";N="\033[0m"}
-                     {ta+=$2; td+=$3; tc+=$1
+              | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";Y="\033[33m";N="\033[0m"
+                      cmd="git log --pretty=format: --name-only --diff-filter=d"
+                      while ((cmd | getline f) > 0) if (f != "") hot[f]++
+                      close(cmd)}
+                     {ta+=$2; td+=$3; tc+=$1; h=hot[$4]+0; th+=h
                       at = $2 ? G "+" $2 N : ""; la = $2 ? length($2)+1 : 0
                       dt = $3 ? R "-" $3 N : ""; ld = $3 ? length($3)+1 : 0
-                      printf "%s%6d%s  %s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", $4}
+                      ht = h ? Y h N : ""; lh = h ? length(h) : 0
+                      printf "%s%6d%s  %s%*s%s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", ht,6-lh,"", $4}
                      END{at = ta ? G "+" ta N : ""; la = ta ? length(ta)+1 : 0
                          dt = td ? R "-" td N : ""; ld = td ? length(td)+1 : 0
-                         printf "%s%6d%s  %s%*s%s%*s%s\n", B,tc,N, at,8-la,"", dt,8-ld,"", B "TOTAL" N}'
+                         ht = th ? Y th N : ""; lh = th ? length(th) : 0
+                         printf "%s%6d%s  %s%*s%s%*s%s%*s%s\n", B,tc,N, at,8-la,"", dt,8-ld,"", ht,6-lh,"", B "TOTAL" N}'
       }
 
       # Vim mode
