@@ -68,13 +68,13 @@
       fi
 
       prdiff() {
-        git diff --numstat "$@" \
-          | awk '{a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, $3}' \
-          | sort -rn \
-          | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";N="\033[0m"}
-                 {at = $2 ? G "+" $2 N : ""; la = $2 ? length($2)+1 : 0
-                  dt = $3 ? R "-" $3 N : ""; ld = $3 ? length($3)+1 : 0
-                  printf "%s%6d%s  %s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", $4}'
+          git diff --numstat main...HEAD \
+              | awk '{a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, $3}' \
+              | sort -rn \
+              | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";N="\033[0m"}
+                     {at = $2 ? G "+" $2 N : ""; la = $2 ? length($2)+1 : 0
+                      dt = $3 ? R "-" $3 N : ""; ld = $3 ? length($3)+1 : 0
+                      printf "%s%6d%s  %s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", $4}'
       }
 
       # Vim mode
