@@ -68,20 +68,37 @@
       fi
 
       prdiff() {
-          (( $# )) || set -- ""
+          local order=linecount grep_pat=""
+          while (( $# )); do
+              case "$1" in
+                  --order-by=*) order="''${1#*=}"; shift ;;
+                  --order-by)   order="$2"; shift 2 ;;
+                  --grep=*)     grep_pat="''${1#*=}"; shift ;;
+                  --grep)       grep_pat="$2"; shift 2 ;;
+                  *) echo "prdiff: unknown argument: $1" >&2; return 1 ;;
+              esac
+          done
+
+          local sortkey
+          case "$order" in
+              linecount) sortkey=1 ;;   # total changed lines (field 1)
+              heat)      sortkey=4 ;;   # lifetime commit count (field 4)
+              *) echo "prdiff: --order-by must be 'linecount' or 'heat'" >&2; return 1 ;;
+          esac
+
           git diff --numstat main...HEAD \
-              | awk '{a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, $3}' \
-              | grep "$@" \
-              | sort -rn \
-              | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";Y="\033[33m";N="\033[0m"
-                      cmd="git log --pretty=format: --name-only --diff-filter=d"
-                      while ((cmd | getline f) > 0) if (f != "") hot[f]++
-                      close(cmd)}
-                     {ta+=$2; td+=$3; tc+=$1; h=hot[$4]+0; th+=h
+              | awk 'BEGIN{cmd="git log --pretty=format: --name-only --diff-filter=d"
+                           while ((cmd | getline f) > 0) if (f != "") hot[f]++
+                           close(cmd)}
+                     {a=($1=="-")?0:$1; d=($2=="-")?0:$2; print a+d, a, d, hot[$3]+0, $3}' \
+              | grep -- "$grep_pat" \
+              | sort -rn -k"$sortkey","$sortkey" \
+              | awk 'BEGIN{G="\033[32m";R="\033[31m";B="\033[1m";Y="\033[33m";N="\033[0m"}
+                     {ta+=$2; td+=$3; tc+=$1; th+=$4
                       at = $2 ? G "+" $2 N : ""; la = $2 ? length($2)+1 : 0
                       dt = $3 ? R "-" $3 N : ""; ld = $3 ? length($3)+1 : 0
-                      ht = h ? Y h N : ""; lh = h ? length(h) : 0
-                      printf "%s%6d%s  %s%*s%s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", ht,6-lh,"", $4}
+                      ht = $4 ? Y $4 N : ""; lh = $4 ? length($4) : 0
+                      printf "%s%6d%s  %s%*s%s%*s%s%*s%s\n", B,$1,N, at,8-la,"", dt,8-ld,"", ht,6-lh,"", $5}
                      END{at = ta ? G "+" ta N : ""; la = ta ? length(ta)+1 : 0
                          dt = td ? R "-" td N : ""; ld = td ? length(td)+1 : 0
                          ht = th ? Y th N : ""; lh = th ? length(th) : 0
