@@ -45,6 +45,11 @@
           username = "ansible";
           homeDirectory = "/home/ansible";
         };
+        "ubuntu@server" = mkHomeConfiguration {
+          system = "x86_64-linux";
+          username = "ubuntu";
+          homeDirectory = "/home/ubuntu";
+        };
         "ow20@csgserver" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "ow20";
