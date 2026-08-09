@@ -41,6 +41,15 @@
       # Allow OSC 52 clipboard to pass through to outer terminal
       set -g set-clipboard on
       set -g allow-passthrough on
+
+      # Native mouse-wheel scrolling of the pane scrollback
+      set -g mouse on
+      # Scroll a few lines at a time (not a full page) for a native feel
+      bind -T copy-mode-vi WheelUpPane   send-keys -X -N 3 scroll-up
+      bind -T copy-mode-vi WheelDownPane send-keys -X -N 3 scroll-down
+      # In the alternate screen (less, man, vim) forward the wheel as arrow keys
+      bind -T root WheelUpPane   if-shell -F -t = "#{alternate_on}" "send-keys -M" "select-pane -t =; copy-mode -e; send-keys -X -N 3 scroll-up"
+      bind -T root WheelDownPane if-shell -F -t = "#{alternate_on}" "send-keys -M" "select-pane -t =; send-keys -X -N 3 scroll-down"
     '';
   };
 }
