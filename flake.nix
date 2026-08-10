@@ -29,6 +29,12 @@
           homeDirectory = "/Users/ottowhite";
           isLaptop = true;
         };
+        "ottowhite@Ottos-MBP" = mkHomeConfiguration {
+          system = "aarch64-darwin";
+          username = "ottowhite";
+          homeDirectory = "/Users/ottowhite";
+          isLaptop = true;
+        };
         "otto@nixos" = mkHomeConfiguration {
           system = "x86_64-linux";
           username = "otto";
