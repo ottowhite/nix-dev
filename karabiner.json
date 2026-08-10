@@ -412,13 +412,15 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
                                             "^com\\.google\\.android\\.studio$",
-                                            "^com\\.google\\.antigravity$"
+                                            "^com\\.google\\.antigravity$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -441,13 +443,15 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
                                             "^com\\.google\\.android\\.studio$",
-                                            "^com\\.google\\.antigravity$"
+                                            "^com\\.google\\.antigravity$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -470,13 +474,15 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
                                             "^com\\.google\\.android\\.studio$",
-                                            "^com\\.google\\.antigravity$"
+                                            "^com\\.google\\.antigravity$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -499,13 +505,15 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
                                             "^com\\.google\\.android\\.studio$",
-                                            "^com\\.google\\.antigravity$"
+                                            "^com\\.google\\.antigravity$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -528,12 +536,14 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -556,12 +566,14 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -584,12 +596,14 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -612,12 +626,14 @@
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^com\\.jetbrains\\.CLion$",
                                             "^com\\.jetbrains\\.cwm\\.guest$",
                                             "^com\\.jetbrains\\.*$",
-                                            "^com\\.google\\.android\\.studio$"
+                                            "^com\\.google\\.android\\.studio$",
+                                            "^dev\\.zed\\.Zed$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -810,21 +826,27 @@
             },
             "devices": [
                 {
-                    "identifiers": { "is_keyboard": true },
-                    "simple_modifications": [
-                        {
-                            "from": { "key_code": "caps_lock" },
-                            "to": [{ "key_code": "left_control" }]
-                        },
-                        {
-                            "from": { "key_code": "left_control" },
-                            "to": [{ "key_code": "caps_lock" }]
-                        }
-                    ]
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 1073,
+                        "vendor_id": 13364
+                    },
+                    "ignore": false
                 }
             ],
             "name": "Poweruser",
             "selected": true,
+            "simple_modifications": [
+                {
+                    "from": { "key_code": "caps_lock" },
+                    "to": [{ "key_code": "left_control" }]
+                },
+                {
+                    "from": { "key_code": "left_control" },
+                    "to": [{ "key_code": "caps_lock" }]
+                }
+            ],
             "virtual_hid_keyboard": {
                 "country_code": 0,
                 "keyboard_type_v2": "ansi"
