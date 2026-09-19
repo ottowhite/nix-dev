@@ -67,6 +67,12 @@
         set +a
       fi
 
+      resethostname() {
+          sudo scutil --set ComputerName "Ottos-MBP"
+          sudo scutil --set LocalHostName "Ottos-MBP"
+          sudo scutil --set HostName "Ottos-MBP"
+      }
+
       prdiff() {
           local order=linecount grep_pat=""
           while (( $# )); do
